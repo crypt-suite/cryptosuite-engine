@@ -1162,7 +1162,7 @@ async function generateAffineGame() {
   document.getElementById("guessB").value = "";
 
   // Call your backend to get the ciphertext!
-  const res = await fetch("http://localhost:3000/api/affine", {
+  const res = await fetch("/api/affine", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ text: currentAffineGame.plain, a: currentAffineGame.a, b: currentAffineGame.b, mode: "encrypt" })
@@ -1474,7 +1474,7 @@ async function handleEncrypt() {
 
   out.textContent = "Processing...";
   let payload = { text: input, mode: "encrypt" };
-  let endpoint = `http://localhost:3000/api/${type}`;
+  let endpoint = `/api/${type}`;
 
 
   // Grab specific inputs based on the cipher selected
@@ -1562,7 +1562,7 @@ async function handleDecrypt() {
 
   out.textContent = "Processing...";
   let payload = { text: input, mode: "decrypt" };
-  let endpoint = `http://localhost:3000/api/${type}`;
+  let endpoint = `/api/${type}`;
 
   // Grab specific inputs based on the cipher selected
   // Grab specific inputs based on the cipher selected
@@ -1862,7 +1862,7 @@ async function completeRegistration() {
   }
 
   // Send to backend
-  const res = await fetch("http://localhost:3000/api/register", {
+  const res = await fetch("/api/register", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, email, password }) // Added email here!
@@ -1890,7 +1890,7 @@ async function attemptLogin() {
   const username = document.getElementById("loginUsername").value;
   const password = document.getElementById("loginPassword").value;
 
-  const res = await fetch("http://localhost:3000/api/login", {
+  const res = await fetch("/api/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, password })
@@ -2716,7 +2716,7 @@ async function storeIntegrity() {
   fd.append("file", fileInput.files[0]);
 
   try {
-    const res = await fetch("http://localhost:3000/api/integrity/store", {
+    const res = await fetch("/api/integrity/store", {
       method: "POST",
       headers: {
         Authorization: "Bearer " + sessionStorage.getItem("authToken")
@@ -2769,7 +2769,7 @@ async function checkIntegrity() {
 
   console.log("Sending token:", sessionStorage.getItem("authToken"));
 
-  const res = await fetch("http://localhost:3000/api/integrity/check", {
+  const res = await fetch("/api/integrity/check", {
   method: "POST",
   headers: {
     Authorization: "Bearer " + sessionStorage.getItem("authToken")
@@ -3019,7 +3019,7 @@ if (file.size === 0) {
 
 
 const xhr = new XMLHttpRequest();
-xhr.open("POST", "http://localhost:3000/api/secure/encrypt");
+xhr.open("POST", "/api/secure/encrypt");
 
 const progressBar = document.getElementById("progressBar");
 const progressText = document.getElementById("progressText");
@@ -3104,7 +3104,7 @@ if (dataFile.size > MAX_SIZE || idFile.size > MAX_SIZE) {
   fd.append("idFile", idFile);
   fd.append("password", password);
 
-  const res = await fetch("http://localhost:3000/api/secure/decrypt", {
+  const res = await fetch("/api/secure/decrypt", {
     method: "POST",
     body: fd
   });
