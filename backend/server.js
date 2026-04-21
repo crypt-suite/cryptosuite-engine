@@ -662,7 +662,7 @@ app.post("/api/login", async (req, res) => {
 
       //2. AUTOMATE THE EMAIL (Upgraded with HTML!)
       // Note: Change this URL to your Render URL later when you deploy!
-      const unlockLink = `http://localhost:3000/api/unlock/${unlockToken}`;
+      const unlockLink = `https://cryptosuite-engine.onrender.com/api/unlock/${unlockToken}`;
       
       const mailOptions = {
         from: '"Security Team" <' + process.env.EMAIL_USER + '>', 
