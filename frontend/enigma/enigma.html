@@ -1,0 +1,322 @@
+
+<body>
+
+
+<h1 id="pageTitle">
+  ENIGMA MACHINE
+  <span id="plate">
+    
+<svg width="250" height="100" viewBox="0 0 340 150">
+  <defs>
+    <!-- Brushed metal gradient -->
+    <linearGradient id="brassPro" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f0e0b0"/>
+      <stop offset="40%" stop-color="#c8ad6d"/>
+      <stop offset="70%" stop-color="#b59655"/>
+      <stop offset="100%" stop-color="#8f773c"/>
+    </linearGradient>
+
+    <!-- Brushed texture -->
+    <filter id="brushed">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" result="noise"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feBlend in="SourceGraphic" in2="noise" mode="multiply" opacity="0.08"/>
+    </filter>
+
+    <!-- Engraved effect -->
+    <filter id="engraveDeep">
+      <feOffset dx="0" dy="1"/>
+      <feGaussianBlur stdDeviation="0.6" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="out"/>
+    </filter>
+
+    <!-- Inner glow -->
+    <filter id="innerShadow">
+      <feOffset dx="0" dy="1"/>
+      <feGaussianBlur stdDeviation="2" result="offset-blur"/>
+      <feComposite operator="arithmetic" k2="-1" k3="1"/>
+    </filter>
+
+    <!-- Drop shadow -->
+    <filter id="shadowPro">
+      <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- Main plate -->
+  <rect x="5" y="5" width="330" height="140" rx="18"
+        fill="url(#brassPro)"
+        stroke="#5a3a1e"
+        stroke-width="4"
+        filter="url(#shadowPro)"/>
+
+  <!-- Texture overlay -->
+  <rect x="5" y="5" width="330" height="140" rx="18"
+        fill="url(#brassPro)"
+        filter="url(#brushed)"
+        opacity="0.4"/>
+
+  <!-- Inner border -->
+  <rect x="14" y="14" width="312" height="122" rx="14"
+        fill="none"
+        stroke="#7a5a2a"
+        stroke-width="2"/>
+
+  <!-- Highlight strip -->
+  <rect x="14" y="14" width="312" height="50" rx="14"
+        fill="white"
+        opacity="0.15"/>
+
+  <!-- Screws -->
+  <g fill="#5a3a1e">
+    <circle cx="28" cy="28" r="5"/>
+    <circle cx="312" cy="28" r="5"/>
+    <circle cx="28" cy="122" r="5"/>
+    <circle cx="312" cy="122" r="5"/>
+  </g>
+
+  <!-- Main text -->
+  <text x="50%" y="55%" text-anchor="middle"
+        font-family="Courier New, monospace"
+        font-size="38"
+        fill="#2b1d12"
+        letter-spacing="8"
+        dominant-baseline="middle"
+        filter="url(#engraveDeep)">
+    ENIGMA
+  </text>
+
+  <!-- Subtext -->
+  <text x="50%" y="80%" text-anchor="middle"
+        font-family="Courier New, monospace"
+        font-size="12"
+        fill="#3a2a1a"
+        letter-spacing="3">
+    SCHLÜSSELMASCHINE
+  </text>
+</svg>
+</span>
+
+</h1>
+  
+<div id="container">
+    <div id="machineContainer">
+    <svg id="enigmaSVG" width="750" height="1000">
+      <rect id="machineBody"
+x="0"
+y="80"
+width="750"
+height="850"
+rx="25"
+fill="#2b1d12"
+stroke="#5a3a1e"
+stroke-width="4"/>
+
+     
+  <g id="logo" transform="translate(375, 90)">
+  <!-- Centered at x=375 (half of 750 width) -->
+
+  <image 
+  href="images/enigma_logo.png"
+  x="-60"
+  y="-5"
+  width="240"
+  height="80"
+  opacity="0.85"
+  style="filter: contrast(1.1) brightness(0.9);"
+/>
+</g>
+
+  <!-- Plugboard -->
+
+  <g id="plugboard"></g>
+
+  <!-- Rotors -->
+
+  <g id="rotors"></g>
+
+  <!-- Wires -->
+
+  <g id="wires"></g>
+
+  <!-- Lamps -->
+
+  <g id="lamps"></g>
+
+  <!-- Keyboard -->
+  <g id="keyboard"></g>
+
+</svg>
+</div>
+
+<div id="infoBox" tabindex="0">
+  <h2 style="font-size: 1.8rem; border-bottom: 2px solid #5a3a1e; padding-bottom: 10px;">The Enigma Machine</h2>
+
+  <h3 style="color: #e0c097; border-bottom: 1px dashed #5a3a1e; padding-bottom: 5px;">Part I: History & The Cryptography War</h3>
+  <p>
+    <strong>The Genesis:</strong> Invented at the end of World War I by German electrical engineer Arthur Scherbius, the Enigma machine was originally patented as a commercial cipher machine for banks and railways to protect corporate secrets. It was a commercial failure. However, in the 1920s, the German military recognized its potential, bought the patents, and heavily militarized the design. By the outbreak of WWII, the Enigma was the cryptographic beating heart of the Wehrmacht, Luftwaffe, and Kriegsmarine (Navy).
+  </p>
+  <p>
+    <strong>The Polish Vanguard:</strong> While history often credits the British for breaking Enigma, the initial, impossible mathematical breakthrough was made by the Polish Cipher Bureau (Biuro Szyfrów) in 1932. Brilliant mathematicians like Marian Rejewski, Henryk Zygalski, and Jerzy Różycki successfully deduced the internal wiring of the early rotors using pure combinatorics and group theory, inventing the <em>bomba kryptologiczna</em> to automate decryption. Just weeks before the invasion of Poland in 1939, they gifted their entire methodology to the British and French.
+  </p>
+  <p>
+    <strong>Bletchley Park & Alan Turing:</strong> As the Germans upgraded Enigma's complexity, the Polish methods became too slow. At Bletchley Park in England, Alan Turing and Gordon Welchman engineered the British <strong>Bombe</strong>. These were massive, ticking electromechanical arrays that simulated 36 Enigma machines simultaneously. By searching for logical contradictions in intercepted messages, the Bombes deduced the daily Enigma settings. This "Ultra" intelligence allowed the Allies to reroute convoys around U-boat wolfpacks in the Battle of the Atlantic, ultimately shortening World War II by an estimated two to four years and saving millions of lives.
+  </p>
+
+  <h3 style="color: #e0c097; border-bottom: 1px dashed #5a3a1e; padding-bottom: 5px; margin-top: 25px;">Part II: The 158 Quintillion Mathematics</h3>
+  <p>
+    The Enigma is a polyalphabetic electromechanical substitution cipher. Its illusion of absolute security came from an astronomical number of daily combinatorial variables. The standard 3-rotor Army Enigma (Enigma I) relied on the following factors:
+  </p>
+  <ul style="margin-bottom: 15px; padding-left: 20px; line-height: 1.6;">
+    <li><strong>Rotor Selection (Walzenlage):</strong> Operators chose 3 rotors from a box of 5 available rotors. The number of ways to arrange 3 items from a set of 5 is 5 × 4 × 3 = <strong>60 combinations</strong>.</li>
+    <li><strong>Starting Positions (Grundstellung):</strong> Each of the 3 rotors could start in 26 different rotational positions. 26 × 26 × 26 = <strong>17,576 combinations</strong>.</li>
+    <li><strong>Ring Settings (Ringstellung):</strong> The internal wiring core of each rotor could be rotated independently of its outer alphabet ring. This altered the position of the mechanical notch, changing exactly when the adjacent rotor would step. 26 × 26 = <strong>676 combinations</strong>.</li>
+    <li><strong>The Plugboard (Steckerbrett):</strong> The most cryptographically powerful component. Operators connected exactly 10 pairs of letters using cables, swapping them before and after they entered the rotors. The number of ways to pair 20 letters out of 26 is a staggering <strong>150,738,274,937,250 variations</strong>.</li>
+  </ul>
+  <p>Multiplying these factors together (60 × 17,576 × 676 × 150,738,274,937,250), the standard Enigma yielded exactly <strong>158,962,555,217,826,360,000</strong> possible daily states. To brute-force this by hand would take longer than the age of the universe.</p>
+
+
+  <h3 style="color: #e0c097; border-bottom: 1px dashed #5a3a1e; padding-bottom: 5px; margin-top: 25px;">Part III: The Machine Settings (Explained Simply)</h3>
+  <p>
+    Before the electrical journey can begin, the machine must be initialized. To understand how this works, you don't need a degree in cryptography—just think of the Enigma as a <strong>mechanical maze for electricity</strong>.
+  </p>
+  <ul style="margin-bottom: 15px; padding-left: 20px; line-height: 1.6;">
+    <li style="margin-bottom: 10px;">
+      <strong>1. Rotor Choice & Order (The "Puzzle Rooms"):</strong> 
+      Imagine you are building an obstacle course and have 5 different puzzle rooms in a box, but only space for 3. First, you pick which 3 to use. Next, you decide the order (putting the "Water Room" first is very different from putting it last). The Germans had a box of 5 physical wheels (rotors), each containing a unique, tangled maze of wires. The operator picked 3 and dropped them into the machine. Swapping their order completely changed the electrical maze.
+    </li>
+    <li style="margin-bottom: 10px;">
+      <strong>2. The Ring Setting (The "Loose Tire"):</strong> 
+      Imagine a car wheel with a metal hubcap (the internal wires) and a rubber tire wrapped around it (the alphabet letters). The rubber tire has a bump on it. When the bump spins to the top, it physically hits the next wheel and forces it to turn (like a car's odometer). If the tire was glued to the hubcap, the bump would always hit at the exact same predictable time. To fix this, the Germans made the alphabet tire <em>loose</em>. The operator could unpin it, twist the alphabet to a secret offset, and pin it back to the wires. This made it incredibly hard for codebreakers to predict when the wheels would physically step.
+    </li>
+    <li>
+      <strong>3. The Starting Position (The "Starting Line"):</strong> 
+      Imagine a combination lock on a bicycle. Before you try to open it, you spin the dials to a random starting word. After the operator put the wheels in and closed the machine's lid, they spun the wheels with their thumbs until three specific letters (like "H-E-Y") showed up in the little glass windows on top. This dictated exactly where the electricity would enter the maze the moment they pressed the very first key.
+    </li>
+  </ul>
+
+
+
+  <h3 style="color: #e0c097; border-bottom: 1px dashed #5a3a1e; padding-bottom: 5px; margin-top: 25px;">Part IV: The Electromechanical Anatomy</h3>
+  <p>
+    Every time an operator presses a key, an incredibly complex electrical journey occurs at the speed of light:
+  </p>
+  <ol style="margin-bottom: 15px; padding-left: 20px; line-height: 1.6;">
+    <li><strong>The Mechanical Step:</strong> The physical pressing of the key engages a mechanical lever, physically advancing the rightmost rotor by one notch. The cryptographic state mutates <em>before</em> the electrical current begins to flow.</li>
+    <li><strong>Plugboard Entry:</strong> The 4.5-volt current leaves the battery and passes into the Plugboard. If 'A' is plugged to 'Z', the current swaps to the 'Z' wire. If left un-plugged, it remains 'A'.</li>
+    <li><strong>The Forward Scramble:</strong> The current enters the Entry Stator (Eintrittswalze) and scrambles through the maze of crisscrossing wires inside the Right, Middle, and Left rotors. Because the rotors are constantly spinning, this physical maze changes with every single keystroke.</li>
+    <li><strong>The Reflector (Umkehrwalze):</strong> The current hits the fixed reflector at the far end of the machine. The reflector consists of 13 wired pairs that U-turn the electricity back into the rotors through an entirely different pin.</li>
+    <li><strong>The Inverse Pass:</strong> The current scrambles backward through the Left, Middle, and Right rotors, traversing a completely new electrical path.</li>
+    <li><strong>Lampboard Output:</strong> The current passes through the Plugboard one final time (swapping again if cabled) and illuminates a single lightbulb—revealing the ciphertext letter.</li>
+  </ol>
+
+  <h3 style="color: #e0c097; border-bottom: 1px dashed #5a3a1e; padding-bottom: 5px; margin-top: 25px;">Part V: Fatal Flaws & Exploits</h3>
+  <p>
+    Despite its mathematical brilliance, the Enigma system was doomed by physical hardware limitations, mathematical paradoxes, and human arrogance:
+  </p>
+  <ul style="margin-bottom: 15px; padding-left: 20px; line-height: 1.6;">
+    <li style="margin-bottom: 10px;"><strong>The Reflector Flaw (The Achilles Heel):</strong> To make the machine easy to use, Scherbius installed a reflector so that encryption and decryption were the exact same process. However, this meant that electricity always entered and exited the reflector on different wires. <strong>A letter could never encrypt to itself</strong> (e.g., 'A' could never become 'A'). This catastrophic flaw allowed Alan Turing to use "cribs" (known plaintext, like "WETTERVORHERSAGE" - weather forecast). By sliding the crib under the ciphertext, if any letter matched itself, the codebreakers instantly knew that rotor position was mathematically impossible, ruling out millions of combinations in seconds.</li>
+    <li style="margin-bottom: 10px;"><strong>Plugboard Reciprocity:</strong> The plugboard wiring was reciprocal. Gordon Welchman invented the "Diagonal Board" for the Turing Bombe to exploit this. If the Bombe guessed that 'A' was plugged to 'Z', the Diagonal Board instantly wired 'Z' to 'A', slashing the processing time of the Bombes exponentially.</li>
+    <li style="margin-bottom: 10px;"><strong>The "Double Stepping" Anomaly:</strong> Due to a mechanical quirk in how the physical stepping pawls pushed the gear ratchets, the middle rotor would occasionally step twice in a row. Our emulator perfectly replicates this mechanical "odometer" flaw, which the British codebreakers relied on to predict rotor movements.</li>
+    <li><strong>Human Error ("Cillies"):</strong> German operators were notoriously lazy under pressure. They frequently chose predictable starting keys (like "AAA", "QWE", or their girlfriends' initials), transmitted "Nothing to Report" at the exact same time every day, and routinely appended messages with "HEILHITLER", granting Bletchley Park a constant stream of plaintext to crack the daily keys.</li>
+  </ul>
+
+  <hr style="border: 0; border-top: 2px solid #5a3a1e; margin: 30px 0;">
+
+  <h2 style="font-size: 1.8rem; border-bottom: 2px solid #5a3a1e; padding-bottom: 10px;">Simulator Instructions (Detailed)</h2>
+
+  <h3>1. Components Overview</h3>
+  <ul style="padding-left: 20px; line-height: 1.6;">
+    <li><strong>Keyboard:</strong> Located at the bottom of the machine. Click a letter to type.</li>
+    <li><strong>Rotors:</strong> Three circular gears in the center (Left, Middle, Right). They rotate with each key press and determine encryption.</li>
+    <li><strong>Reflector:</strong> Circle on the left side. Reflects signal back through rotors for bidirectional encryption.</li>
+    <li><strong>Plugboard:</strong> Two rows of circles at the bottom. Connect pairs of letters to swap them before entering rotors.</li>
+    <li><strong>Lampboard:</strong> Displays the encrypted output. When a letter is typed, the corresponding lamp lights up.</li>
+  </ul>
+
+  <hr style="border-top: 1px solid #3a2a1a;">
+
+  <h3>2. Setting Up the Plugboard</h3>
+  <ul style="padding-left: 20px; line-height: 1.6;">
+    <li><strong>Step 1:</strong> Click a letter circle you want to connect.</li>
+    <li><strong>Step 2:</strong> Click a second letter circle to pair it. A cyan line appears between them.</li>
+    <li><strong>Step 3:</strong> Repeat for any other pairs you wish to create. (Historical operators used exactly 10 cables).</li>
+    <li><strong>Step 4:</strong> To remove or change a connection, click either letter of the pair and select a new pair or leave it unconnected.</li>
+  </ul>
+
+  <hr style="border-top: 1px solid #3a2a1a;">
+
+  <h3>3. Typing Letters</h3>
+  <ul style="padding-left: 20px; line-height: 1.6;">
+    <li>Click a letter on the keyboard.</li>
+    <li>Observe the signal animation:
+      <ul style="margin-top: 5px;">
+        <li><strong>Forward path (Orange):</strong> key → plugboard → rotors → reflector.</li>
+        <li><strong>Return path (Yellow):</strong> signal returns through rotors → lampboard.</li>
+        <li>The corresponding lamp lights up, showing the encrypted letter, and the text prints to the output screen.</li>
+      </ul>
+    </li>
+  </ul>
+
+  <hr style="border-top: 1px solid #3a2a1a;">
+
+  <h3>4. Understanding Rotor Rotation</h3>
+  <ul style="padding-left: 20px; line-height: 1.6;">
+    <li>The Right rotor rotates with each key press.</li>
+    <li>Middle & left rotors rotate according to mechanical stepping rules.</li>
+    <li><strong>Visual cue:</strong> The letters around each rotor gear stay upright while the gear rotates to help you track rotor positions.</li>
+  </ul>
+
+  <hr style="border-top: 1px solid #3a2a1a;">
+
+  <h3>5. Reading the Output</h3>
+  <ul style="padding-left: 20px; line-height: 1.6;">
+    <li>Because the Enigma is reciprocal, encryption and decryption are the exact same process.</li>
+    <li>Example: If you configure the machine, type "HELLO", and get "XMVPA", you can reset the machine to those exact settings, type "XMVPA", and it will perfectly spit out "HELLO".</li>
+  </ul>
+
+  <hr style="border-top: 1px solid #3a2a1a;">
+
+  <h3>6. Resetting the Machine</h3>
+  <ul style="padding-left: 20px; line-height: 1.6;">
+    <li>Click the <strong>Reset Machine</strong> button at the top to instantly return all rotors to the 'A' position and clear the output screen.</li>
+    <li>You can reconfigure plugboard or swap rotor types anytime.</li>
+  </ul>
+
+  <hr style="border-top: 1px solid #3a2a1a;">
+
+  <h3>7. Tips for Beginners</h3>
+  <ul style="padding-left: 20px; line-height: 1.6;">
+    <li>Start with no plugboard connections to understand rotor and reflector behavior.</li>
+    <li>Type single letters first and observe the signal path.</li>
+    <li>Experiment with plugboard connections to see how the signal routes differently before entering the rotors.</li>
+  </ul>
+
+  <hr style="border-top: 1px solid #3a2a1a;">
+
+  <h3>8. Suggested Workflow</h3>
+  <ol style="padding-left: 20px; line-height: 1.6; margin-bottom: 30px;">
+    <li>Set your desired Plugboard connections.</li>
+    <li>Select your Rotors (I, II, III, IV, or V) and set their initial Ring settings using the dropdowns on the left.</li>
+    <li>Type your message on the keyboard one letter at a time.</li>
+    <li>Watch the glowing signal trace the physical wiring path.</li>
+    <li>Copy your finished ciphertext directly from the digital Output Screen!</li>
+  </ol>
+</div>
+
+  
+
+<link rel="stylesheet" href="./css/enigma.css">
+
+<script type="module" src="./js/enigmaui.js"></script>
+
+</body>
+
+
+
+
+
+
+
+
+

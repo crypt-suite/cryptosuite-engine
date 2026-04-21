@@ -1,0 +1,329 @@
+
+  .signal-active {
+  fill: orange !important;
+  filter: drop-shadow(0 0 8px orange);
+}
+
+.rotor-active circle {
+  stroke: orange !important;
+  stroke-width: 4;
+  filter: drop-shadow(0 0 6px orange);
+}
+
+
+.signal-dot {
+  filter: drop-shadow(0 0 4px orange);
+}
+
+
+.signal-line {
+  filter: drop-shadow(0 0 6px orange);
+}
+
+
+
+
+
+
+
+
+#pageTitle {
+  position: absolute;
+  top: 18px;
+  left: 60%;
+  transform: translateX(-50%);
+
+  display: flex;              /* KEY */
+  align-items: center;        /* vertical align */
+  gap: 30px;
+
+  font-size: 50px;                 /* smaller = more realistic */
+  font-family: 'Courier New', monospace;
+  letter-spacing: 20px;             /* wide spacing like stamped text */
+
+  white-space: nowrap;
+  color: #3a2a1a;                  /* muted brown (not too dark, not gold) */
+
+  text-transform: uppercase;
+
+  /* very subtle engraved feel */
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.15),
+    0 1.5px 2px rgba(0,0,0,0.4);
+
+  margin: 0;
+  pointer-events: none;
+
+  /* Plate sizing */
+#plate svg {
+  height: 55px;   /* adjust size */
+  width: auto;
+}
+}
+
+#plate {
+  transform: translateY(2px);   /* down */
+  transform: translateY(-2px);  /* up */
+
+  transform: translateX(-1000px);  /* left */
+}
+
+
+
+
+
+
+
+
+
+#container {
+  display: flex;
+  flex-wrap: wrap;              /* allow heading to take full row */
+  justify-content: center;      /* center everything horizontally */
+  align-items: flex-start;
+  gap: 0;
+  padding: 0 5px;
+  
+}
+
+/* Centered heading */
+#mainTitle {
+  width: 100%;                  /* take full row */
+  text-align: center;           /* center text */
+  font-size: 42px;
+  letter-spacing: 4px;
+  margin: 10px 0 20px 0;        /* minimal top space */
+  color: #2b1d12;
+  font-family: 'Courier New', monospace;
+}
+
+
+
+
+
+
+
+
+body {
+  margin: 0;
+  background: #ddd;
+  font-family: sans-serif;
+  overscroll-behavior: auto;
+}
+
+#machineContainer {
+  width: 750px;
+  margin: 0px ;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.controls {
+  width: 820px;
+  margin: 0 auto 20px auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+text {
+  user-select: none;
+}
+
+
+#machineBody {
+  filter: drop-shadow(0 8px 20px rgba(0,0,0,0.4));
+}
+
+
+.key-active {
+  fill: orange !important;
+  stroke: yellow !important;
+  stroke-width: 3 !important;
+}
+
+
+
+
+
+
+
+/* --- ENIGMA UI BUTTONS --- */
+.enigma-btn {
+  background-color: #2b1d12;
+  border: 1.5px solid #5a3a1e;
+  color: #e0c097;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  font-weight: bold;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+  transition: all 0.1s ease;
+}
+
+.enigma-btn:hover {
+  background-color: #3a2a1a;
+  color: white;
+}
+
+.enigma-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+/* Special state for when the Turbo Mode (VIZ) is OFF */
+.enigma-btn-off {
+  background-color: #3b1515;
+  border-color: #7a2a2a;
+  color: #ffb3b3;
+}
+
+.enigma-btn-off:hover {
+  background-color: #4b1a1a;
+}
+
+
+
+
+
+
+
+
+
+
+#machineContainer {
+  width: 790px;               /* match rectangle width, ignore SVG extra width */
+  flex-shrink: 0;             /* don’t shrink */
+  overflow: visible;          /* show full SVG if needed */
+  
+}
+
+#infoBox {
+  width: 700px;               /* fits nicely next to machine */
+  height: 860px;              /* match machine height */
+  margin-top: 75px;
+  margin-left: -35px;
+  background-color: #2b1d12;  /* same as machine */
+  border: 4px solid #5a3a1e;  /* matches SVG stroke */
+  border-radius: 25px;        /* match SVG rounded corners */
+  padding: 10px;
+  color: #f5f5f5;
+  font-family: 'Courier New', monospace;
+  box-sizing: border-box;
+  overflow-y: auto;           /* scroll if text is long */
+  scroll-behavior: smooth;
+  
+   overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+#infoBox h2, #infoBox h3 {
+  color: #e0c097;            /* warm accent matching machine highlights */
+  margin-top: 5;
+}
+
+#infoBox p {
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+/* Optional: nice scrollbar style */
+#infoBox::-webkit-scrollbar {
+  width: 8px;
+}
+
+#infoBox::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 4px;
+}
+
+#infoBox::-webkit-scrollbar-track {
+  background-color: #2b1d12;
+}
+
+
+
+
+
+#cipher-output {
+  position: absolute;       /* you can change to fixed or relative as needed */
+  top: 167px;             /* adjust vertical position */
+  left: 37%;                /* adjust horizontal anchor */
+  transform: translateX(-50%); /* center horizontally */
+  
+  width: 400px;             /* adjust width as needed */
+  max-width: 90%;           /* responsive on smaller screens */
+  height: 30px;             /* adjust height as needed */
+
+  background: #111;
+  border: 2px solid #5a3a1e;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  padding: 6px 12px;
+
+  color: lime;
+  font-family: monospace;
+  font-size: 18px;
+  overflow: hidden;         /* hides overflow, scroll inside */
+  box-sizing: border-box;
+}
+
+#output-label {
+  flex-shrink: 0;
+  margin-right: 10px;
+}
+
+#cipher-scroll {
+  flex-grow: 1;
+  overflow-x: auto;         /* horizontal scroll */
+  white-space: nowrap;
+  display: block;
+}
+
+#cipher-text {
+  display: inline-block;
+  min-width: 1px;
+}
+
+#cipher-text::after {
+  content: "|";
+  margin-left: 2px;
+  animation: blink 1s infinite;
+}
+
+/* 1. Make the jagged gear teeth glow heavily */
+.rotor-active path {
+    stroke: orange !important;
+    stroke-width: 2px !important;
+    filter: drop-shadow(0 0 5px rgba(255, 165, 0, 0.9)) !important;
+    transition: stroke 0.2s ease, filter 0.2s ease;
+}
+
+/* 2. Make the FIRST inner ring glow (delicate, thin wire look) */
+.rotor-active circle:nth-of-type(1) {
+    stroke: orange !important;
+    stroke-width: 2.9px !important; 
+    filter: drop-shadow(0 0 3px rgba(255, 165, 0, 0.6)) !important;
+    transition: stroke 0.2s ease, filter 0.2s ease;
+}
+
+/* 3. Force the center hole to stay pitch black */
+.rotor-active circle:nth-of-type(2) {
+    stroke: #222 !important;
+    filter: none !important;
+}
+
+
+/* 4. Make the Reflector (UKW) glow heavily to match the gear teeth */
+#reflector-unit.rotor-active circle:nth-of-type(1) {
+    stroke: orange !important;
+    stroke-width: 2px !important;
+    filter: drop-shadow(0 0 5px rgba(255, 165, 0, 0.9)) !important;
+}
+
+@keyframes blink {
+  0%,50%,100% { opacity: 1; }
+  25%,75% { opacity: 0; }
+}

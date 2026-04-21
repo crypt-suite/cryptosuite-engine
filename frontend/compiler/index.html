@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Compiler Visualizer</title>
+
+<link rel="stylesheet" href="style.css">
+
+<!-- D3.js for tree -->
+<script src="https://d3js.org/d3.v7.min.js"></script>
+
+</head>
+<body>
+
+<h1>⚙️ Compiler Visualizer</h1>
+
+<div class="legend">
+    <span style="color:#e879f9">●</span> Program
+    <span style="color:#38bdf8">●</span> Statements
+    <span style="color:#22c55e">●</span> Literals
+    <span style="color:#f59e0b">●</span> Encryption
+</div>
+
+
+<div class="top-bar">
+    <div class="controls">
+
+    <label>Parser Category:</label>
+    <select id="parserCategory">
+        <option value="1">Top-Down</option>
+        <option value="2">Bottom-Up</option>
+    </select>
+
+    <label>Parser Type:</label>
+    <select id="parserType">
+        <option value="1">Recursive Descent</option>
+        <option value="2">LL(1)</option>
+        <option value="3">Shift Reduce</option>
+        <option value="4">Operator Precedence</option>
+        <option value="5">LR(0)</option>
+        <option value="6">SLR(1)</option>
+        <option value="7">LALR(1)</option>
+        <option value="8">CLR</option>
+    </select>
+
+    <div id="grammarControl" style="display: none; margin-top: 10px;">
+            <label style="color: #f59e0b;">Grammar:</label>
+            <select id="grammarType">
+                <option value="1">Arithmetic</option>
+                <option value="2">Boolean</option>
+            </select>
+        </div>
+        
+
+</div>
+    <textarea id="codeInput" placeholder="Enter your code..."></textarea>
+
+    <div class="controls">
+        <button onclick="runAll()">▶ Run</button>
+        <button onclick="stepTree()">🌳 Animate Tree</button>
+    </div>
+</div>
+
+<div class="grid">
+
+    <div class="panel">
+        <h2>Lexical</h2>
+        <pre id="lex"></pre>
+    </div>
+
+    <div class="panel">
+        <h2>Semantic</h2>
+        <pre id="semantic"></pre>
+    </div>
+
+    <div class="panel full">
+        <h2>🌳 Parse Tree</h2>
+        <svg id="tree"></svg>
+    </div>
+
+    <div class="panel">
+        <h2>📚 Symbol Table (Semantic Analysis)</h2>
+        <div id="symtab" style="overflow-x: auto; max-height: 300px;">
+            <p style="color: #64748b; font-style: italic;">Run code to generate symbol table...</p>
+        </div>
+    </div>
+
+    <div class="panel">
+        <h2>TAC</h2>
+        <pre id="tac"></pre>
+    </div>
+
+    <div class="panel full">
+        <h2>🔀 Control Flow Graph (CFG)</h2>
+        <svg id="cfg"></svg>
+    </div>
+
+
+    
+
+    <div class="panel full" style="display: flex; gap: 10px;">
+        <div style="flex: 1; border-right: 1px solid #334155; padding-right: 10px;">
+            <h2>⚡ Execution Output</h2>
+            <pre id="exec"></pre>
+        </div>
+        <div style="flex: 1; padding-left: 10px; overflow-y: auto;">
+            <h2>💾 Live Memory (VM)</h2>
+            <table id="memoryTable" style="width: 100%; border-collapse: collapse; font-family: monospace;">
+                <thead>
+                    <tr style="border-bottom: 1px solid #334155; color: #94a3b8; text-align: left;">
+                        <th style="padding-bottom: 5px;">Variable</th>
+                        <th style="padding-bottom: 5px;">Value</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,3133 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Cryptography Site</title>
+<style>
+  
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+/* Reset & base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+  color: #333;
+  line-height: 1.6;
+  min-height: 100vh;
+  padding: 30px 15px;
+}
+
+/* Typography */
+h1, h2, h3 {
+  color: #111827;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 15px;
+}
+
+h1 { font-size: 2.2rem; }
+h2 { font-size: 1.5rem; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px; margin-bottom: 20px;}
+h3 { font-size: 1.2rem; margin-top: 15px;}
+p, small { color: #4b5563; }
+
+/* Containers */
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hidden { display: none !important; }
+
+/* Front Page & Auth Pages (Centered) */
+#frontPage, #registerPage, #loginPage {
+  max-width: 500px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  text-align: center;
+  margin-top: 5vh;
+}
+
+/* Dashboard Header */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  padding: 15px 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+  margin-bottom: 25px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 25px;
+  align-items: start;
+}
+
+/* Cards */
+.card {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+  border: 1px solid #f3f4f6;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+}
+
+.card.full-width {
+  grid-column: 1 / -1;
+}
+
+/* Inputs & Selects */
+input[type="text"], input[type="number"], input[type="password"], input[type="file"], select, textarea {
+  width: 100%;
+  padding: 12px 15px;
+  margin-top: 8px;
+  margin-bottom: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+  background: #f9fafb;
+  transition: all 0.2s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #3b82f6;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+  outline: none;
+}
+
+/* Buttons */
+button {
+  cursor: pointer;
+  padding: 12px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  background-color: #3b82f6;
+  color: #fff;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 5px;
+}
+
+button:hover { background-color: #2563eb; transform: translateY(-1px); }
+button:active { transform: translateY(0); }
+button:disabled { background-color: #9ca3af; cursor: not-allowed; transform: none; }
+
+.btn-secondary { background-color: #f3f4f6; color: #374151; }
+.btn-secondary:hover { background-color: #e5e7eb; }
+.btn-danger { background-color: #ef4444; }
+.btn-danger:hover { background-color: #dc2626; }
+
+/* Output Box */
+#cryptoOutput, .output-box {
+  white-space: pre-wrap;
+  background: #1f2937;
+  color: #10b981;
+  padding: 15px;
+  margin-top: 15px;
+  border-radius: 8px;
+  min-height: 100px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+  overflow-x: auto;
+}
+
+/* Utilities & Progress */
+hr { border: 0; border-top: 1px solid #e5e7eb; margin: 20px 0; }
+.same { color: #059669; font-weight: 600; }
+.diff { color: #dc2626; font-weight: 600; background: #fee2e2; padding: 0 2px; border-radius: 3px; }
+
+
+
+
+
+
+
+
+
+
+.same { color: #059669; font-weight: 600; }
+.diff { color: #dc2626; font-weight: 600; background: #fee2e2; padding: 0 2px; border-radius: 3px; }
+
+/* The styling for the deleted gap! */
+.diff-space { 
+  background-color: #fca5a5; 
+  display: inline-block; 
+  width: 12px; 
+  height: 14px; 
+  margin: 0 4px; 
+  border-radius: 2px; 
+  cursor: help; 
+  vertical-align: middle;
+}
+
+
+
+
+
+progress {
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 10px;
+}
+progress::-webkit-progress-bar { background-color: #e5e7eb; }
+progress::-webkit-progress-value { background-color: #3b82f6; }
+
+canvas {
+  max-width: 100%;
+  border-radius: 6px;
+  border: 1px dashed #cbd5e1;
+  margin: 10px 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* CrypTool Styles */
+.cryptool-card {
+  background-color: #1e222b;
+  border: 1px solid #2d3340;
+  border-radius: 8px;
+  color: #e4e4e7;
+  font-family: 'Inter', sans-serif;
+  margin-top: 20px;
+  overflow: hidden;
+}
+
+.cryptool-toggle-btn {
+  background-color: #2d3340;
+  color: #e4e4e7;
+  border: none;
+  width: 100%;
+  text-align: left;
+  padding: 10px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #1e222b;
+}
+
+.cryptool-toggle-btn:hover { background-color: #3f4759; }
+
+.cryptool-content {
+  padding: 20px;
+  display: block; /* Toggled via JS */
+}
+
+.cryptool-header h3 {
+  color: white;
+  margin: 0 0 10px 0;
+  font-size: 1.2rem;
+}
+
+.badge-container { display: flex; gap: 8px; margin-bottom: 25px; }
+.badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.badge.green { background-color: #22c55e; color: #000; }
+.badge.grey { background-color: #4b5563; color: #fff; }
+
+/* The Simple Tabular Mapping */
+.cryptool-table-wrapper {
+  overflow-x: auto;
+  margin-top: 30px;
+  border: 1px solid #3f4759;
+  border-radius: 6px;
+}
+
+.cryptool-table {
+  width: max-content;
+  border-collapse: collapse;
+  font-family: monospace;
+  font-size: 14px;
+}
+
+.cryptool-table th, .cryptool-table td {
+  padding: 6px 10px;
+  border: 1px solid #3f4759;
+  text-align: center;
+  min-width: 30px;
+}
+
+.cryptool-table tr:first-child { background-color: #1e222b; color: white; }
+.cryptool-table tr:last-child { background-color: #1e222b; color: #a1a1aa; }
+
+/* Rail Fence Specific */
+.rail-grid-table {
+  border-collapse: collapse;
+  font-family: monospace;
+  font-size: 14px; /* Slightly smaller text */
+  font-weight: bold;
+  margin: 0 auto;
+  white-space: nowrap;
+}
+.rail-grid-table td {
+  min-width: 22px; /* Reduced from 35px */
+  height: 26px;    /* Reduced from 35px */
+  padding: 2px 4px; /* Tighter padding */
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid rgba(63, 71, 89, 0.3);
+}
+.rail-char { color: #22c55e; background-color: rgba(34, 197, 94, 0.08); }
+.rail-dot { color: #3f4759; }
+
+
+
+
+
+
+
+/* Caesar Viz Options */
+.caesar-options {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin: 15px 0;
+  background: #1a1e24;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #2d3340;
+}
+.caesar-options label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  color: #e4e4e7;
+  user-select: none;
+}
+.caesar-options input[type="checkbox"] {
+  accent-color: #22c55e;
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  cursor: pointer;
+}
+
+</style>
+</head>
+<body>
+
+<!-- FRONT PAGE  -->
+
+<div id="frontPage" class="page">
+  <h1>Welcome to the Cryptography Site</h1>
+  <p>Explore classic ciphers, encryption, and brute-force techniques.</p>
+  <button id="enterBtn">Enter Playground</button>
+  <button id="aboutBtn" onclick="showAboutPage()">📖 How it Works (Documentation)</button>
+  
+  <div id="auth-buttons" style="text-align: center; margin-top: 20px;">
+    <button onclick="showRegister()" class="btn-secondary">Register</button>
+    <button onclick="showLogin()" class="btn-secondary">Login</button>
+  </div>
+</div> <div id="aboutPage" class="page hidden" style="max-width: 950px; text-align: left; line-height: 1.7;">
+  
+  <div style="text-align: center; margin-bottom: 40px;">
+    <h2 style="font-size: 2.2rem; margin-bottom: 5px; color: #111827;">📖 Core Architecture & Documentation</h2>
+    <p style="color: #4b5563; font-size: 1.1rem; max-width: 700px; margin: 0 auto;">An intricate, under-the-hood analysis of the cryptographic mathematics, buffer manipulations, and heuristic algorithms powering this system.</p>
+  </div>
+
+  <div style="background: #ffffff; padding: 30px; border-radius: 12px; margin-bottom: 30px; border: 1px solid #e5e7eb; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+    <h3 style="color: #2563eb; border-bottom: 2px solid #eff6ff; padding-bottom: 10px; font-size: 1.5rem;">Module 1: Mathematical & Transposition Ciphers</h3>
+    
+    <div style="margin-top: 20px;">
+      <h4 style="color: #111827; margin-bottom: 5px; font-size: 1.2rem;">1. Dynamic Caesar Cipher</h4>
+      <p style="color: #4b5563; margin-top: 0; margin-bottom: 10px;"><strong>Core Concept:</strong> A monoalphabetic substitution cipher relying on modular arithmetic.</p>
+      <ul style="color: #374151; margin-left: 20px; font-size: 0.95rem;">
+        <li><strong>Dynamic Alphabet Generation:</strong> Unlike standard 26-letter implementations, this engine dynamically constructs the modulo base (up to 62 characters: <code>A-Z, a-z, 0-9</code>) based on UI checkbox states.</li>
+        <li><strong>Mathematical Engine:</strong> For encryption, the engine computes <code>E(x) = (x + s) mod L</code>, where <code>x</code> is the character index, <code>s</code> is the shift, and <code>L</code> is the dynamic alphabet length.</li>
+        <li><strong>Decryption Wrap-Around:</strong> To handle negative modulo values in JavaScript during decryption, the formula explicitly forces positive wrapping: <code>D(x) = ((x - s) % L + L) % L</code>.</li>
+      </ul>
+    </div>
+
+    <div style="margin-top: 25px;">
+      <h4 style="color: #111827; margin-bottom: 5px; font-size: 1.2rem;">2. Vigenère Cipher</h4>
+      <p style="color: #4b5563; margin-top: 0; margin-bottom: 10px;"><strong>Core Concept:</strong> A polyalphabetic cipher utilizing a repeating key to flatten frequency analysis.</p>
+      <ul style="color: #374151; margin-left: 20px; font-size: 0.95rem;">
+        <li><strong>Index Mapping:</strong> The engine iterates through the plaintext. If a character is alphabetical, it calculates its base offset (65 for Uppercase, 97 for Lowercase).</li>
+        <li><strong>Key Pointer:</strong> A separate index <code>j</code> tracks the key character. It wraps using <code>j % key.length</code>. The key character's ASCII value is mapped to a 0-25 shift range.</li>
+        <li><strong>Algorithm:</strong> The resulting character is computed as <code>String.fromCharCode((c.charCodeAt(0) - base + shift) % 26 + base)</code>, strictly preserving case and ignoring symbols/spaces.</li>
+      </ul>
+    </div>
+
+    <div style="margin-top: 25px;">
+      <h4 style="color: #111827; margin-bottom: 5px; font-size: 1.2rem;">3. Affine Cipher (Coprime Verification)</h4>
+      <p style="color: #4b5563; margin-top: 0; margin-bottom: 10px;"><strong>Core Concept:</strong> A substitution cipher combining multiplication and addition. <code>E(x) = (ax + b) mod 26</code>.</p>
+      <ul style="color: #374151; margin-left: 20px; font-size: 0.95rem;">
+        <li><strong>Key 'A' Validation:</strong> Key A must be coprime to 26 (e.g., 1, 3, 5, 7, 9, 11...). The backend enforces this by attempting to calculate the <strong>Modular Multiplicative Inverse</strong> of A modulo 26. If the loop <code>(a * x) % 26 === 1</code> fails to find an integer <code>x</code>, decryption is mathematically impossible, and the API rejects the request.</li>
+        <li><strong>Decryption Formula:</strong> <code>D(x) = a⁻¹ * (x - b) mod 26</code>. The JS engine implements a secondary wrap to prevent negative modulo resolution: <code>(aInv * (x - b + 26)) % 26</code>.</li>
+      </ul>
+    </div>
+
+    <div style="margin-top: 25px;">
+      <h4 style="color: #111827; margin-bottom: 5px; font-size: 1.2rem;">4. Rail Fence Matrix Algorithm</h4>
+      <p style="color: #4b5563; margin-top: 0; margin-bottom: 10px;"><strong>Core Concept:</strong> A transposition cipher that disrupts positional syntax.</p>
+      <ul style="color: #374151; margin-left: 20px; font-size: 0.95rem;">
+        <li><strong>Vector Tracking:</strong> The algorithm constructs a 2D array of dimensions <code>[rails][text.length]</code>. It utilizes a <code>dir</code> (direction) variable initialized to <code>1</code> (down).</li>
+        <li><strong>Reflection Bounds:</strong> As characters are populated into the matrix, the engine checks <code>if (row === 0 || row === rails - 1)</code>. Upon hitting the ceiling or floor rail, the vector flips (<code>dir *= -1</code>), causing the exact zigzag path.</li>
+        <li><strong>Decryption Reconstruction:</strong> To decrypt, the engine first maps the zigzag path with `*` placeholder tokens. It then fills the placeholders linearly with the ciphertext, and finally traces the zigzag path one last time to read out the plaintext.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="background: #ffffff; padding: 30px; border-radius: 12px; margin-bottom: 30px; border: 1px solid #e5e7eb; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+    <h3 style="color: #dc2626; border-bottom: 2px solid #fef2f2; padding-bottom: 10px; font-size: 1.5rem;">Module 2: Offensive Security & Cryptanalysis</h3>
+    
+    <div style="margin-top: 20px;">
+      <h4 style="color: #111827; margin-bottom: 5px; font-size: 1.2rem;">1. Asynchronous Caesar Brute-Force</h4>
+      <p style="color: #4b5563; margin-top: 0; margin-bottom: 10px;"><strong>Core Concept:</strong> Exhaustive key-space searching paired with heuristic detection.</p>
+      <ul style="color: #374151; margin-left: 20px; font-size: 0.95rem;">
+        <li><strong>Non-Blocking Event Loop:</strong> The UI utilizes <code>setInterval()</code> to yield control back to the browser render thread between guesses. This prevents UI lockups while updating the visual logs at dynamic <code>Guesses/sec</code> rates.</li>
+        <li><strong>Heuristic Halting:</strong> Instead of dumping all 25 shifts and forcing the user to read them, the engine scans the lowercased output of each shift against an array of 80+ common English words. If <code>.some()</code> returns true, the loop automatically halts and flags the index as the cracked key.</li>
+      </ul>
+    </div>
+
+    <div style="margin-top: 25px;">
+      <h4 style="color: #111827; margin-bottom: 5px; font-size: 1.2rem;">2. The Mutation Dictionary Attack</h4>
+      <p style="color: #4b5563; margin-top: 0; margin-bottom: 10px;"><strong>Core Concept:</strong> A multi-layered password cracking simulator that predicts human password habits.</p>
+      <ul style="color: #374151; margin-left: 20px; font-size: 0.95rem;">
+        <li><strong>Layer 1 (File Input):</strong> Parses user-uploaded <code>.txt</code> dictionary files asynchronously via the <code>FileReader</code> API.</li>
+        <li><strong>Layer 2 (Heuristic Substitution Map):</strong> Feeds base words into a recursive generator that maps characters to Leetspeak (<code>a → @</code>, <code>s → $</code>, <code>e → 3</code>). It generates all possible combinations (e.g., <code>apple</code> → <code>@pple</code>).</li>
+        <li><strong>Layer 3 (Pattern & Suffix Injection):</strong> Takes the results and appends highly predictable human suffixes (<code>1</code>, <code>123</code>, <code>2023</code>, <code>99</code>). It also tests common keyboard geometric patterns (e.g., <code>qazwsx</code>, <code>zxcvb</code>).</li>
+        <li><strong>Layer 4 (Raw Permutation Generator):</strong> If heuristic layers fail, the code falls back to a <code>yield*</code> generator function to systematically test every single character combination (A-Z, 0-9, symbols) up to the specified max length.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="background: #ffffff; padding: 30px; border-radius: 12px; margin-bottom: 30px; border: 1px solid #e5e7eb; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+    <h3 style="color: #10b981; border-bottom: 2px solid #ecfdf5; padding-bottom: 10px; font-size: 1.5rem;">Module 3: Secure Vault & Deep-Buffer Integrity</h3>
+    
+    <div style="margin-top: 20px;">
+      <h4 style="color: #111827; margin-bottom: 5px; font-size: 1.2rem;">1. Split-Key Buffer Encryption (Vault)</h4>
+      <p style="color: #4b5563; margin-top: 0; margin-bottom: 10px;"><strong>Core Concept:</strong> Two-factor physical file fragmentation via AES-256-CBC.</p>
+      <ul style="color: #374151; margin-left: 20px; font-size: 0.95rem;">
+        <li><strong>Key Derivation (PBKDF2):</strong> User passwords are never used directly as AES keys. The backend generates a 16-byte cryptographically secure pseudo-random salt. It then applies PBKDF2 with 100,000 iterations to derive a perfect 32-byte key.</li>
+        <li><strong>Cipher Initialization:</strong> A 16-byte random IV (Initialization Vector) ensures identical files encrypt to entirely different ciphertexts. Salt and IV are logged to <code>secure_meta.json</code> keyed by a UUID.</li>
+        <li><strong>Buffer Slicing:</strong> The final ciphertext buffer is literally severed in half: <code>encrypted.slice(0, mid)</code> and <code>encrypted.slice(mid)</code>. The <code>archiver</code> library bundles these fragments with the UUID text file into a downloadable ZIP.</li>
+      </ul>
+    </div>
+
+    <div style="margin-top: 25px;">
+      <h4 style="color: #111827; margin-bottom: 5px; font-size: 1.2rem;">2. Granular SHA-256 Integrity Validation</h4>
+      <p style="color: #4b5563; margin-top: 0; margin-bottom: 10px;"><strong>Core Concept:</strong> Cryptographic hashing and tokenized array diffing.</p>
+      <ul style="color: #374151; margin-left: 20px; font-size: 0.95rem;">
+        <li><strong>File-Level Hashing:</strong> The entire `fs.readFileSync` buffer is passed through Node's `crypto.createHash("sha256")` to generate a 64-character hex signature representing the file's absolute binary state.</li>
+        <li><strong>Tokenized Word Hashing:</strong> If the buffer passes the `indexOf("\uFFFD")` text-encoding check, the backend normalizes the text (removing punctuation and line-breaks). It then splits the text into a massive array and calculates the individual SHA-256 hash for <em>every single word</em>.</li>
+        <li><strong>Array Diffing:</strong> During integrity checks, if the global hash fails, the backend compares the historical `originalWordHashes[i]` against `currentWordHashes[i]`. It maps the indices of mismatched hashes and returns an array of `changedWords` to the frontend, which renders targeted red `<span>` elements around the exact tampered tokens.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="background: #ffffff; padding: 30px; border-radius: 12px; margin-bottom: 30px; border: 1px solid #e5e7eb; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+    <h3 style="color: #8b5cf6; border-bottom: 2px solid #f5f3ff; padding-bottom: 10px; font-size: 1.5rem;">Module 4: Visual Cryptography Sub-Pixel Engine</h3>
+    
+    <div style="margin-top: 20px;">
+      <h4 style="color: #111827; margin-bottom: 5px; font-size: 1.2rem;">HTML5 Canvas Pixel Manipulation</h4>
+      <p style="color: #4b5563; margin-top: 0; margin-bottom: 10px;"><strong>Core Concept:</strong> 2-out-of-2 secret sharing scheme reliant on human optical overlay.</p>
+      <ul style="color: #374151; margin-left: 20px; font-size: 0.95rem;">
+        <li><strong>Pixel Expansion:</strong> The original text is drawn to a hidden canvas and its <code>ImageData</code> is extracted. To fit the noise data, the output canvases are scaled up (Width × 2, Height × 2).</li>
+        <li><strong>Boolean Subpixel Assignment:</strong> The engine iterates through the original pixel matrix. If a pixel is deemed "black" (RGBA threshold < 128), it is assigned a random subpixel pattern matrix (e.g., <code>[1,0],[0,1]</code>) for Share 1. Share 2 is assigned the <strong>bitwise complement</strong> of that matrix (<code>[0,1],[1,0]</code>). If the pixel is white, both shares receive the exact same pattern matrix.</li>
+        <li><strong>Logical OR Overlay Simulation:</strong> When generating the overlay, the code simulates transparencies stacking on top of each other. It extracts the `ImageData` for both Share canvases and processes them via a simulated logical OR: <code>const blackOverlay = black1 || black2;</code>. If either subpixel is black, light is blocked, resulting in the secret image emerging from the noise.</li>
+      </ul>
+    </div>
+  </div>
+
+
+
+
+  <div style="background: #ffffff; padding: 30px; border-radius: 12px; margin-bottom: 30px; border: 1px solid #e5e7eb; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+    <h3 style="color: #d97706; border-bottom: 2px solid #fef3c7; padding-bottom: 10px; font-size: 1.5rem;">Module 5: Enigma Machine Emulator (Electromechanical Cryptanalysis)</h3>
+    
+    <div style="margin-top: 20px;">
+      <h4 style="color: #111827; margin-bottom: 5px; font-size: 1.2rem;">1. Component & State Architecture</h4>
+      <p style="color: #4b5563; margin-top: 0; margin-bottom: 10px;"><strong>Core Concept:</strong> A strict MVC-patterned simulation built purely in modern ES6 JavaScript, severing cryptographic logic from DOM updates.</p>
+      <ul style="color: #374151; margin-left: 20px; font-size: 0.95rem;">
+        <li><strong>State Isolation:</strong> The machine's hardware variables—rotor configurations (I-V), active positions, ring settings (Ringstellung), and plugboard hash maps (Steckerbrett)—are contained in an immutable <code>enigmaState</code> object.</li>
+        <li><strong>Logic Separation:</strong> <code>enigmacore.js</code> operates entirely blindly to the DOM. It processes integer indices mathematically and returns a <code>{outputLetter, signalPath}</code> payload.</li>
+        <li><strong>Visualization Bridging:</strong> <code>enigmaviz.js</code> ingests the path array, calculating absolute screen coordinates using SVG matrix transformations (<code>getCTM()</code>) to render physical electron flow.</li>
+      </ul>
+    </div>
+
+    <div style="margin-top: 25px;">
+      <h4 style="color: #111827; margin-bottom: 5px; font-size: 1.2rem;">2. The Cryptographic Pipeline & Mathematics</h4>
+      <p style="color: #4b5563; margin-top: 0; margin-bottom: 10px;"><strong>Core Concept:</strong> Index-based array mapping modeling electrical conductivity through physical rotating discs.</p>
+      <ul style="color: #374151; margin-left: 20px; font-size: 0.95rem;">
+        <li><strong>Character Indexing:</strong> The engine maps A-Z to integers 0-25 via base-offset logic: <code>c.charCodeAt(0) - 65</code>.</li>
+        <li><strong>Forward Rotor Substitution:</strong> As the signal enters the right side of a rotor, the code accounts for the rotor's rotation offset AND the ring setting offset. The relative contact index is: <code>shifted = (i + pos - ring + 26) % 26</code>.</li>
+        <li><strong>Inverse Backward Pass:</strong> After striking the fixed Reflector (UKW-B), the signal travels backward through the rotors. Because the wiring is fixed, the code simulates reverse electrical flow by calculating the <em>index</em> of the letter: <code>rotor.wiring.indexOf(letter)</code>, and reverse-mapping the offsets.</li>
+      </ul>
+    </div>
+
+    <div style="margin-top: 25px;">
+      <h4 style="color: #111827; margin-bottom: 5px; font-size: 1.2rem;">3. The Odometer Anomaly (Double Stepping)</h4>
+      <p style="color: #4b5563; margin-top: 0; margin-bottom: 10px;"><strong>Core Concept:</strong> Accurate emulation of the physical pawl-and-ratchet mechanical flaw present in the historical Enigma.</p>
+      <ul style="color: #374151; margin-left: 20px; font-size: 0.95rem;">
+        <li><strong>Primary Stepping:</strong> The rightmost rotor steps universally upon every key press via <code>state.positions[2] = (rp + 1) % 26</code>.</li>
+        <li><strong>Notch Triggering:</strong> Each historical rotor possesses a physical notch (e.g., Rotor I notches at 'Q'). The engine checks if the normalized index hits this notch: <code>indexToChar((mp + 26 - state.rings[1]) % 26) === middle.notch</code>.</li>
+        <li><strong>The Mechanical Flaw:</strong> Due to the historical physical design of the stepping pawls, when the middle rotor reaches its notch, it engages the left rotor's ratchet. However, when it steps the left rotor, it simultaneously pushes itself forward. The engine accurately replicates this "Double Step" phenomenon, advancing the middle rotor twice in a row.</li>
+      </ul>
+    </div>
+
+    <div style="margin-top: 25px;">
+      <h4 style="color: #111827; margin-bottom: 5px; font-size: 1.2rem;">4. The SVG Sub-Pixel Routing Engine</h4>
+      <p style="color: #4b5563; margin-top: 0; margin-bottom: 10px;"><strong>Core Concept:</strong> Dynamic trigonometric DOM plotting to simulate real-time electron pathing.</p>
+      <ul style="color: #374151; margin-left: 20px; font-size: 0.95rem;">
+        <li><strong>Trigonometric Pin Detection:</strong> Rotors contain 26 contact pins. To find the exact screen coordinate of a signal hitting a pin, the engine utilizes sine and cosine functions: <code>x = Math.sin(rad) * radius</code> and <code>y = -Math.cos(rad) * radius</code>.</li>
+        <li><strong>Matrix Transformations:</strong> Because rotors are rotated using CSS transforms, local coordinates do not match the global SVG canvas. The engine employs <code>point.matrixTransform(gear.getCTM())</code> to convert localized physical pin locations to absolute drawing coordinates.</li>
+        <li><strong>Asynchronous Signal Lacing:</strong> The glowing orange signal path is plotted using the SVG <code>stroke-dasharray</code> and <code>stroke-dashoffset</code> properties. An asynchronous <code>sleep()</code> loop pairs with CSS transitions to simulate continuous current flow through physical wires, rendering exact intersection points down to the specific letter typed.</li>
+      </ul>
+    </div>
+  </div>
+
+
+
+
+
+  <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
+    <button class="btn-secondary" onclick="goHome()" style="width: 250px; font-size: 1.1rem; padding: 15px; font-weight: bold;">Back to Dashboard</button>
+  </div>
+</div>
+  
+
+<!-- REGISTRATION PAGE -->
+<div id="registerPage" class="page hidden">
+  <h2>Register</h2>
+  <input type="text" id="regUsername" placeholder="Username" />
+  
+  <input 
+    type="email" 
+    id="regEmail" 
+    placeholder="Email Address" 
+    style="width: 100%; padding: 12px 15px; margin-top: 10px; border: 1.8px solid #ccc; border-radius: 8px; font-size: 16px; font-family: inherit; box-sizing: border-box;" 
+  />
+
+<div style="position: relative;">
+  <input
+    type="password"
+    id="regPassword"
+    placeholder="Password"
+    oninput="checkPasswordStrength(this.value)"
+    style="
+      width: 100%;
+      padding: 12px 15px;
+      margin-top: 10px;
+      border: 1.8px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      font-family: inherit;
+      box-sizing: border-box;
+      padding-right: 40px;
+    "
+  />
+  <svg
+    onclick="toggleVisibility('regPassword', this)"
+    xmlns="http://www.w3.org/2000/svg"
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    style="
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+    "
+  >
+    <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" />
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+</div>
+
+  <div id="strengthBar" style="height: 10px; background: #ccc; border-radius: 5px; margin-top: 5px;">
+    <div id="strengthFill" style="height: 100%; width: 0%; background: red; border-radius: 5px;"></div>
+  </div>
+  <small id="strengthText" style="color: gray;">Password strength: </small>
+  <button onclick="suggestPassword()">Suggest Strong Password</button>
+  <button onclick="completeRegistration()">Submit Registration</button>
+  <button onclick="goHome()">Back</button>
+</div>
+
+<!-- LOGIN PAGE -->
+<div id="loginPage" class="page hidden">
+  <h2>Login</h2>
+  <input type="text" id="loginUsername" placeholder="Username" />
+
+
+<div style="position: relative;">
+  <input
+    type="password"
+    id="loginPassword"
+    placeholder="Password"
+    style="
+      width: 100%;
+      padding: 12px 15px;
+      margin-top: 10px;
+      border: 1.8px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      font-family: inherit;
+      box-sizing: border-box;
+      padding-right: 40px;
+    "
+  />
+  <svg
+    onclick="toggleVisibility('loginPassword', this)"
+    xmlns="http://www.w3.org/2000/svg"
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    style="
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+    "
+  >
+    <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" />
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+</div>
+
+  <button onclick="attemptLogin()">Login</button>
+  <button onclick="goHome()">Back</button>
+</div>
+
+<!-- Hide these elements -->
+<button id="registerBtn" onclick="showRegister()" style="display: none;">Register</button>
+<button id="loginBtn" onclick="showLogin()" style="display: none;">Login</button>
+
+
+<!-- AFFINE CIPHER CHALLENGE BOX -->
+<div id="affineChallengeBox" class="hidden">
+  <h2>Affine Cipher Challenge</h2>
+
+  <textarea id="affinePlaintext" placeholder="Enter plaintext"></textarea>
+  <button onclick="startAffineChallenge()">Start Challenge</button>
+
+  <p><strong>Ciphertext:</strong> <span id="affineCipher"></span></p>
+  <p id="affineGivenKey"></p>
+
+  <input type="number" id="affineGuess" placeholder="Guess missing key" />
+  <button onclick="submitAffineGuess()">Submit Guess</button>
+
+  <p id="affineResult"></p>
+</div>
+<!-- AFFINE CIPHER GAME PAGE -->
+
+<!-- CRYPTO PLAYGROUND PAGE -->
+<div id="playgroundPage" class="page hidden">
+
+  <header class="app-header">
+    <h1 style="margin:0; font-size:1.5rem;">🔐 Cryptography Dashboard</h1>
+    <div class="header-actions">
+
+      <button style="background-color: #8b5cf6; color: white; font-weight: bold;" onclick="showEnigmaPage()">⚙️ Enigma Emulator</button>
+
+      <button style="background-color: #0f2537; color: #66d9ff; font-weight: bold; border: 1px solid #1a4a66;" onclick="window.open('/compiler', '_blank')">🖥️ Compiler Parser</button>
+      
+      <button class="btn-secondary" onclick="resetPlaygroundFields()">Reset Fields</button>
+      <button class="btn-secondary" onclick="goHome()">Home</button>
+      <button class="btn-danger" onclick="logout()">Logout</button>
+    </div>
+  </header>
+
+  <div class="dashboard-grid">
+
+    <div class="card full-width" style="margin-bottom: 25px;">
+      <h2>Text Cipher</h2>
+      <textarea id="cryptoInput" rows="4" placeholder="Enter text to encrypt/decrypt..."></textarea>
+
+<select id="cipherType" onchange="handleCipherChange()">
+    <option value="caesar">Caesar Cipher</option>
+    <option value="vigenere">Vigenère Cipher</option>
+    <option value="rot13">ROT13</option>
+    <option value="atbash">Atbash</option>
+    <option value="base64">Base64</option>
+    <option value="aes">AES</option>
+    <option value="sha256">SHA-256 (Hash only)</option>
+    <option value="morse">Morse Code</option>
+    <option value="affine">Affine Cipher</option>
+    <option value="railfence">Rail Fence Cipher</option>
+    <option value="binary">Binary</option>
+  </select>
+  <small id="cipherNote" style="display: block; margin-top: -5px; margin-bottom: 10px; color: gray;"></small>
+<div style="min-height: 55px; margin-top: 5px;">
+    <input type="text" id="keyInput" placeholder="Encryption Key (for Vigenère or AES)" style="display:none; margin: 0;" />
+    
+    <input type="number" id="caesarShiftInput" placeholder="Caesar Shift (default 3)" value="3" oninput="updateCaesarVisualization()" style="display:block; margin: 0;" />
+    
+    <input type="number" id="railFenceInput" placeholder="Number of Rails (e.g., 3)" min="2" style="display:none; margin: 0;" />
+
+    <div id="affineInputs" style="display:none; gap: 15px; width: 100%;">
+      <input type="number" id="affineA" placeholder="Key A (Coprime)" value="5" style="flex: 1; margin: 0;">
+      <input type="number" id="affineB" placeholder="Key B (0-25)" value="8" style="flex: 1; margin: 0;">
+    </div>
+  </div>
+
+  <div id="caesarVisualization" style="display:none;" class="cryptool-card">
+    <button class="cryptool-toggle-btn" onclick="toggleVis('caesarContent', this)">
+      <span>▼</span> Hide visualization
+    </button>
+    
+
+
+
+
+
+    <div id="caesarContent" class="cryptool-content">
+  <div class="cryptool-header">
+    <h3>Caesar mapping</h3>
+    <div class="badge-container">
+      <span class="badge green">Plaintext</span>
+      <span class="badge grey">Ciphertext</span>
+    </div>
+  </div>
+
+  <div class="caesar-options">
+    <label><input type="checkbox" id="cbUpper" checked onchange="updateCaesarVisualization()"> Uppercase (A-Z)</label>
+    <label><input type="checkbox" id="cbLower" checked onchange="updateCaesarVisualization()"> Lowercase (a-z)</label>
+    <label><input type="checkbox" id="cbDigits" checked onchange="updateCaesarVisualization()"> Digits (0-9)</label>
+  </div>
+
+
+      <div id="caesarSvgContainer" style="text-align: center;"></div>
+      <div class="cryptool-table-wrapper">
+        <table class="cryptool-table" id="caesarTable"></table>
+      </div>
+      <p style="font-size: 13px; color: #a1a1aa; margin-top: 15px;">The Caesar disc and substitution table interactively display the alphabet and the key.</p>
+    </div>
+  </div>
+
+  <div id="railFenceVisualization" style="display:none;" class="cryptool-card">
+    <button class="cryptool-toggle-btn" onclick="toggleVis('railContent', this)">
+      <span>▼</span> Hide visualization
+    </button>
+    <div id="railContent" class="cryptool-content">
+      <div class="cryptool-header">
+        <h3>Rail Fence Matrix</h3>
+        <div class="badge-container">
+          <span class="badge green">Character</span>
+          <span class="badge grey">Empty Space</span>
+        </div>
+      </div>
+      <div style="overflow-x: auto; text-align: center; padding: 20px 0;">
+        <table class="rail-grid-table" id="railGridTable"></table>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex; gap:10px; margin-top: 15px;">
+    <button style="flex:1;" onclick="handleEncrypt()">Encrypt</button>
+    <button style="flex:1;" class="btn-secondary" onclick="handleDecrypt()">Decrypt</button>
+  </div>
+
+  <pre id="cryptoOutput">Output will appear here...</pre>
+</div>
+
+<div class="card full-width" id="affineGameCard">
+  <h2>🎮 Crack the Affine Cipher!</h2>
+  <p>You intercepted a message. You know it was encrypted using the Affine cipher. Can you guess Key A and Key B to decrypt it?</p>
+  <div style="background: #f9fafb; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+    <p><strong>Plaintext Clue:</strong> <span id="gamePlaintext">APPLE</span></p>
+    <p><strong>Ciphertext:</strong> <span id="gameCiphertext" style="color: red; font-weight: bold; font-family: monospace;">...</span></p>
+  </div>
+  <div style="display: flex; gap: 10px;">
+    <input type="number" id="guessA" placeholder="Guess Key A">
+    <input type="number" id="guessB" placeholder="Guess Key B">
+    <button onclick="checkAffineGuess()">Check Answer</button>
+  </div>
+  <p id="gameResult" style="margin-top: 10px; font-weight: bold;"></p>
+  <button class="btn-secondary" style="width: 100%;" onclick="generateAffineGame()">New Game</button>
+</div>
+
+
+
+      
+
+    <div class="card full-width">
+      <h2>Brute Force & Cracking</h2>
+
+      <textarea id="bruteInput" rows="3" placeholder="Enter ciphertext to brute-force here..."></textarea>
+      
+      <h3>Caesar Tools</h3>
+      <div style="display: flex; gap: 5px; flex-wrap: wrap;">
+        <button onclick="startCaesarBruteForce()">Animated Force</button>
+        <button onclick="instantBruteForce()" class="btn-secondary">Instant Force</button>
+        <button onclick="toggleBruteForce()" id="caesarpauseBtn" class="btn-danger" disabled>Pause</button>
+      </div>
+      <input type="number" id="bruteSpeed" placeholder="Guesses/sec (default: 5)" min="1">
+
+      <pre id="caesarBruteOutput" class="output-box" style="display: none; margin-top: 10px;"></pre>
+
+      <hr>
+
+      <h3>Vigenère Estimator</h3>
+      <div style="display: flex; gap: 10px;">
+        <input type="number" id="vigKeyLen" placeholder="Key Len (e.g. 4)" min="1" />
+        <input type="number" id="vigSpeed" placeholder="Guesses/sec" min="1" />
+      </div>
+      <button onclick="estimateVigenereBruteForce()">Estimate Time</button>
+
+      <pre id="vigBruteOutput" class="output-box" style="display: none; margin-top: 10px;"></pre>
+
+      <hr>
+
+      <h3>Dictionary Attack</h3>
+      <label style="font-size: 14px; font-weight: 600;">Upload custom dictionary (.txt)</label>
+      <input type="file" id="passwordFile" accept=".txt" />
+      <input type="text" id="targetPassword" placeholder="Target password (max 5 chars)">
+      
+      <div style="display: flex; gap: 10px;">
+        <button onclick="startBruteForce()">Start Crack</button>
+        <button class="btn-danger" onclick="stopCracking = true">Stop</button>
+      </div>
+
+      <div style="background:#f3f4f6; padding:15px; border-radius:8px; margin-top:15px; font-family:monospace;">
+        <p>Cracked: <span id="crackedPassword" style="font-weight:bold; color:red;">-</span></p>
+        <p>Attempts: <span id="attemptCount">0</span></p>
+        <p>Time (ms): <span id="elapsedTime">0.00</span></p>
+        <progress id="progressBar" max="100" value="0"></progress>
+      </div>
+    </div>
+
+    <div class="card full-width">
+      <h2>Secure File Vault</h2>
+      <p style="font-size: 14px; margin-bottom: 15px;">Two‑File Secure File Encryption protocol.</p>
+
+      <h3>1. Encrypt File</h3>
+      <input type="file" id="secureEncFile">
+      <input type="password" id="secureEncPassword" placeholder="Enter vault password">
+      <button onclick="encryptSecureFile()" style="width: 100%;">Encrypt & Generate Keys</button>
+
+      <div style="width: 100%; background: #eee; border-radius: 10px; margin-top:10px;">
+        <div id="fakeProgressBar" style="width: 0%; height: 8px; background: #10b981; border-radius: 10px; transition: width 0.2s ease;"></div>
+      </div>
+      <small id="progressText"></small>
+      <div id="secureEncStatus"></div>
+
+      <hr>
+
+      <h3>2. Decrypt File</h3>
+      <label style="font-size: 13px;">Encrypted Data File:</label>
+      <input type="file" id="secureDataFile">
+      <label style="font-size: 13px;">Key Fragment File:</label>
+      <input type="file" id="secureKeyFile">
+      <label style="font-size: 13px;">File ID:</label>
+      <input type="file" id="secureIdFile">
+      
+      <input type="password" id="secureDecPassword" placeholder="Enter vault password">
+      <button class="btn-secondary" onclick="decryptSecureFile()" style="width: 100%;">Decrypt File</button>
+      <div id="secureDecStatus"></div>
+    </div>
+
+    <div class="card full-width">
+      <h2>File Integrity Checker</h2>
+      <p style="font-size: 14px; margin-bottom: 15px;">Ensure files have not been tampered with.</p>
+      
+      <div id="integritySection">
+        <input type="file" id="integrityFile" />
+        <div style="display: flex; gap: 10px;">
+          <button type="button" onclick="storeIntegrity()" style="flex:1;">Store Integrity</button>
+          <button type="button" class="btn-secondary" onclick="checkIntegrity()" style="flex:1;">Check Integrity</button>
+        </div>
+
+        <div id="statusBox" style="margin-top:15px; padding:12px; border-radius:8px; text-align:center; font-weight:600;">Waiting for file...</div>
+        
+        <div id="hashBox" style="display:none; background:#f9fafb; padding:10px; border-radius:6px; margin-top:10px; font-family:monospace; font-size:12px; word-break:break-all;">
+          <p><strong>Original:</strong> <br><span id="originalHash"></span></p>
+          <p style="margin-top:8px;"><strong>Current:</strong> <br><span id="currentHash"></span></p>
+        </div>
+        <div id="diffBox" style="margin-top:10px; font-family:monospace; font-size:13px; word-break:break-all;"></div>
+      </div>
+    </div>
+
+    <div class="card full-width">
+      <h2>Visual Cryptography Demo</h2>
+      <div style="display:flex; gap:20px; flex-wrap: wrap;">
+        
+        <div style="flex: 1; min-width: 300px;">
+          <textarea id="inputText" rows="2" placeholder="Enter secret word to turn into visual shares..."></textarea>
+          <div style="display: flex; gap: 10px;">
+            <button id="generateBtn">Generate Shares</button>
+            <button id="overlayBtn" class="btn-secondary" disabled>Overlay Shares</button>
+          </div>
+          
+          <div style="margin-top:20px; padding:15px; background:#f9fafb; border-radius:8px;">
+            <h3 style="margin-top:0;">Animation Controls</h3>
+            <div style="display:flex; gap:10px; margin-bottom: 15px;">
+              <button id="stepBtn" disabled>Next Pixel</button>
+              <button id="autoPlayBtn" disabled>Auto Play</button>
+              <button id="vcPauseBtn" class="btn-danger" disabled>Pause VC</button>
+            </div>
+            <label for="speedSlider" style="font-weight:600;">Speed:</label>
+            <input type="range" id="speedSlider" min="0" max="100" value="5" style="width:100%; margin-top:10px; cursor:pointer;" />
+            <span id="speedLabel" style="display:block; text-align:right; font-size:13px;">20 ms/pixel</span>
+          </div>
+        </div>
+
+        <div style="flex: 2; display: flex; flex-direction: column; gap: 15px; min-width: 300px;">
+          <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+            <div style="flex:1;">
+              <strong>Share 1</strong>
+              <canvas id="share1" width="200" height="50"></canvas>
+              <button class="btn-secondary" onclick="downloadCanvas('share1')" style="width:100%; font-size:12px;">Download</button>
+            </div>
+            <div style="flex:1;">
+              <strong>Share 2</strong>
+              <canvas id="share2" width="200" height="50"></canvas>
+              <button class="btn-secondary" onclick="downloadCanvas('share2')" style="width:100%; font-size:12px;">Download</button>
+            </div>
+          </div>
+          <div>
+            <strong>Overlay Result</strong>
+            <canvas id="overlay" width="400" height="100"></canvas>
+          </div>
+        </div>
+      </div>
+      <canvas id="textCanvas" width="400" height="100" style="display:none;"></canvas>
+    </div>
+
+  </div>
+
+</div>
+</div> 
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="enigmaPage" class="page hidden" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; max-width: none; margin: 0; padding: 0; z-index: 1000; background: #ddd; overflow: auto;">
+  
+  <div style="position: relative; width: 100%; min-width: 1450px; height: 1200px;">
+    
+    <button onclick="goBackFromAbout()" style="position: absolute; top: 20px; left: 20px; z-index: 1001; background: #2b1d12; color: #e0c097; font-family: 'Courier New', monospace; font-weight: bold; font-size: 14px; border: 2px solid #5a3a1e; border-radius: 8px; padding: 8px 16px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: all 0.2s ease;">
+      ⬅ Back
+    </button>
+
+    <iframe 
+      src="./enigma/enigma.html" 
+      style="width: 100%; height: 100%; border: none; display: block;" 
+      scrolling="no"
+      title="Enigma Emulator">
+    </iframe>
+
+  </div>
+</div>
+
+
+
+<script>
+const originalGoToFrontPage = window.goToFrontPage;
+
+window.goToFrontPage = function () {
+  console.log("🚨 goToFrontPage CALLED");
+  console.trace(); // 👈 shows WHO called it
+};
+
+
+
+// Brute-force state
+
+let brutePaused = false;
+let isPaused = false;
+
+
+
+
+let mode = "encode"; // default
+
+function setEncryptMode() {
+  mode = "encode";
+}
+
+function setDecryptMode() {
+  mode = "decode";
+}
+
+
+
+
+  // Front page buttons and toggle logic
+  const frontPage = document.getElementById('frontPage');
+  const playgroundPage = document.getElementById('playgroundPage');
+  const enterBtn = document.getElementById('enterBtn');
+  //const aboutBtn = document.getElementById('aboutBtn');
+  //const aboutText = document.getElementById('aboutText');
+  const caesarpauseBtn = document.getElementById("caesarpauseBtn");
+
+  
+enterBtn.onclick = () => {
+  if (!sessionStorage.getItem("authToken")) {
+
+    alert("Please log in first.");
+    return;
+  }
+  frontPage.classList.add('hidden');
+  playgroundPage.classList.remove('hidden');
+};
+
+  // Goes to the front page WITHOUT logging out
+  function goHome() {
+    playgroundPage.classList.add('hidden');
+    frontPage.classList.remove('hidden');
+    resetBruteForce(); // clear any brute force running
+  }
+
+  // Destroys the session and kicks you to the front page
+  function logout() {
+    sessionStorage.removeItem("authToken"); // Deletes the saved session
+    alert("You have been logged out.");
+    playgroundPage.classList.add('hidden');
+    frontPage.classList.remove('hidden');
+    resetBruteForce();
+  }
+
+  // Cipher functions
+
+// Add to your scripts:
+
+const CAESAR_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+function handleCipherChange() {
+  const type = document.getElementById("cipherType").value;
+  
+  // 1. Hide all dynamic inputs initially
+  document.getElementById("keyInput").style.display = "none";
+  document.getElementById("caesarShiftInput").style.display = "none";
+  document.getElementById("railFenceInput").style.display = "none";
+  document.getElementById("affineInputs").style.display = "none";
+  document.getElementById("caesarVisualization").style.display = "none";
+  document.getElementById("railFenceVisualization").style.display = "none";
+  document.getElementById("cipherNote").textContent = "";
+
+  // 2. FORCE ACCORDIONS CLOSED (This fixes the visualizer staying open!)
+  document.getElementById("caesarContent").style.display = "none";
+  document.querySelector("#caesarVisualization .cryptool-toggle-btn").innerHTML = "<span>▶</span> Show visualization";
+  
+  document.getElementById("railContent").style.display = "none";
+  document.querySelector("#railFenceVisualization .cryptool-toggle-btn").innerHTML = "<span>▶</span> Show visualization";
+
+  // 3. Show the correct inputs for the selected cipher
+  if (type === "caesar") {
+    document.getElementById("caesarShiftInput").style.display = "block";
+    document.getElementById("caesarVisualization").style.display = "block"; // Shows the wrapper, but content remains closed!
+    updateCaesarVisualization();
+  } else if (type === "vigenere" || type === "aes") {
+    document.getElementById("keyInput").style.display = "block";
+  } else if (type === "railfence") {
+    document.getElementById("railFenceInput").style.display = "block";
+    document.getElementById("cipherNote").textContent = "Rail Fence creates a visual zigzag pattern.";
+  } else if (type === "affine") {
+    document.getElementById("affineInputs").style.display = "flex";
+    document.getElementById("cipherNote").textContent = "A must be coprime to 26 (e.g. 1, 3, 5, 7, 9, 11...).";
+  } else if (type === "sha256") {
+    document.getElementById("cipherNote").textContent = "Note: SHA-256 is a one-way hash. You can only encrypt.";
+  }
+}
+
+// Draws the interactive wheel and table
+function updateCaesarVisualization() {
+  const shift = parseInt(document.getElementById("caesarShiftInput").value) || 0;
+  const s = shift % CAESAR_ALPHABET.length;
+  
+  const wheelContainer = document.getElementById("caesarWheel");
+  const tableContainer = document.getElementById("caesarTable");
+  
+  // 1. Draw Wheel
+  let wheelHTML = `<div class="wheel-center">Shifted<br>by: ${s}</div>`;
+  const angleStep = 360 / CAESAR_ALPHABET.length;
+  
+  for(let i = 0; i < CAESAR_ALPHABET.length; i++) {
+    const char = CAESAR_ALPHABET[i];
+    const shiftedIdx = (i + s + CAESAR_ALPHABET.length) % CAESAR_ALPHABET.length;
+    const shiftedChar = CAESAR_ALPHABET[shiftedIdx];
+    
+    // Create rotated segments. The text inside reverses the rotation so it stays upright.
+    wheelHTML += `<div class="wheel-segment outer" style="transform: rotate(${i * angleStep}deg)"><span style="transform: rotate(-${i * angleStep}deg)">${char}</span></div>`;
+    wheelHTML += `<div class="wheel-segment inner" style="transform: rotate(${i * angleStep}deg)"><span style="transform: rotate(-${i * angleStep}deg)">${shiftedChar}</span></div>`;
+  }
+  wheelContainer.innerHTML = wheelHTML;
+
+  // 2. Draw Mapping Table
+  let tableHTML = `<table class="caesar-mapping-table"><tr>`;
+  for(let c of CAESAR_ALPHABET) tableHTML += `<th>${c}</th>`;
+  tableHTML += `</tr><tr>`;
+  for(let i = 0; i < CAESAR_ALPHABET.length; i++) {
+    tableHTML += `<td>${CAESAR_ALPHABET[(i + s + CAESAR_ALPHABET.length) % CAESAR_ALPHABET.length]}</td>`;
+  }
+  tableHTML += `</tr></table>`;
+  tableContainer.innerHTML = tableHTML;
+}
+
+// Affine Game Logic
+let currentAffineGame = { a: 5, b: 8, plain: "SECURITY" };
+const coprimes = [1, 3, 5, 7, 9, 11, 15, 17, 19, 21, 23, 25];
+//const words = ["SECURITY", "HACKER", "ENCRYPT", "PAYLOAD", "NETWORK", "PRIVACY", "STUDENT", "RIGHT", "ANIMAL", "SNACKS", "HELLO", "WELCOME", "GAME", "ENIGMA", "MACHINE", "HIPPOPOTOMONSTROSESQUIPPEDALIOPHOBIA"];
+const words = [
+  // Cryptography & Security
+  "SECURITY", "HACKER", "ENCRYPT", "PAYLOAD", "NETWORK", "PRIVACY",
+  "CIPHER", "DECRYPT", "ALGORITHM", "FIREWALL", "MALWARE", "PHISHING",
+  "KEYSTROKE", "BACKDOOR", "VULNERABLE", "PASSWORD", "PROTOCOL", "DEFENSE",
+  
+  // Tech & Computers
+  "DATABASE", "SERVER", "TERMINAL", "BROWSER", "HARDWARE", "SOFTWARE",
+  "INTERNET", "BANDWIDTH", "MAINFRAME", "PROCESSOR", "GIGABYTE", "PROGRAMMER",
+  
+  // The Ciphers & Dashboard Theme
+  "ENIGMA", "MACHINE", "VIGENERE", "CAESAR", "ATBASH", "RAILFENCE", "PLAINTEXT",
+  
+  // General & Fun
+  "STUDENT", "RIGHT", "ANIMAL", "SNACKS", "HELLO", "WELCOME", "GAME",
+  "UNIVERSE", "DINOSAUR", "ASTRONAUT", "CHOCOLATE", "ADVENTURE", "MYSTERY",
+  
+  // The absolute final boss word
+  "HIPPOPOTOMONSTROSESQUIPPEDALIOPHOBIA", "PNEUMONOULTRAMICROSCOPICSILICOVOLCANOCONIOSIS", "SUPERCALIFRAGILISTICEXPIALIDOCIOUS", "FLOCCINAUCINIHILIPILIFICATION", "ANTIDISESTABLISHMENTARIANISM"
+];
+async function generateAffineGame() {
+  currentAffineGame.a = coprimes[Math.floor(Math.random() * coprimes.length)];
+  currentAffineGame.b = Math.floor(Math.random() * 26);
+  currentAffineGame.plain = words[Math.floor(Math.random() * words.length)];
+  
+  document.getElementById("gamePlaintext").textContent = currentAffineGame.plain;
+  document.getElementById("gameResult").textContent = "";
+  document.getElementById("guessA").value = "";
+  document.getElementById("guessB").value = "";
+
+  // Call your backend to get the ciphertext!
+  const res = await fetch("http://localhost:3000/api/affine", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text: currentAffineGame.plain, a: currentAffineGame.a, b: currentAffineGame.b, mode: "encrypt" })
+  });
+  const data = await res.json();
+  document.getElementById("gameCiphertext").textContent = data.result;
+}
+
+function checkAffineGuess() {
+  const guessA = parseInt(document.getElementById("guessA").value);
+  const guessB = parseInt(document.getElementById("guessB").value);
+  const resultText = document.getElementById("gameResult");
+
+  if (guessA === currentAffineGame.a && guessB === currentAffineGame.b) {
+    resultText.textContent = "✅ System Cracked! Great job.";
+    resultText.style.color = "green";
+  } else {
+    resultText.textContent = "❌ Access Denied. Try again.";
+    resultText.style.color = "red";
+  }
+}
+
+// Call these when the window loads
+window.addEventListener('DOMContentLoaded', () => {
+  handleCipherChange();
+  generateAffineGame();
+});
+
+
+
+
+
+
+
+// --- CONSECUTIVE BACKSPACE LOGOUT LOGIC ---
+let backspaceCount = 0;
+let backspaceTimer;
+
+document.addEventListener('keydown', function(event) {
+    // Only care about the Backspace key
+    if (event.key !== 'Backspace') {
+        backspaceCount = 0;
+        return;
+    }
+
+    // Check if the user is typing inside an input field, text area, or contenteditable
+    const activeElement = document.activeElement;
+    const isTyping = ['INPUT', 'TEXTAREA', 'SELECT'].includes(activeElement.tagName) || activeElement.isContentEditable;
+
+    if (isTyping) {
+        // Safe: they are correcting a typo. Do not count this.
+        backspaceCount = 0;
+        return;
+    }
+
+    // Only count if they are logged in (i.e., on the playground page)
+    if (!sessionStorage.getItem("authToken")) return;
+
+    // User pressed Backspace outside of an input field!
+    backspaceCount++;
+    clearTimeout(backspaceTimer); 
+
+    // If they press it 3 times consecutively, log them out
+    if (backspaceCount >= 3) {
+        backspaceCount = 0; 
+        console.log("Consecutive backspaces detected. Logging out...");
+        logout(); // Calls your existing logout function!
+    } else {
+        // Reset the count if they don't press backspace again within 1.5 seconds
+        backspaceTimer = setTimeout(() => {
+            backspaceCount = 0;
+        }, 1500);
+    }
+});
+// --- END BACKSPACE LOGOUT LOGIC ---
+
+
+
+
+
+// Toggle Function for "Hide visualization" buttons
+function toggleVis(contentId, btnElement) {
+  const content = document.getElementById(contentId);
+  const icon = btnElement.querySelector('span');
+  if (content.style.display === "none") {
+    content.style.display = "block";
+    icon.textContent = "▼";
+    btnElement.innerHTML = `<span>▼</span> Hide visualization`;
+  } else {
+    content.style.display = "none";
+    icon.textContent = "▶";
+    btnElement.innerHTML = `<span>▶</span> Show visualization`;
+  }
+}
+
+//------ CAESAR CRYPTOOL CLONE---------
+function updateCaesarVisualization() {
+  const shiftInput = document.getElementById("caesarShiftInput");
+  if (!shiftInput) return; 
+  
+  const cbUpper = document.getElementById("cbUpper");
+  const cbLower = document.getElementById("cbLower");
+  const cbDigits = document.getElementById("cbDigits");
+  
+  // Enforce at least one selection
+  if (!cbUpper.checked && !cbLower.checked && !cbDigits.checked) {
+    cbUpper.checked = true;
+  }
+
+  // Build the dynamic alphabet based on checkboxes
+  let displayAlphabet = "";
+  if (cbUpper.checked) displayAlphabet += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  if (cbLower.checked) displayAlphabet += "abcdefghijklmnopqrstuvwxyz";
+  if (cbDigits.checked) displayAlphabet += "0123456789";
+
+  const len = displayAlphabet.length;
+  const shift = parseInt(shiftInput.value) || 0;
+  
+  // Safe modulo for Javascript (handles negative shifts)
+  const s = (((shift) % len) + len) % len;
+  
+  // GENERATE PERFECT SVG WHEEL
+  const svgSize = 500;
+  const center = svgSize / 2;
+  const outerRadius = 220;
+  const midRadius = 180;
+  const innerRadius = 140;
+  
+  let svgHTML = `<svg width="${svgSize}" height="${svgSize}" viewBox="0 0 ${svgSize} ${svgSize}">`;
+  svgHTML += `<circle cx="${center}" cy="${center}" r="${outerRadius}" fill="#1a1e24" />`;
+  
+  const angleStep = (2 * Math.PI) / len;
+  
+  for(let i = 0; i < len; i++) {
+    const angle = i * angleStep - (Math.PI / 2);
+    const rotationOuter = (angle * 180 / Math.PI) + 90;
+    
+    // Outer Ring (Plaintext)
+    const char = displayAlphabet[i];
+    const outerX = center + (outerRadius - 20) * Math.cos(angle);
+    const outerY = center + (outerRadius - 20) * Math.sin(angle);
+    
+    svgHTML += `
+      <path d="M ${center} ${center} L ${center + outerRadius * Math.cos(angle - angleStep/2)} ${center + outerRadius * Math.sin(angle - angleStep/2)} A ${outerRadius} ${outerRadius} 0 0 1 ${center + outerRadius * Math.cos(angle + angleStep/2)} ${center + outerRadius * Math.sin(angle + angleStep/2)} Z" fill="#22c55e" stroke="#1a1e24" stroke-width="1"/>
+      <text x="${outerX}" y="${outerY}" fill="black" font-size="${len > 30 ? 10 : 14}" font-family="monospace" font-weight="bold" text-anchor="middle" dominant-baseline="middle" transform="rotate(${rotationOuter}, ${outerX}, ${outerY})">${char}</text>
+    `;
+
+    // Inner Ring (Ciphertext) - Wraps strictly within the displayAlphabet
+    const shiftedIdx = (i + s) % len;
+    const shiftedChar = displayAlphabet[shiftedIdx];
+
+    const innerX = center + (midRadius - 20) * Math.cos(angle);
+    const innerY = center + (midRadius - 20) * Math.sin(angle);
+    
+    svgHTML += `
+      <path d="M ${center} ${center} L ${center + midRadius * Math.cos(angle - angleStep/2)} ${center + midRadius * Math.sin(angle - angleStep/2)} A ${midRadius} ${midRadius} 0 0 1 ${center + midRadius * Math.cos(angle + angleStep/2)} ${center + midRadius * Math.sin(angle + angleStep/2)} Z" fill="#4b5563" stroke="#1a1e24" stroke-width="1"/>
+      <text x="${innerX}" y="${innerY}" fill="#e4e4e7" font-size="${len > 30 ? 10 : 14}" font-family="monospace" text-anchor="middle" dominant-baseline="middle" transform="rotate(${rotationOuter}, ${innerX}, ${innerY})">${shiftedChar}</text>
+    `;
+  }
+  
+  // Center Hole
+  svgHTML += `<circle cx="${center}" cy="${center}" r="${innerRadius}" fill="#1e222b" />`;
+  svgHTML += `<text x="${center}" y="${center - 10}" fill="white" font-size="20" text-anchor="middle">Shifted</text>`;
+  svgHTML += `<text x="${center}" y="${center + 20}" fill="white" font-size="20" text-anchor="middle">by: ${s}</text>`;
+  svgHTML += `</svg>`;
+  
+  document.getElementById("caesarSvgContainer").innerHTML = svgHTML;
+
+  // GENERATE TABULAR MAPPING
+  let topRow = `<tr>`;
+  let bottomRow = `<tr>`;
+  for(let i = 0; i < len; i++) {
+    topRow += `<td>${displayAlphabet[i]}</td>`;
+    bottomRow += `<td>${displayAlphabet[(i + s) % len]}</td>`;
+  }
+  topRow += `</tr>`;
+  bottomRow += `</tr>`;
+  
+  document.getElementById("caesarTable").innerHTML = topRow + bottomRow;
+}
+
+
+
+
+
+
+
+
+
+
+// -------- LOCAL CAESAR DECRYPT (For Brute Forcing) --------
+function caesarDecrypt(text, shift) {
+  const CAESAR_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+  const len = CAESAR_ALPHABET.length;
+  const s = parseInt(shift) % len;
+
+  for (let c of text) {
+    const idx = CAESAR_ALPHABET.indexOf(c);
+    if (idx !== -1) {
+      // Safe modulo for reverse shifting
+      const newIdx = (((idx - s) % len) + len) % len;
+      result += CAESAR_ALPHABET[newIdx];
+    } else {
+      result += c; // Leave spaces and symbols untouched
+    }
+  }
+  return result;
+}
+
+
+
+
+// --------RAIL FENCE VISUALIZER---------
+function renderRailFenceGrid(text, rails) {
+  if (!text || rails < 2) return;
+  const r = parseInt(rails);
+  let grid = Array.from({ length: r }, () => Array(text.length).fill("."));
+  
+  // Build the zigzag pattern
+  let row = 0, dir = 1;
+  for (let i = 0; i < text.length; i++) {
+    grid[row][i] = text[i];
+    row += dir;
+    if (row === 0 || row === r - 1) dir *= -1;
+  }
+
+  // Render to HTML Table
+  let html = "";
+  for (let i = 0; i < r; i++) {
+    html += "<tr>";
+    for (let j = 0; j < text.length; j++) {
+      if (grid[i][j] === ".") {
+        html += `<td class="rail-dot">•</td>`;
+      } else {
+        html += `<td class="rail-char">${grid[i][j]}</td>`;
+      }
+    }
+    html += "</tr>";
+  }
+  document.getElementById("railGridTable").innerHTML = html;
+  document.getElementById("railFenceVisualization").style.display = "block";
+}
+
+
+
+
+
+
+//--------------------------------------------------------------------------------------------
+// -------- RAIL FENCE TEXT FORMATTER --------
+function generateRailFenceTextOutput(plaintext, rails, isDecrypt = false) {
+  const r = parseInt(rails);
+  let grid = Array.from({ length: r }, () => Array(plaintext.length).fill("-"));
+  
+  let row = 0, dir = 1;
+  for (let i = 0; i < plaintext.length; i++) {
+    grid[row][i] = plaintext[i];
+    row += dir;
+    if (row === 0 || row === r - 1) dir *= -1;
+  }
+
+  let textOutput = "Visualization (Railfence)\n";
+  textOutput += `Key: Depth = ${r}, Offset = 0\n\n`;
+
+  let groups = [];
+
+  for (let i = 0; i < r; i++) {
+    let lineChars = [];
+    let rowStr = "";
+    for (let j = 0; j < plaintext.length; j++) {
+      if (grid[i][j] !== "-") {
+        rowStr += grid[i][j] + " ";
+        lineChars.push(grid[i][j]);
+      } else {
+        rowStr += "- ";
+      }
+    }
+    const extracted = lineChars.join(" ");
+    groups.push(lineChars.join(""));
+    textOutput += `${rowStr}= ${extracted}\n`;
+  }
+
+  const spacedCiphertext = groups.join("  ");
+  
+  if (isDecrypt) {
+    textOutput += `\nDecrypted Plaintext:  ${plaintext}`;
+  } else {
+    textOutput += `\nCiphertext:  ${spacedCiphertext}`;
+  }
+  
+  return textOutput;
+}
+//-------------------------------------------------------------------------------------
+
+    
+
+let affineChallenge = {};
+//-------- MAIN ENCRYPT HANDLER------
+async function handleEncrypt() {
+  const input = document.getElementById("cryptoInput").value;
+  const type = document.getElementById("cipherType").value;
+  const out = document.getElementById("cryptoOutput");
+
+  if (!input) {
+    out.textContent = "Please enter some text to encrypt.";
+    return;
+  }
+
+  out.textContent = "Processing...";
+  let payload = { text: input, mode: "encrypt" };
+  let endpoint = `http://localhost:3000/api/${type}`;
+
+
+  // Grab specific inputs based on the cipher selected
+  if (type === "caesar") {
+    payload.shift = parseInt(document.getElementById("caesarShiftInput").value) || 3;
+    
+    // Grab the dynamic alphabet to send to the backend
+    let customAlphabet = "";
+    if (document.getElementById("cbUpper")?.checked) customAlphabet += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    if (document.getElementById("cbLower")?.checked) customAlphabet += "abcdefghijklmnopqrstuvwxyz";
+    if (document.getElementById("cbDigits")?.checked) customAlphabet += "0123456789";
+    //payload.alphabet = customAlphabet || "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; 
+    // Fallback
+    payload.alphabet = customAlphabet || "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  } else if (type === "vigenere" || type === "aes") {
+    payload.key = document.getElementById("keyInput").value;
+    if (!payload.key) return out.textContent = `Enter a key for ${type}.`;
+  } else if (type === "railfence") {
+    payload.rails = parseInt(document.getElementById("railFenceInput").value) || 3;
+  } else if (type === "affine") {
+    payload.a = parseInt(document.getElementById("affineA").value) || 5;
+    payload.b = parseInt(document.getElementById("affineB").value) || 8;
+  }
+
+  try {
+    const res = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await res.json();
+    
+    if (!res.ok) {
+      out.textContent = "Error: " + (data.error || "Encryption failed.");
+      return;
+    }
+
+
+// Format output to show steps if available
+    let outputText = "";
+    if (type === "railfence") {
+      // Use the CrypTool text layout for Rail Fence
+      outputText = generateRailFenceTextOutput(input, payload.rails, false);
+    } else {
+      if (data.steps && data.steps.length > 0) {
+        if (type === "sha256" || type === "affine" || type === "aes" || type === "base64") {
+          outputText += data.steps.join("\n") + "\n\n";
+        } else {
+          outputText += `Converted ${data.steps.length} characters.\n\n`;
+        }
+      }
+      outputText += `Final Result:\n${data.result}`;
+    }
+    out.textContent = outputText;
+
+    // Trigger the Rail Fence visualization 
+    if (type === "railfence") {
+      renderRailFenceGrid(input, payload.rails);
+    }
+
+  } catch (err) {
+    out.textContent = "Network error. Make sure your backend is running.";
+  }
+}
+
+
+// ---------MAIN DECRYPT HANDLER---------
+
+async function handleDecrypt() {
+  const input = document.getElementById("cryptoInput").value;
+  const type = document.getElementById("cipherType").value;
+  const out = document.getElementById("cryptoOutput");
+
+  if (!input) {
+    out.textContent = "Please enter some text to decrypt.";
+    return;
+  }
+
+  // SHA-256 Guard Clause
+  if (type === "sha256") {
+    out.textContent = "❌ SHA-256 is a one-way cryptographic hash function. It cannot be decrypted. Use a brute-force or dictionary attack to guess the original text.";
+    return;
+  }
+
+  out.textContent = "Processing...";
+  let payload = { text: input, mode: "decrypt" };
+  let endpoint = `http://localhost:3000/api/${type}`;
+
+  // Grab specific inputs based on the cipher selected
+  // Grab specific inputs based on the cipher selected
+  if (type === "caesar") {
+    payload.shift = parseInt(document.getElementById("caesarShiftInput").value) || 3;
+    
+    // Tell the backend which alphabet we are decrypting with!
+    let customAlphabet = "";
+    if (document.getElementById("cbUpper")?.checked) customAlphabet += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    if (document.getElementById("cbLower")?.checked) customAlphabet += "abcdefghijklmnopqrstuvwxyz";
+    if (document.getElementById("cbDigits")?.checked) customAlphabet += "0123456789";
+    
+    payload.alphabet = customAlphabet || "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  }
+  
+  else if (type === "vigenere" || type === "aes") {
+    payload.key = document.getElementById("keyInput").value;
+    if (!payload.key) return out.textContent = `Enter a key for ${type}.`;
+  } else if (type === "railfence") {
+    payload.rails = parseInt(document.getElementById("railFenceInput").value) || 3;
+  } else if (type === "affine") {
+    payload.a = parseInt(document.getElementById("affineA").value) || 5;
+    payload.b = parseInt(document.getElementById("affineB").value) || 8;
+  }
+
+  try {
+    const res = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await res.json();
+    
+    if (!res.ok) {
+      out.textContent = "Error: " + (data.error || "Decryption failed.");
+      return;
+    }
+
+
+// Format output
+    let outputText = "";
+    if (type === "railfence") {
+      // Use the CrypTool text layout for Rail Fence 
+      outputText = generateRailFenceTextOutput(data.result, payload.rails, true);
+    } else {
+      if (data.steps) {
+        outputText += data.steps[0] + "\n\n";
+      }
+      outputText += `Decrypted Result:\n${data.result}`;
+    }
+    out.textContent = outputText;
+
+    // Trigger the Rail Fence visualization using the decrypted plaintext 
+    if (type === "railfence") {
+      renderRailFenceGrid(data.result, payload.rails);
+    }
+
+  } catch (err) {
+    out.textContent = "Network error. Make sure your backend is running.";
+  }
+}
+
+  // Animated Caesar brute-force attack
+let bruteInterval;
+let shift = 0;
+
+
+const commonWords = [ "123456", "password", "123456789", "12345678", "12345", "111111", "1234567", "sunshine", "qwerty", "iloveyou",
+  "princess", "admin", "welcome", "666666", "abc123", "football", "123123", "monkey", "654321", "!@#$%^&*",
+  "charlie", "aa123456", "donald", "password1", "qwerty123", "zxcvbnm", "1q2w3e4r", "123qwe", "qazwsx", "dragon",
+  "letmein", "baseball", "master", "hello", "freedom", "whatever", "trustno1", "starwars", "jordan23", "harley",
+  "1234", "login", "admin123", "michael", "batman", "superman", "ninja", "passw0rd", "shadow", "killer",
+  "696969", "1111", "qwertyuiop", "qwe123", "loveme", "hottie", "pokemon", "jordan", "michelle", "tigger",
+  "asdfgh", "pepper", "silver", "cookie", "ashley", "bailey", "maggie", "cheese", "biteme", "matrix",
+  "secret", "ginger", "pepper", "sparky", "buster", "muffin", "taylor", "soccer", "whatever1", "mustang",
+  "merlin", "hannah", "thomas", "william", "snoopy", "bubbles", "charles", "summer", "batman123", "pokemon123",
+  "daniel", "qaz123", "jennifer", "asdf1234", "access", "welcome1", "hello123", "test", "asdf", "iloveyou1"];
+
+function startCaesarBruteForce() {
+  // Check the new bruteInput box first. If empty, fallback to the top box!
+  let input = document.getElementById("bruteInput").value.trim();
+  if (!input) input = document.getElementById("cryptoInput").value.trim();
+  const out = document.getElementById("caesarBruteOutput");
+  out.style.display = "block";
+
+  const speed = parseInt(document.getElementById("bruteSpeed").value) || 5;
+
+  shift = 0;
+  isPaused = false;
+  document.getElementById("caesarpauseBtn").textContent = "Pause";
+  document.getElementById("caesarpauseBtn").disabled = false;
+
+  if (!input) {
+    out.textContent = "Enter some text to brute-force.";
+    return;
+  }
+
+  clearInterval(bruteInterval);
+  bruteInterval = setInterval(() => {
+    if (isPaused) return;
+
+    if (shift > 25) {
+      out.textContent += "\n\nBrute-force complete. No common word match found.";
+      clearInterval(bruteInterval);
+      return;
+    }
+
+    const decrypted = caesarDecrypt(input, shift);
+    const lower = decrypted.toLowerCase();
+    const match = commonWords.some(word => lower.includes(word));
+
+if (shift === 0) {
+  out.textContent = "Brute-forcing Caesar...\n\n";
+}
+out.textContent += `Shift ${shift}: ${decrypted}\n`;
+
+    if (match) {
+      out.textContent += `\n\nMatch found using shift ${shift}! Likely plaintext.`;
+      clearInterval(bruteInterval);
+      document.getElementById("caesarpauseBtn").disabled = true;
+    }
+
+    shift++;
+  }, 1000 / speed);
+}
+
+  function toggleBruteForce() {
+  if (!bruteInterval) return;
+  isPaused = !isPaused;
+  document.getElementById("caesarpauseBtn").textContent = isPaused ? "Resume" : "Pause";
+}
+
+  function resetBruteForce() {
+    if (bruteInterval) clearInterval(bruteInterval);
+    bruteInterval = null;
+    isPaused = false;
+
+    document.getElementById("caesarpauseBtn").disabled = true;
+    document.getElementById("caesarpauseBtn").textContent = "Pause";
+  }
+
+  // Instant brute-force for Caesar cipher
+  function instantBruteForce() {
+  // Check the new bruteInput box first. If empty, fallback to the top box!
+  let input = document.getElementById("bruteInput").value.trim();
+  if (!input) input = document.getElementById("cryptoInput").value.trim();
+
+  const out = document.getElementById("caesarBruteOutput");
+  out.style.display = "block";
+
+  const speedInput = parseInt(document.getElementById("bruteSpeed").value);
+  const guessesPerSecond = speedInput > 0 ? speedInput : 1000;
+
+  if (!input) {
+    out.textContent = "Enter some text to brute-force.";
+    return;
+  }
+
+  const totalShifts = 25;
+  const estimatedTime = (totalShifts / guessesPerSecond).toFixed(5); // in seconds
+
+  let result = "Brute-force Caesar Decryption:\n\n";
+  for (let shift = 1; shift < 62; shift++) {
+    const decrypted = caesarDecrypt(input, shift);
+    result += `Shift ${shift}: ${decrypted}\n`;
+  }
+  result += `\nEstimated crack time: ${estimatedTime} seconds at ${guessesPerSecond} guesses/sec.`;
+  out.textContent = result;
+}
+  
+function estimateVigenereBruteForce() {
+  const keyLen = parseInt(document.getElementById("vigKeyLen").value);
+  const guessesPerSecond = parseInt(document.getElementById("vigSpeed").value) || 1000;
+  //const out = document.getElementById("cryptoOutput");
+
+  const out = document.getElementById("vigBruteOutput");
+  out.style.display = "block";
+
+  if (!keyLen || keyLen < 1) {
+    out.textContent = "Enter a valid key length.";
+    return;
+  }
+
+  const keyspace = Math.pow(26, keyLen); // assuming lowercase keys
+  const estimatedSeconds = keyspace / guessesPerSecond;
+  const formatted = formatTime(estimatedSeconds);
+
+  out.textContent = `Keyspace: 26^${keyLen} = ${keyspace.toLocaleString()}\nEstimated crack time: ${formatted} at ${guessesPerSecond.toLocaleString()} guesses/sec.`;
+}
+
+  function formatTime(seconds) {
+    seconds = Math.floor(seconds);
+    const days = Math.floor(seconds / (24 * 3600));
+    seconds %= 24 * 3600;
+    const hours = Math.floor(seconds / 3600);
+    seconds %= 3600;
+    const minutes = Math.floor(seconds / 60);
+    seconds %= 60;
+
+    let result = "";
+    if (days) result += `${days} day${days > 1 ? 's' : ''} `;
+    if (hours) result += `${hours} hour${hours > 1 ? 's' : ''} `;
+    if (minutes) result += `${minutes} minute${minutes > 1 ? 's' : ''} `;
+    result += `${seconds} second${seconds !== 1 ? 's' : ''}`;
+
+    return result.trim();
+  }
+
+  
+  let storedUsername = "";
+let storedPassword = "";
+
+// --- BULLETPROOF PAGE NAVIGATION ---
+
+// 1. Helper function that instantly hides EVERY page
+function hideAllPages() {
+  document.querySelectorAll(".page").forEach(page => page.classList.add("hidden"));
+}
+
+function showRegister() {
+  hideAllPages();
+  document.getElementById("registerPage").classList.remove("hidden");
+}
+
+function showLogin() {
+  hideAllPages();
+  document.getElementById("loginPage").classList.remove("hidden");
+}
+
+function showAboutPage() {
+  hideAllPages();
+  document.getElementById("aboutPage").classList.remove("hidden");
+}
+
+function showEnigmaPage() {
+  hideAllPages();
+  document.getElementById("enigmaPage").classList.remove("hidden");
+}
+
+function goHome() {
+  hideAllPages();
+  document.getElementById("frontPage").classList.remove("hidden");
+  resetBruteForce(); // clear any brute force running
+}
+
+// 2. Smart Back Button for the Documentation Page
+function goBackFromAbout() {
+  hideAllPages();
+  // If the user is logged in, take them to the Playground. Otherwise, to the Front Page.
+  if (sessionStorage.getItem("authToken")) {
+    document.getElementById("playgroundPage").classList.remove("hidden");
+  } else {
+    document.getElementById("frontPage").classList.remove("hidden");
+  }
+}
+
+
+
+// Registration logic
+
+async function completeRegistration() {
+  const username = document.getElementById("regUsername").value.trim();
+  const email = document.getElementById("regEmail").value.trim();
+  const password = document.getElementById("regPassword").value;
+
+  // Username validation
+
+  if (username.length < 2) {
+    alert("Username must be at least 2 characters long.");
+    return;
+  }
+
+  // 1. Email Validation
+
+  const emailRegex = /^[a-zA-Z0-9]+(?:[._-][a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*(?:\.[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*)*\.[a-zA-Z]{2,}$/;
+  if (!emailRegex.test(email)) {
+    alert("Please enter a valid email address. (No consecutive dots, trailing dots, or invalid domains).");
+    return;
+  }
+
+  // 2. Restrict to Popular Domains
+  const allowedDomains = ["gmail.com", "yahoo.com", "outlook.com", "hotmail.com", "icloud.com", "ethereal.email"];
+  const userDomain = email.split('@')[1].toLowerCase();
+  
+  if (!allowedDomains.includes(userDomain)) {
+    alert(`Please use a supported email provider: ${allowedDomains.join(', ')}`);
+    return;
+  }
+
+  // Password strength validation
+
+  const strongPasswordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$/;
+  if (!strongPasswordRegex.test(password)) {
+    alert("Password must be at least 8 characters long and include at least one number and one special character.");
+    return;
+  }
+
+  // Send to backend
+  const res = await fetch("http://localhost:3000/api/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, email, password }) // Added email here!
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    alert(data.error || "Registration failed");
+    return;
+  }
+
+  alert("Registration successful! Please login.");
+
+  document.getElementById("registerPage").classList.add("hidden");
+  document.getElementById("loginPage").classList.remove("hidden");
+}
+
+
+
+
+// Login logic
+
+async function attemptLogin() {
+  const username = document.getElementById("loginUsername").value;
+  const password = document.getElementById("loginPassword").value;
+
+  const res = await fetch("http://localhost:3000/api/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password })
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    //alert(data.message || "Login failed");
+    alert(data.error || "Login failed"); 
+    return;
+  }
+
+  // Save token so refresh keeps login
+  sessionStorage.setItem("authToken", data.token);
+  //loggedIn = true;
+  // UI changes
+  document.getElementById("loginPage").classList.add("hidden");
+  document.getElementById("frontPage").classList.add("hidden");
+  document.getElementById("playgroundPage").classList.remove("hidden");
+}
+
+// Password strength
+function checkPasswordStrength(pwd) {
+  const fill = document.getElementById("strengthFill");
+  const text = document.getElementById("strengthText");
+  let strength = 0;
+
+  if (pwd.length >= 8) strength++;
+  if (/[a-z]/.test(pwd)) strength++;
+  if (/[A-Z]/.test(pwd)) strength++;
+  if (/[0-9]/.test(pwd)) strength++;
+  if (/[\W_]/.test(pwd)) strength++;
+
+  const percent = (strength / 5) * 100;
+  fill.style.width = `${percent}%`;
+  fill.style.background = percent < 40 ? "red" : percent < 70 ? "orange" : "green";
+  text.textContent = `Password strength: ${["Weak", "Fair", "Good", "Strong", "Excellent"][strength - 1] || ""}`;
+} 
+
+// Password suggestion
+function suggestPassword() {
+  const letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const numbers = "0123456789";
+  const specials = "!@#$%^&*";
+  const allValidChars = letters + numbers + specials;
+
+  let password = "";
+
+  // Ensure at least one number and one special character
+  password += numbers[Math.floor(Math.random() * numbers.length)];
+  password += specials[Math.floor(Math.random() * specials.length)];
+
+  // Fill remaining characters
+  for (let i = 0; i < 10; i++) {
+    password += allValidChars[Math.floor(Math.random() * allValidChars.length)];
+  }
+
+  // Shuffle the characters
+  password = password.split('').sort(() => 0.5 - Math.random()).join('');
+
+  // Validate against the regex (safety check)
+  const strongPasswordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$/;
+  if (!strongPasswordRegex.test(password)) {
+    return suggestPassword(); // retry if it somehow fails
+  }
+
+  const passField = document.getElementById("regPassword");
+  passField.value = password;
+  checkPasswordStrength(password);
+}
+
+
+function toggleVisibility(inputId, iconEl) {
+  const input = document.getElementById(inputId);
+  const isHidden = input.type === "password";
+
+  input.type = isHidden ? "text" : "password";
+
+  iconEl.innerHTML = isHidden
+    ? `<path d="M17.94 17.94A10.12 10.12 0 0112 20c-7 0-11-8-11-8a17.6 17.6 0 014.14-5.3M1 1l22 22" />
+       <path d="M9.5 9.5A3.5 3.5 0 0114.5 14.5" />`
+    : `<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" />
+       <circle cx="12" cy="12" r="3" />`;
+}
+ 
+
+
+
+let stopCracking = false;
+
+function resetUI() {
+  document.getElementById("crackedPassword").textContent = "-";
+  document.getElementById("attemptCount").textContent = "0";
+  document.getElementById("elapsedTime").textContent = "0";
+  document.getElementById("progressBar").value = 0;
+  stopCracking = false;
+}
+
+// Helper functions for heuristics
+
+
+
+const subsMap = { a: "@", s: "$", o: "0", i: "1", e: "3", l: "1", t: "7" };
+
+function substitutions(word) {
+  let results = new Set([""]);
+
+  for (const char of word) {
+    const lower = char.toLowerCase();
+    const subs = subsMap[lower] ? [char, subsMap[lower]] : [char];
+
+    const temp = new Set();
+    for (const prefix of results) {
+      for (const subChar of subs) {
+        temp.add(prefix + subChar);
+      }
+    }
+    results = temp;
+  }
+
+  return Array.from(results);
+}
+
+function appendNumbers(words) {
+  const suffixes = ["", "1", "7", "12", "123", "2023", "007", "99"];
+  const results = [];
+
+  for (const word of words) {
+    for (const suffix of suffixes) {
+      results.push(word + suffix);
+    }
+  }
+
+  return results;
+}
+
+
+
+function capitalizeVariants(word) {
+  return [word, word.toUpperCase(), word[0].toUpperCase() + word.slice(1)];
+}
+
+
+
+/*
+function generateHeuristicList(dictionary) {
+  let heuristicList = [];
+  for (const word of dictionary) {
+    const subs = substitutions(word);       // get all substitution combos
+    const allVariants = appendNumbers(subs); // append suffixes to all
+    heuristicList.push(...allVariants);
+  }
+  return [...new Set(heuristicList)];
+}
+*/
+const baseDictionary = ["a", "apple", "mango", "admin", "hello", "world"];
+const heuristicDictionary = generateHeuristicList(baseDictionary);
+
+
+
+
+
+// --- UPGRADED HEURISTIC ENGINE ---
+function generateHeuristicList(dictionary) {
+  let heuristicList = [];
+  for (const word of dictionary) {
+    // 1. Capitalize first
+    const caps = capitalizeVariants(word);
+    
+    // 2. Apply Leetspeak to all capital variations
+    let subs = [];
+    for (const w of caps) {
+      subs.push(...substitutions(w));
+    }
+    
+    // 3. Append common numbers
+    const allVariants = appendNumbers(subs); 
+    heuristicList.push(...allVariants);
+  }
+  return [...new Set(heuristicList)]; // Deduplicate instantly
+}
+
+
+
+
+// Keyboard pattern mutations
+
+function reverseString(str) {
+  return str.split("").reverse().join("");
+}
+
+function keyboardPatternMutations(patterns) {
+  const mutations = [];
+  const suffixes = ["", "1", "123", "2023"];
+  const substitutions = { a: "@", s: "$", o: "0", i: "1", e: "3" };
+
+  for (const pattern of patterns) {
+    for (const suffix of suffixes) {
+      mutations.push(pattern + suffix);
+      mutations.push(reverseString(pattern) + suffix);
+    }
+
+    let substituted = pattern;
+    for (const [key, val] of Object.entries(substitutions)) {
+      substituted = substituted.replaceAll(key, val).replaceAll(key.toUpperCase(), val);
+    }
+    for (const suffix of suffixes) {
+      mutations.push(substituted + suffix);
+      mutations.push(reverseString(substituted) + suffix);
+    }
+  }
+  return [...new Set(mutations)];
+}
+
+// Combination generator (generator function)
+function* generateCombinations(charset, maxLength) {
+  function* helper(prefix, length) {
+    if (length === 0) {
+      yield prefix;
+      return;
+    }
+    for (const char of charset) {
+      yield* helper(prefix + char, length - 1);
+    }
+  }
+
+  for (let length = 1; length <= maxLength; length++) {
+    yield* helper("", length);
+  }
+}
+
+// Estimate total combinations for progress bar
+function estimateTotalCombos(charsetLength, maxLength) {
+  let total = 0;
+  for (let i = 1; i <= maxLength; i++) {
+    total += Math.pow(charsetLength, i);
+  }
+  return total;
+}
+
+
+
+
+
+
+
+async function readPasswordFile(inputElement) {
+  return new Promise((resolve, reject) => {
+    const file = inputElement.files[0];
+    if (!file) return resolve([]);
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const lines = reader.result.split('\n').map(line => line.trim()).filter(Boolean);
+      resolve(lines);
+    };
+    reader.onerror = reject;
+    reader.readAsText(file);
+  });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+async function startBruteForce() {
+  const fileInput = document.getElementById("passwordFile");
+  const uploadedPasswords = await readPasswordFile(fileInput);
+
+  const target = document.getElementById("targetPassword").value;
+  if (!target || target.length > 10) {
+    alert("Enter a password with 1 to 10 characters.");
+    return;
+  }
+
+  const baseDictionary = [
+    "a","apple", "mango", "admin", "hello", "world",
+    "12345", "qwert", "abc12", "letme", "money",
+    "super", "magic", "zxcvb", "11111", "ilove"
+  ];
+
+  const keyboardPatterns = [
+    "qwerty", "asdfg", "zxcvb", "12345", "qazwsx", "1q2w3e"
+  ];
+
+  // Generate enhanced guess lists
+  const heuristicDictionary = generateHeuristicList(baseDictionary);
+  const keyboardMutations = keyboardPatternMutations(keyboardPatterns);
+  const combinedDictionary = [...new Set([
+    ...heuristicDictionary,
+    ...keyboardMutations,
+    ...uploadedPasswords
+  ])];
+
+  const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#!&*/$()_";
+  const generator = generateCombinations(charset, target.length);
+
+  const resultDisplay = document.getElementById("crackedPassword");
+  const attemptDisplay = document.getElementById("attemptCount");
+  const timeDisplay = document.getElementById("elapsedTime");
+  const progressBar = document.getElementById("progressBar");
+
+  let attempts = 0;
+  const totalCombos = estimateTotalCombos(charset.length, target.length) + combinedDictionary.length;
+  const startTime = performance.now();
+  
+  resultDisplay.textContent = "Cracking...";
+  resultDisplay.style.color = "orange";
+
+  // --- PHASE 1: Dictionary & Heuristic Attack ---
+  let dictIndex = 0;
+  while (dictIndex < combinedDictionary.length) {
+    if (stopCracking) return resetUI();
+
+    // TIME-BASED CHUNKING: Run as fast as possible for 15ms
+    const chunkStart = performance.now();
+    while (performance.now() - chunkStart < 15 && dictIndex < combinedDictionary.length) {
+      const word = combinedDictionary[dictIndex++];
+      attempts++;
+
+      if (word === target) {
+        resultDisplay.textContent = word;
+        resultDisplay.style.color = "lime";
+        attemptDisplay.textContent = attempts.toLocaleString();
+        timeDisplay.textContent = ((performance.now() - startTime) / 1000).toFixed(2);
+        progressBar.value = 100;
+        return;
+      }
+    }
+
+    // Update UI once per frame
+    attemptDisplay.textContent = attempts.toLocaleString();
+    progressBar.value = Math.min((attempts / totalCombos) * 100, 100);
+    timeDisplay.textContent = ((performance.now() - startTime) / 1000).toFixed(2);
+    await new Promise(requestAnimationFrame);
+  }
+
+  // --- PHASE 2: Raw Brute-Force Attack ---
+  let done = false;
+  while (!done && !stopCracking) {
+    
+    // TIME-BASED CHUNKING: Run as fast as possible for 15ms
+    const chunkStart = performance.now();
+    while (performance.now() - chunkStart < 15) {
+      const { value: guess, done: genDone } = generator.next();
+      if (genDone) {
+        done = true;
+        break;
+      }
+
+      attempts++;
+      if (guess === target) {
+        resultDisplay.textContent = guess;
+        resultDisplay.style.color = "lime";
+        attemptDisplay.textContent = attempts.toLocaleString();
+        progressBar.value = 100;
+        timeDisplay.textContent = ((performance.now() - startTime) / 1000).toFixed(2);
+        return;
+      }
+    }
+
+    // Update UI once per frame
+    attemptDisplay.textContent = attempts.toLocaleString();
+    progressBar.value = Math.min((attempts / totalCombos) * 100, 100);
+    timeDisplay.textContent = ((performance.now() - startTime) / 1000).toFixed(2);
+    await new Promise(requestAnimationFrame);
+  }
+
+  if (!stopCracking) {
+    resultDisplay.textContent = "Not found";
+    resultDisplay.style.color = "red";
+  } else {
+    resetUI();
+  }
+}
+
+
+
+
+
+
+
+
+
+const canvas1 = document.getElementById('share1');
+const canvas2 = document.getElementById('share2');
+const overlayCanvas = document.getElementById('overlay');
+const ctx1 = canvas1.getContext('2d');
+const ctx2 = canvas2.getContext('2d');
+const overlayCtx = overlayCanvas.getContext('2d');
+const generateBtn = document.getElementById('generateBtn');
+const overlayBtn = document.getElementById('overlayBtn');
+const stepBtn = document.getElementById('stepBtn');
+const autoPlayBtn = document.getElementById('autoPlayBtn');
+const vcPauseBtn = document.getElementById('vcPauseBtn');
+const speedSlider = document.getElementById('speedSlider');
+const speedLabel = document.getElementById('speedLabel');
+
+
+let stepIndex = 0;
+let stepWidth = 0, stepHeight = 0;
+let stepData1, stepData2, stepOverlayData;
+let autoPlayInterval = null;
+let vcPaused = false;
+
+
+speedSlider.addEventListener('input', () => {
+  const val = parseInt(speedSlider.value);
+  speedLabel.textContent = `${val} ms/pixel`;
+  if (autoPlayInterval) {
+    startAutoPlay(val);
+  }
+});
+
+
+
+function drawTextToCanvas(text) {
+  const canvas = document.getElementById('textCanvas');
+  const ctx = canvas.getContext('2d');
+
+  const fontSize = 32;
+  ctx.font = `bold ${fontSize}px Arial`;
+
+  const textWidth = ctx.measureText(text).width;
+  const padding = 20;
+  const canvasWidth = Math.ceil(textWidth + padding * 2);
+  const canvasHeight = fontSize + padding * 2;
+
+  canvas.width = canvasWidth;
+  canvas.height = canvasHeight;
+
+  ctx.fillStyle = 'white';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = 'black';
+  ctx.font = `bold ${fontSize}px Arial`;
+  ctx.fillText(text, padding, canvasHeight / 2 + fontSize / 3);
+
+  return ctx.getImageData(0, 0, canvas.width, canvas.height);
+}
+
+function generateSharesFromTextImage(imgData) {
+  const width = imgData.width;
+  const height = imgData.height;
+
+  const pixelSize = 1.5; // You can change this to 1 or even allow slider input
+
+  const outWidth = width * 2 * pixelSize;
+  const outHeight = height * 2 * pixelSize;
+
+  [canvas1, canvas2, overlayCanvas].forEach(c => {
+    c.width = outWidth;
+    c.height = outHeight;
+  });
+
+  ctx1.clearRect(0, 0, outWidth, outHeight);
+  ctx2.clearRect(0, 0, outWidth, outHeight);
+  overlayCtx.clearRect(0, 0, outWidth, outHeight);
+
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4;
+      const isBlack = imgData.data[idx] < 128;
+
+      const pattern = Math.random() < 0.5
+        ? [[1, 0], [0, 1]]
+        : [[0, 1], [1, 0]];
+      const complement = pattern.map(row => row.map(p => isBlack ? 1 - p : p));
+
+      for (let dy = 0; dy < 2; dy++) {
+        for (let dx = 0; dx < 2; dx++) {
+          const drawX = (x * 2 + dx) * pixelSize;
+          const drawY = (y * 2 + dy) * pixelSize;
+
+          ctx1.fillStyle = pattern[dy][dx] ? 'black' : 'white';
+          ctx1.fillRect(drawX, drawY, pixelSize, pixelSize);
+
+          ctx2.fillStyle = complement[dy][dx] ? 'black' : 'white';
+          ctx2.fillRect(drawX, drawY, pixelSize, pixelSize);
+        }
+      }
+    }
+  }
+}
+
+
+function overlayShares() {
+  const width = canvas1.width;
+  const height = canvas1.height;
+
+  const data1 = ctx1.getImageData(0, 0, width, height);
+  const data2 = ctx2.getImageData(0, 0, width, height);
+  const overlayData = overlayCtx.createImageData(width, height);
+
+  for (let i = 0; i < data1.data.length; i += 4) {
+    const black1 = data1.data[i] < 128;  // Use "darkness" threshold
+    const black2 = data2.data[i] < 128;
+    const blackOverlay = black1 || black2;
+
+    const color = blackOverlay ? 0 : 255;
+    overlayData.data[i] = color;
+    overlayData.data[i + 1] = color;
+    overlayData.data[i + 2] = color;
+    overlayData.data[i + 3] = 255;
+  }
+
+  overlayCtx.putImageData(overlayData, 0, 0);
+}
+
+
+function startPixelStepOverlay() {
+  const width = canvas1.width;
+  const height = canvas1.height;
+
+  stepWidth = width;
+  stepHeight = height;
+  stepIndex = 0;
+
+  stepData1 = ctx1.getImageData(0, 0, width, height).data;
+  stepData2 = ctx2.getImageData(0, 0, width, height).data;
+  stepOverlayData = overlayCtx.createImageData(width, height);
+
+  overlayCtx.clearRect(0, 0, width, height);
+  stepBtn.disabled = false;
+  autoPlayBtn.disabled = false;
+  vcPauseBtn.disabled = false;
+vcPauseBtn.textContent = 'Pause VC';
+  vcPaused = false;
+  caesarpauseBtn.textContent = 'Pause';
+}
+
+function revealNextPixel() {
+  if (stepIndex >= stepData1.length) {
+    stopAutoPlay();
+    caesarpauseBtn.disabled = true;
+    return;
+  }
+
+  const black1 = stepData1[stepIndex] < 128;
+  const black2 = stepData2[stepIndex] < 128;
+  const resultBlack = black1 || black2;
+  const color = resultBlack ? 0 : 255;
+
+  stepOverlayData.data[stepIndex] = color;
+  stepOverlayData.data[stepIndex + 1] = color;
+  stepOverlayData.data[stepIndex + 2] = color;
+  stepOverlayData.data[stepIndex + 3] = 255;
+
+  overlayCtx.putImageData(stepOverlayData, 0, 0);
+  stepIndex += 4;
+}
+
+function startAutoPlay(speed) {
+  stopAutoPlay();
+  autoPlayInterval = setInterval(() => {
+    revealNextPixel();
+  }, speed);
+}
+
+function stopAutoPlay() {
+  if (autoPlayInterval) {
+    clearInterval(autoPlayInterval);
+    autoPlayInterval = null;
+  }
+}
+
+generateBtn.onclick = () => {
+  const text = document.getElementById('inputText').value.trim();
+  if (!text) {
+    alert("Please enter some text.");
+    return;
+  }
+  const imgData = drawTextToCanvas(text);
+  generateSharesFromTextImage(imgData);
+  overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+  overlayBtn.disabled = false;
+};
+
+
+overlayBtn.onclick = () => {
+  overlayShares();
+  setTimeout(() => {
+    const viewStep = confirm("Do you want to explore step-by-step overlay?");
+    if (viewStep) {
+      startPixelStepOverlay();
+    }
+  }, 300);
+};
+
+
+/*
+overlayBtn.onclick = () => {
+  // Show the full overlay immediately
+  overlayShares();
+
+  // Enable the step-by-step controls, but do NOT start animation yet
+  stepBtn.disabled = false;
+  autoPlayBtn.disabled = false;
+  vcPauseBtn.disabled = false;
+  vcPauseBtn.textContent = 'Pause VC';
+  vcPaused = false;
+
+  // Prepare data for step-by-step animation when needed
+  const width = overlayCanvas.width;
+  const height = overlayCanvas.height;
+
+  stepWidth = width;
+  stepHeight = height;
+  stepIndex = 0;
+
+  stepData1 = ctx1.getImageData(0, 0, width, height).data;
+  stepData2 = ctx2.getImageData(0, 0, width, height).data;
+  stepOverlayData = overlayCtx.createImageData(width, height);
+};
+
+*/
+
+stepBtn.onclick = revealNextPixel;
+
+autoPlayBtn.onclick = () => {
+  const speed = parseInt(speedSlider.value);
+  startAutoPlay(speed);
+};
+
+vcPauseBtn.onclick = () => {
+  if (vcPaused) {
+    const speed = parseInt(speedSlider.value);
+    startAutoPlay(speed);
+    vcPauseBtn.textContent = 'Pause VC';
+    vcPaused = false;
+  } else {
+    stopAutoPlay();
+    vcPauseBtn.textContent = 'Resume VC';
+    vcPaused = true;
+  }
+};
+
+function downloadCanvas(canvasId) {
+  const canvas = document.getElementById(canvasId);
+  const link = document.createElement('a');
+  link.href = canvas.toDataURL('image/png');
+  link.download = `${canvasId}.png`;
+
+  // For Firefox, the link must be added to the DOM
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+
+function resetPlaygroundFields() {
+  const playground = document.getElementById("playgroundPage");
+  if (!playground) return;
+
+  // Clear inputs and textareas
+  const inputs = playground.querySelectorAll("input, textarea");
+  inputs.forEach(field => {
+    if (field.type !== "button" && field.type !== "submit" && field.type !== "range") {
+      field.value = "";
+    }
+  });
+
+// Hide the newly added Brute Force output boxes
+  const caesarOut = document.getElementById("caesarBruteOutput");
+  const vigOut = document.getElementById("vigBruteOutput");
+  if (caesarOut) caesarOut.style.display = "none";
+  if (vigOut) vigOut.style.display = "none";
+  
+
+  // Reset selects
+  const selects = playground.querySelectorAll("select");
+  selects.forEach(select => select.selectedIndex = 0);
+
+  // Reset checkboxes/radios
+  const boxes = playground.querySelectorAll("input[type='checkbox'], input[type='radio']");
+  boxes.forEach(box => box.checked = false);
+
+  // Clear output areas
+  const outputs = playground.querySelectorAll(".output, .result, .cipher-output, #cryptoOutput, #crackedPassword, #attemptCount, #elapsedTime");
+  outputs.forEach(el => {
+    el.textContent = "";
+    el.innerHTML = "";
+  });
+
+  // Reset progress bar
+  const progress = document.getElementById("progressBar");
+  if (progress) progress.value = 0;
+
+  // Clear canvases
+  const canvasIds = ["share1", "share2", "overlay", "textCanvas"];
+  canvasIds.forEach(id => {
+    const canvas = document.getElementById(id);
+    if (canvas) {
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  });
+
+  // Disable buttons that get activated later
+  const buttonsToDisable = ["overlayBtn", "stepBtn", "autoPlayBtn", "caesarpauseBtn"];
+  buttonsToDisable.forEach(id => {
+    const btn = document.getElementById(id);
+    if (btn) btn.disabled = true;
+  });
+
+  // Optionally reset the speed slider and label
+  const slider = document.getElementById("speedSlider");
+  if (slider) slider.value = 5;
+
+  const speedLabel = document.getElementById("speedLabel");
+  if (speedLabel) speedLabel.textContent = "20 ms/pixel";
+  
+  
+  // Stop Visual Cryptography autoplay
+stopAutoPlay();
+isPaused = false;
+if (caesarpauseBtn) {
+  caesarpauseBtn.textContent = 'Pause';
+  caesarpauseBtn.disabled = true;
+}
+
+
+
+// Hide Affine Challenge section
+const affineSection = document.getElementById("affine-challenge-section");
+if (affineSection) {
+  affineSection.style.display = "none";
+}
+}
+
+
+
+// Frontend function to display integrity status
+function showStatus(status) {
+  const box = document.getElementById("statusBox");
+
+  if (status === "SAFE") {
+    box.innerText = "✔ File is Safe";
+    box.style.background = "#d4f8d4";
+    box.style.color = "green";
+  } else {
+    box.innerText = "✖ File is Tampered";
+    box.style.background = "#ffd6d6";
+    box.style.color = "red";
+  }
+}
+// Frontend function to display integrity status --------
+
+// Frontend function to show hash comparison
+function showComparison(original, current) {
+  document.getElementById("hashBefore").innerText = original;
+  document.getElementById("hashAfter").innerText = current;
+}
+// Frontend function to show hash comparison --------
+
+// Frontend function to animate hash change
+function animateHashChange(before, after) {
+  const el = document.getElementById("hashAfter");
+  el.innerText = before;
+
+  setTimeout(() => {
+    el.style.color = "red";
+    el.innerText = after;
+  }, 700);
+}
+// Frontend function to animate hash change --------
+
+
+
+// Frontend function to highlight hash differences
+function highlightHashDiff(original, current) {
+  let originalHTML = "";
+  let currentHTML = "";
+
+  for (let i = 0; i < original.length; i++) {
+    if (original[i] === current[i]) {
+      originalHTML += `<span class="same">${original[i]}</span>`;
+      currentHTML += `<span class="same">${current[i]}</span>`;
+    } else {
+      originalHTML += `<span class="diff">${original[i]}</span>`;
+      currentHTML += `<span class="diff">${current[i]}</span>`;
+    }
+  }
+
+  document.getElementById("hashOriginal").innerHTML = originalHTML;
+  document.getElementById("hashCurrent").innerHTML = currentHTML;
+}
+// Frontend function to highlight hash differences --------
+
+
+let storedFilename = null;
+
+
+
+
+
+
+
+
+
+
+async function storeIntegrity() {
+  const fileInput = document.getElementById("integrityFile");
+  const statusBox = document.getElementById("statusBox");
+
+  if (!fileInput.files[0]) {
+    return alert("Please select a file first.");
+  }
+
+  // Visual feedback while processing
+  statusBox.innerText = "Processing...";
+  statusBox.style.background = "#f3f4f6";
+  statusBox.style.color = "black";
+
+  const fd = new FormData();
+  fd.append("file", fileInput.files[0]);
+
+  try {
+    const res = await fetch("http://localhost:3000/api/integrity/store", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + sessionStorage.getItem("authToken")
+      },
+      body: fd
+    });
+
+    if (res.status === 401 || res.status === 403) {
+      alert("Session Expired. Please log in again.");
+      logout(); // Kick to front page if token is dead
+      return;
+    }
+
+    if (!res.ok) {
+      statusBox.innerText = "Store failed ❌";
+      statusBox.style.background = "#ffd6d6";
+      statusBox.style.color = "red";
+      return;
+    }
+
+    // Success UI Update
+    statusBox.innerText = "Integrity stored successfully ✅";
+    statusBox.style.background = "#d4f8d4";
+    statusBox.style.color = "green";
+    
+    // Hide previous check results if they exist
+    document.getElementById("hashBox").style.display = "none";
+    document.getElementById("diffBox").style.display = "none";
+
+  } catch (err) {
+    console.error("Fetch error:", err);
+    statusBox.innerText = "Network Error ❌";
+    statusBox.style.color = "red";
+  }
+}
+
+
+
+
+
+async function checkIntegrity() {
+  //e.preventDefault();
+  //e.stopPropagation();
+
+  const file = document.getElementById("integrityFile").files[0];
+  if (!file) return alert("Select a file");
+
+  const fd = new FormData();
+  fd.append("file", file);
+
+  console.log("Sending token:", sessionStorage.getItem("authToken"));
+
+  const res = await fetch("http://localhost:3000/api/integrity/check", {
+  method: "POST",
+  headers: {
+    Authorization: "Bearer " + sessionStorage.getItem("authToken")
+  },
+  body: fd
+});
+    if (res.status === 401 || res.status === 403) {
+    alert("Auth failed (debug mode)");
+    console.log("Auth failed, NOT removing token for debugging");
+    return;
+}
+
+
+  //const data = await res.json();
+  let data;
+
+try {
+  data = await res.json();
+} catch (err) {
+  console.error("❌ JSON parse failed:", err);
+  alert("Server returned invalid response");
+  return;
+}
+
+  document.getElementById("hashBox").style.display = "block";
+  document.getElementById("originalHash").innerText = data.originalHash;
+  document.getElementById("currentHash").innerText = data.currentHash;
+
+  document.getElementById("statusBox").innerText =
+    data.status === "SAFE"
+      ? "File NOT tampered ✅"
+      : "File TAMPERED ❌";
+
+       document.getElementById("statusBox").style.color =
+    data.status === "SAFE" ? "green" : "red";
+
+
+    // Force the background to change back to red if tampered!
+  document.getElementById("statusBox").style.background =
+    data.status === "SAFE" ? "#d4f8d4" : "#ffd6d6";
+
+
+
+
+
+
+
+
+
+// ----------------------change here-------------------
+
+/*
+    if (data.status === "TAMPERED" && data.changedWords?.length > 0) {
+  const reader = new FileReader();
+
+  reader.onload = function (e) {
+    highlightChangedWords(e.target.result, data.changedWords);
+  };
+
+  reader.readAsText(file);
+
+  document.getElementById("diffBox").style.display = "block";
+}
+
+  return false; //  THIS STOPS PAGE JUMP
+}
+*/
+
+
+
+
+
+
+// Pass BOTH arrays to the highlight function!
+  if (data.status === "TAMPERED" && (file.type.startsWith("text/") || file.name.endsWith(".txt"))) {
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+      highlightChangedWords(e.target.result, data.changedWords || [], data.deletedSpaces || []);
+    };
+
+    reader.readAsText(file);
+    document.getElementById("diffBox").style.display = "block";
+  } else {
+    document.getElementById("diffBox").style.display = "none";
+  }
+
+  return false; // THIS STOPS PAGE JUMP
+}
+//---------------------------change here too----------------------------------
+
+/*
+function highlightChangedWords(text, changedWords) {
+  const words = text.split(/\s+/);
+
+  let result = "";
+
+  for (let i = 0; i < words.length; i++) {
+    if (changedWords.includes(i)) {
+      result += `<span class="diff">${words[i]} </span>`;
+    } else {
+      result += `<span class="same">${words[i]} </span>`;
+    }
+  }
+
+  document.getElementById("diffBox").innerHTML = result;
+}
+*/
+
+
+
+function highlightChangedWords(text, changedWords, deletedSpaces) {
+  const words = text.split(/\s+/);
+  let result = "";
+  let hasDeletions = false;
+
+  for (let i = 0; i < words.length; i++) {
+    // 1. Check if a word was deleted right before this current word
+    if (deletedSpaces.includes(i)) {
+      result += `<span class="diff-space" title="A word was deleted from here!"></span>`;
+      hasDeletions = true;
+    }
+
+    // 2. Render the word itself (either red if altered, green if safe)
+    if (changedWords.includes(i)) {
+      result += `<span class="diff">${words[i]} </span>`;
+    } else {
+      result += `<span class="same">${words[i]} </span>`;
+    }
+  }
+
+  // 3. Catch edge case: if a word was deleted at the very end of the file
+  if (deletedSpaces.includes(words.length)) {
+     result += `<span class="diff-space" title="A word was deleted from here!"></span>`;
+     hasDeletions = true;
+  }
+
+  document.getElementById("diffBox").innerHTML = result;
+
+  // 4. Show the warning message if any deletions occurred!
+  const existingMsg = document.getElementById("deletionMsg");
+  if (hasDeletions) {
+     if (!existingMsg) {
+       document.getElementById("diffBox").insertAdjacentHTML('afterend', 
+         '<p id="deletionMsg" style="color: #dc2626; font-size: 13px; font-weight: bold; margin-top: 12px;">⚠️ The red spaces indicate where text was deleted.</p>'
+       );
+     } else {
+       existingMsg.style.display = "block";
+     }
+  } else if (existingMsg) {
+     existingMsg.style.display = "none";
+  }
+}
+
+
+/*
+function normalizeText(text) {
+  return text
+    .toLowerCase()
+    .replace(/\r\n/g, "\n")
+    .replace(/[^\w\s]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function highlightChangedWords(text, changedWords) {
+  const normalized = normalizeText(text);
+  const words = normalized.split(" ");
+
+  let result = "";
+
+  for (let i = 0; i < words.length; i++) {
+    if (changedWords.includes(i)) {
+      result += `<span class="diff">${words[i]} </span>`;
+    } else {
+      result += `<span class="same">${words[i]} </span>`;
+    }
+  }
+
+  document.getElementById("diffBox").innerHTML = result;
+}
+*/
+
+
+
+
+let fakeProgress = 0;
+let fakeInterval;
+
+function startFakeProgress(progressBar, progressText) {
+  fakeProgress = 0;
+
+  fakeInterval = setInterval(() => {
+    if (fakeProgress < 90) {
+      fakeProgress += Math.random() * 5; // random smooth increase
+      fakeProgress = Math.min(fakeProgress, 90);
+
+      progressBar.style.width = fakeProgress + "%";
+      progressText.innerText = Math.floor(fakeProgress) + "% uploading...";
+    }
+  }, 200);
+}
+
+function stopFakeProgress(progressBar, progressText) {
+  clearInterval(fakeInterval);
+  progressBar.style.width = "100%";
+  progressText.innerText = "Processing & downloading...";
+}
+
+
+async function encryptSecureFile() {
+  const fileInput = document.getElementById("secureEncFile");
+  const password = document.getElementById("secureEncPassword").value;
+  const status = document.getElementById("secureEncStatus");
+
+  if (!fileInput.files[0] || !password) {
+    alert("Select a file and enter a password");
+    return;
+  }
+
+  
+
+  //  STEP 5: FILE TYPE VALIDATION (ADD HERE)
+  const file = fileInput.files[0];
+
+
+  // FILE SIZE LIMIT
+const MAX_SIZE = 5 * 1024 * 1024; // 5MB
+
+if (file.size > MAX_SIZE) {
+  alert("File too large (max 5MB)");
+  return;
+}
+
+
+if (file.size === 0) {
+  alert("Empty file not allowed");
+  return;
+}
+
+
+
+  const fd = new FormData();
+  fd.append("file", fileInput.files[0]);
+  fd.append("password", password);
+
+
+
+const xhr = new XMLHttpRequest();
+xhr.open("POST", "http://localhost:3000/api/secure/encrypt");
+
+const progressBar = document.getElementById("progressBar");
+const progressText = document.getElementById("progressText");
+
+//  START FAKE PROGRESS
+startFakeProgress(progressBar, progressText);
+
+//  REAL UPLOAD (optional override)
+xhr.upload.onprogress = function (e) {
+  if (e.lengthComputable) {
+    const realPercent = (e.loaded / e.total) * 100;
+
+    // If real progress is ahead, sync it
+    if (realPercent > fakeProgress) {
+      fakeProgress = realPercent;
+      progressBar.style.width = fakeProgress + "%";
+    }
+  }
+};
+
+//  ON SUCCESS
+xhr.onload = function () {
+  if (xhr.status === 200) {
+    stopFakeProgress(progressBar, progressText);
+
+    const blob = new Blob([xhr.response]);
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `secure_${Date.now()}.zip`;
+    a.click();
+
+    setTimeout(() => {
+      progressText.innerText = "Done ✅";
+    }, 800);
+
+  } else {
+    clearInterval(fakeInterval);
+    progressText.innerText = "Encryption failed ❌";
+  }
+};
+
+xhr.onerror = function () {
+  clearInterval(fakeInterval);
+  progressText.innerText = "Upload failed ❌";
+};
+
+xhr.responseType = "blob";
+
+xhr.send(fd);
+
+
+}
+
+async function decryptSecureFile() {
+  const dataFile = document.getElementById("secureDataFile").files[0];
+  const keyFile = document.getElementById("secureKeyFile").files[0];
+  const idFile = document.getElementById("secureIdFile").files[0];
+  const password = document.getElementById("secureDecPassword").value;
+  const status = document.getElementById("secureDecStatus");
+
+  if (!dataFile || !keyFile || !idFile || !password) {
+    alert("Upload both files and enter password");
+    return;
+  }
+
+
+  // ✅ FILE SIZE VALIDATION FOR DECRYPT
+const MAX_SIZE = 5 * 1024 * 1024;
+
+if (dataFile.size > MAX_SIZE || idFile.size > MAX_SIZE) {
+  alert("File too large (max 5MB)");
+  return;
+}
+
+
+
+  const fd = new FormData();
+  fd.append("dataFile", dataFile);
+  fd.append("keyFile", keyFile);
+  fd.append("idFile", idFile);
+  fd.append("password", password);
+
+  const res = await fetch("http://localhost:3000/api/secure/decrypt", {
+    method: "POST",
+    body: fd
+  });
+
+  if (!res.ok) {
+    status.innerText = "Decryption failed ❌";
+    return;
+  }
+
+  const blob = await res.blob();
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "decrypted_file";
+  a.click();
+
+  status.innerText = "Decryption successful ✅";
+}
+
+
+
+</script>
+</body>
+</html>
+    
