@@ -597,6 +597,14 @@ canvas {
     <div id="strengthFill" style="height: 100%; width: 0%; background: red; border-radius: 5px;"></div>
   </div>
   <small id="strengthText" style="color: gray;">Password strength: </small>
+
+  <input 
+    type="text" 
+    id="regAccessCode" 
+    placeholder="VIP Access Code" 
+    style="width: 100%; padding: 12px 15px; margin-top: 15px; margin-bottom: 10px; border: 1.8px solid #ccc; border-radius: 8px; font-size: 16px; font-family: inherit; box-sizing: border-box;" 
+  />
+
   <button onclick="suggestPassword()">Suggest Strong Password</button>
   <button onclick="completeRegistration()">Submit Registration</button>
   <button onclick="goHome()">Back</button>
@@ -1832,12 +1840,15 @@ function goBackFromAbout() {
 
 
 
-// Registration logic
+//Registration logic
 
 async function completeRegistration() {
   const username = document.getElementById("regUsername").value.trim();
   const email = document.getElementById("regEmail").value.trim();
   const password = document.getElementById("regPassword").value;
+  
+  // 1. ADD THIS LINE TO GRAB THE ACCESS CODE 
+  const accessCode = document.getElementById("regAccessCode").value.trim();
 
   // Username validation
 
@@ -1875,7 +1886,9 @@ async function completeRegistration() {
   const res = await fetch("/api/register", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username, email, password }) // Added email here!
+    
+    // 2. UPDATE THIS LINE TO INCLUDE THE ACCESS CODE
+    body: JSON.stringify({ username, email, password, accessCode }) 
   });
 
   const data = await res.json();
@@ -1885,13 +1898,12 @@ async function completeRegistration() {
     return;
   }
 
-  alert("Registration successful! Please login.");
+  // Alert the user that they need to check their email!
+  alert(data.message || "Registration pending. Please check your email to verify your account.");
 
   document.getElementById("registerPage").classList.add("hidden");
   document.getElementById("loginPage").classList.remove("hidden");
 }
-
-
 
 
 // Login logic
