@@ -724,7 +724,7 @@ app.get("/api/verify", async (req, res) => {
 
 
 //------------User Login Route------------//
-const jwt = require("jsonwebtoken");
+
 
 
 // Optional but highly recommended: Add a rate limiter to login too!
