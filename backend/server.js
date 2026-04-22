@@ -54,7 +54,7 @@ const transporter = nodemailer.createTransport({
 
 
 const rateLimit = require('express-rate-limit');
-const crypto = require('crypto');
+
 
 // --- 1. THE RATE LIMITER ---
 const registerLimiter = rateLimit({
