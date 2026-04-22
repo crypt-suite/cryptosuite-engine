@@ -66,6 +66,18 @@ app.get("/", (req, res) => {
 
 
 
+
+app.get("/api/ping", async (req, res) => {
+    try {
+        await pool.query("SELECT 1"); // Just a tiny ping to the DB
+        res.status(200).send("Database is awake!");
+    } catch (err) {
+        res.status(500).send("Database is asleep.");
+    }
+});
+
+
+
 // Serve the Main Hub (Your landing page with the two buttons)
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/index.html'));
