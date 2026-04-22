@@ -46,17 +46,6 @@ const transporter = nodemailer.createTransport({
 
 
 
-// Helper for Affine cipher modular inverse
-function modInverse(a, m) {
-  a = a % m;
-  for (let x = 1; x < m; x++) {
-    if ((a * x) % m === 1) return x;
-  }
-  return null;
-}
-//------------Helper for Affine cipher modular inverse------------//
-
-
 
 
 //------------ceasar cipher backend route integrated directly into server.js------------//
@@ -443,13 +432,24 @@ app.post("/api/sha256", (req, res) => {
   res.json({ result: hash, steps: ["Hashed input using SHA-256 protocol."] });
 });
 
+
+
+
+
 // ------------ 3. Affine Cipher Route ------------ //
 app.post("/api/affine", (req, res) => {
-  const { text, a = 5, b = 8, mode } = req.body;
+  let { text, a = 5, b = 8, mode } = req.body;
   const m = 26;
+
+  // 1. SANITIZE INPUTS: Force 'a' and 'b' into a positive 0-25 range
+  // This completely fixes the JavaScript negative modulo bug.
+  a = ((a % m) + m) % m;
+  b = ((b % m) + m) % m;
+
   const aInv = modInverse(a, m);
   
-  if (!aInv && mode === "decrypt") {
+  // 2. PROTECT DATA: Reject invalid 'A' for BOTH encrypt and decrypt!
+  if (!aInv) {
     return res.status(400).json({ error: "'A' must be coprime to 26 (e.g., 1, 3, 5, 7, 9, 11, 15, 17, 19, 21, 23, 25)" });
   }
 
@@ -461,8 +461,8 @@ app.post("/api/affine", (req, res) => {
       let newX;
       
       if (mode === "decrypt") {
-        newX = (aInv * (x - b + m)) % m;
-        if (newX < 0) newX += m;
+        // Because 'b' is safely positive now, this formula works perfectly
+        newX = (aInv * ((x - b + m) % m)) % m; 
       } else {
         newX = (a * x + b) % m;
       }
@@ -474,6 +474,17 @@ app.post("/api/affine", (req, res) => {
   }
   res.json({ result, steps: [`Affine applied with A=${a}, B=${b}`] });
 });
+
+// Helper for Affine cipher modular inverse
+function modInverse(a, m) {
+  // Safe modulo here as well, just in case this helper is called from elsewhere
+  a = ((a % m) + m) % m;
+  for (let x = 1; x < m; x++) {
+    if ((a * x) % m === 1) return x;
+  }
+  return null;
+}
+//------------Helper for Affine cipher modular inverse------------//
 
 // ------------ 4. Rail Fence Cipher Route ------------ //
 app.post("/api/railfence", (req, res) => {

@@ -1495,8 +1495,13 @@ async function handleEncrypt() {
   } else if (type === "railfence") {
     payload.rails = parseInt(document.getElementById("railFenceInput").value) || 3;
   } else if (type === "affine") {
-    payload.a = parseInt(document.getElementById("affineA").value) || 5;
-    payload.b = parseInt(document.getElementById("affineB").value) || 8;
+    const valA = parseInt(document.getElementById("affineA").value);
+    const valB = parseInt(document.getElementById("affineB").value);
+    
+    // isNaN checks if it's specifically "Not a Number" (like an empty box)
+    // If it's a valid number (even 0!), it uses it. Otherwise, it falls back.
+    payload.a = isNaN(valA) ? 5 : valA;
+    payload.b = isNaN(valB) ? 8 : valB;
   }
 
   try {
@@ -1584,8 +1589,13 @@ async function handleDecrypt() {
   } else if (type === "railfence") {
     payload.rails = parseInt(document.getElementById("railFenceInput").value) || 3;
   } else if (type === "affine") {
-    payload.a = parseInt(document.getElementById("affineA").value) || 5;
-    payload.b = parseInt(document.getElementById("affineB").value) || 8;
+    const valA = parseInt(document.getElementById("affineA").value);
+    const valB = parseInt(document.getElementById("affineB").value);
+    
+    // isNaN checks if it's specifically "Not a Number" (like an empty box)
+    // If it's a valid number (even 0!), it uses it. Otherwise, it falls back.
+    payload.a = isNaN(valA) ? 5 : valA;
+    payload.b = isNaN(valB) ? 8 : valB;
   }
 
   try {
