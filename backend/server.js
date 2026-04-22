@@ -17,6 +17,12 @@ app.use(express.json());
 
 
 
+const pool = require("./db"); 
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+
+
+
 
 
 const Diff = require("diff");
@@ -43,6 +49,19 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+
+
+
+
+const rateLimit = require('express-rate-limit');
+const crypto = require('crypto');
+
+// --- 1. THE RATE LIMITER ---
+const registerLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour
+    max: 3, // Max 3 accounts per IP per hour
+    message: { error: "Too many accounts created from this IP, please try again later." }
+});
 
 
 
@@ -94,7 +113,7 @@ app.use("/compiler", express.static(path.join(__dirname, '../frontend/compiler')
 
 
 // The Compiler API Route
-app.post("/run", express.text(), (req, res) => {
+app.post("/api/run", express.text(), (req, res) => {
     const code = req.body; 
 
     // Point to where you placed the 'lan' executable inside your backend folder
@@ -551,7 +570,7 @@ app.post("/api/railfence", (req, res) => {
 
 
 
-
+/*
 //------------User Registration Route------------//
 const bcrypt = require("bcryptjs");
 const db = require("./db"); // Assuming you have your DB connection here
@@ -599,58 +618,122 @@ app.post("/api/register", async (req, res) => {
   }
 });
 //------------User Registration Route------------//
-
-/*
-//------------User Login Route------------//
-const jwt = require("jsonwebtoken");
-
-app.post("/api/login", async (req, res) => {
-  const { username, password } = req.body;
-
-  const [rows] = await db.execute(
-    "SELECT * FROM users WHERE username = ?",
-    [username]
-  );
-
-  if (rows.length === 0) {
-    return res.status(401).json({ error: "Invalid credentials" });
-  }
-
-  const user = rows[0];
-  const ok = await bcrypt.compare(password, user.password_hash);
-
-  if (!ok) {
-    return res.status(401).json({ error: "Invalid credentials" });
-  }
-
-  const token = jwt.sign(
-    { id: user.id, username: user.username },
-    "SECRET_KEY",
-    { expiresIn: "1d" }
-  );
-
-  res.json({ token });
-});
-//------------User Login Route------------//
-
 */
 
 
 
+//------------User Registration Route------------//
+app.post("/api/register", registerLimiter, async (req, res) => {
+  // Added accessCode to your destructured payload
+  const { username, email, password, accessCode } = req.body;
+
+  // 2. THE VIP ACCESS CODE CHECK
+  if (accessCode !== "ENIGMA2026") {
+    return res.status(403).json({ error: "Invalid Access Code." });
+  }
+
+  // 3. Check for missing fields
+  if (!username || !email || !password) {
+    return res.status(400).json({ error: "Missing fields" });
+  }
+
+  // 4. Server-side Airtight Email Validation (Your Logic)
+  const emailRegex = /^[a-zA-Z0-9]+(?:[._-][a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*(?:\.[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*)*\.[a-zA-Z]{2,}$/;
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ error: "Invalid email format. Please check for typos, consecutive dots, or invalid characters." });
+  }
+
+  // 5. Restrict to Popular Domains (Your Logic)
+  const allowedDomains = ["gmail.com", "yahoo.com", "outlook.com", "hotmail.com", "icloud.com", "ethereal.email"];
+  const userDomain = email.split('@')[1].toLowerCase();
+  
+  if (!allowedDomains.includes(userDomain)) {
+    return res.status(400).json({ 
+      error: `Unsupported email provider. We only accept: ${allowedDomains.join(', ')}` 
+    });
+  }
+
+  try {
+    // 6. Generate the Verification Token & Hash Password
+    const verifyToken = crypto.randomBytes(32).toString('hex');
+    const hashed = await bcrypt.hash(password, 10);
+
+    // 7. Insert into database (Quarantined State: is_verified = 0)
+    await pool.execute(
+      "INSERT INTO users (username, email, password_hash, is_verified, verification_token) VALUES (?, ?, ?, 0, ?)",
+      [username, email, hashed, verifyToken]
+    );
+
+    // 8. Dispatch the Verification Email
+    const verifyLink = `https://cryptosuite-engine.onrender.com/api/verify?token=${verifyToken}`;
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: "Verify your Cryptography Suite Account",
+        html: `<h2>Welcome to the Suite, ${username}!</h2>
+               <p>Please verify your email to unlock your account. This link expires in 24 hours.</p>
+               <a href="${verifyLink}" style="padding: 10px 20px; background: #5a3a1e; color: white; text-decoration: none; border-radius: 5px;">Verify Account</a>`
+    };
+    
+    await transporter.sendMail(mailOptions);
+
+    // 9. Success Response
+    res.json({ success: true, message: "Registration pending. Please check your email." });
+
+  } catch (err) {
+    // Your Duplicate Entry Catch
+    if (err.code === 'ER_DUP_ENTRY' || err.code === '23505') { 
+      return res.status(400).json({ error: "Username or Email already exists" });
+    }
+    console.error("Database error during registration:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+//------------User Registration Route------------//
 
 
 
+// --- 3. THE VERIFICATION ROUTE ---
+app.get("/api/verify", async (req, res) => {
+    const token = req.query.token;
+
+    if (!token) return res.status(400).send("No verification token provided.");
+
+    try {
+        // Find the user with this exact token
+        const [user] = await pool.query("SELECT * FROM users WHERE verification_token = ?", [token]);
+
+        if (user.length === 0) {
+            return res.status(400).send("Invalid or expired verification link.");
+        }
+
+        // Promote to active: Set verified to 1, and clear the token so it can't be reused
+        await pool.query(
+            "UPDATE users SET is_verified = 1, verification_token = NULL WHERE verification_token = ?",
+            [token]
+        );
+
+        res.send("<h1>Account Verified!</h1><p>You may now log in to the Cryptography Suite.</p>");
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Server error during verification.");
+    }
+});
 
 
 
 
 //------------User Login Route------------//
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto"); // Ensure this is imported!
+
+// Optional but highly recommended: Add a rate limiter to login too!
+// const loginLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 10, message: { error: "Too many login attempts." } });
 
 app.post("/api/login", async (req, res) => {
   const { username, password } = req.body;
 
-  const [rows] = await db.execute(
+  const [rows] = await pool.execute(
     "SELECT * FROM users WHERE username = ?",
     [username]
   );
@@ -659,9 +742,15 @@ app.post("/api/login", async (req, res) => {
     return res.status(401).json({ error: "Invalid credentials" });
   }
 
+  // 1. DEFINE USER FIRST
   const user = rows[0];
 
-  //THE DEADBOLT: Strict Number check to prevent string/buffer bypasses!
+  // 2. CHECK VERIFICATION STATUS
+  if (user.is_verified === 0) {
+      return res.status(403).json({ error: "You must verify your email before logging in." });
+  }
+
+  // 3. THE DEADBOLT: Strict Number check
   if (Number(user.is_locked) === 1) {
     console.log(`🔒 Blocked login attempt for locked user: ${username}`);
     return res.status(403).json({ 
@@ -669,44 +758,38 @@ app.post("/api/login", async (req, res) => {
     });
   }
 
+  // 4. VERIFY PASSWORD
   const ok = await bcrypt.compare(password, user.password_hash);
 
   if (!ok) {
-    //Increment failed attempts
+    // Increment failed attempts
     let attempts = (user.failed_login_attempts || 0) + 1;
     
     if (attempts >= 5) {
-      // 1. Lock the account and generate token
+      // Lock the account and generate token
       const unlockToken = crypto.randomBytes(32).toString("hex");
-      await db.execute(
+      await pool.execute(
         "UPDATE users SET failed_login_attempts = ?, is_locked = 1, unlock_token = ? WHERE id = ?", 
         [attempts, unlockToken, user.id]
       );
 
-      //2. AUTOMATE THE EMAIL (Upgraded with HTML!)
-      // Note: Change this URL to your Render URL later when you deploy!
+      // AUTOMATE THE EMAIL 
       const unlockLink = `https://cryptosuite-engine.onrender.com/api/unlock/${unlockToken}`;
       
       const mailOptions = {
         from: '"Security Team" <' + process.env.EMAIL_USER + '>', 
         to: user.email, 
         subject: "🚨 Security Alert: Account Locked",
-        
-        // The plain text fallback (for old email clients)
         text: `Hello ${user.username},\n\nWe detected 5 failed login attempts on your account. For your security, we have locked it.\n\nCopy and paste this link to unlock your account: ${unlockLink}`,
-        
-        // The HTML version with a clickable button!
         html: `
           <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
             <h2 style="color: #dc2626;">Account Locked</h2>
             <p>Hello <strong>${user.username}</strong>,</p>
             <p>We detected 5 failed login attempts on your account. For your security, we have temporarily locked it.</p>
             <p>If this was a mistake, please click the button below to unlock your account immediately:</p>
-            
             <a href="${unlockLink}" style="display: inline-block; padding: 12px 24px; margin: 15px 0; background-color: #3b82f6; color: #ffffff; text-decoration: none; font-weight: bold; border-radius: 6px;">
               Unlock My Account
             </a>
-            
             <p style="font-size: 13px; color: #6b7280;">
               If the button doesn't work, copy and paste this link into your browser:<br>
               <a href="${unlockLink}">${unlockLink}</a>
@@ -716,20 +799,19 @@ app.post("/api/login", async (req, res) => {
         `
       };
 
+      // Cleaned up production email callback
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-            console.log("Failed to send fake unlock email:", error);
+            console.error("Failed to send unlock email:", error);
         } else {
-            console.log("✅ Fake email 'sent' to:", user.email);
-            //THIS IS THE MAGIC LINE: It gives you a clickable link to view the fake email!
-            console.log("👀 Preview your email here:", nodemailer.getTestMessageUrl(info));
+            console.log("✅ Unlock email successfully sent to:", user.email);
         }
       });
 
       return res.status(403).json({ error: "Account locked. An unlock link has been automatically sent to your registered email address." });
     } else {
-      // 4. Warn the user how many attempts are left
-      await db.execute(
+      // Warn the user how many attempts are left
+      await pool.execute(
         "UPDATE users SET failed_login_attempts = ? WHERE id = ?", 
         [attempts, user.id]
       );
@@ -737,14 +819,15 @@ app.post("/api/login", async (req, res) => {
     }
   }
 
-  // 5. Success! Reset failed attempts back to 0
+  // 5. SUCCESS! Reset failed attempts back to 0
   if (user.failed_login_attempts > 0) {
-     await db.execute("UPDATE users SET failed_login_attempts = 0 WHERE id = ?", [user.id]);
+     await pool.execute("UPDATE users SET failed_login_attempts = 0 WHERE id = ?", [user.id]);
   }
 
+  // 6. GENERATE SECURE JWT
   const token = jwt.sign(
     { id: user.id, username: user.username },
-    "SECRET_KEY",
+    process.env.JWT_SECRET,
     { expiresIn: "1d" }
   );
 
@@ -764,14 +847,14 @@ app.get("/api/unlock/:token", async (req, res) => {
   const token = req.params.token;
   
   // 1. Check if the token from the email exists in the database
-  const [rows] = await db.execute("SELECT id FROM users WHERE unlock_token = ?", [token]);
+  const [rows] = await pool.execute("SELECT id FROM users WHERE unlock_token = ?", [token]);
   
   if (rows.length === 0) {
     return res.send("<h1 style='color:red; text-align:center; margin-top:50px;'>Invalid or Expired Link</h1>");
   }
 
   // 2. Unlock the account
-  await db.execute(
+  await pool.execute(
     "UPDATE users SET is_locked = 0, failed_login_attempts = 0, unlock_token = NULL WHERE id = ?", 
     [rows[0].id]
   );
@@ -791,14 +874,14 @@ app.post("/api/unlock", async (req, res) => {
   
   if (!token) return res.status(400).json({ error: "Token required" });
 
-  const [rows] = await db.execute("SELECT id FROM users WHERE unlock_token = ?", [token]);
+  const [rows] = await pool.execute("SELECT id FROM users WHERE unlock_token = ?", [token]);
   
   if (rows.length === 0) {
     return res.status(400).json({ error: "Invalid or expired unlock token" });
   }
 
   // Reset the account to normal
-  await db.execute(
+  await pool.execute(
     "UPDATE users SET is_locked = 0, failed_login_attempts = 0, unlock_token = NULL WHERE id = ?", 
     [rows[0].id]
   );

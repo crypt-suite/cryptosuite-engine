@@ -252,8 +252,11 @@ let inputData = "";
         inputData = `${category}\n${type}\n${code}\nEND\n`;
     }
 
-    const res = await fetch("/run", {
+    const res = await fetch("/api/run", {
         method: "POST",
+        headers: {
+            "Content-Type": "text/plain" // to tell the server it's raw code
+        },
         body: inputData
     });
 
