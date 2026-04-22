@@ -688,21 +688,22 @@ string affineEncrypt(string s, int a, int b) {
     for (char &c : s) {
         if (isalpha(c)) {
             char base = isupper(c) ? 'A' : 'a';
-            int x = c - base; // Convert 'A' to 0, 'B' to 1, etc.
-            c = base + (a * x + b) % 26; // Apply linear equation
+            int x = c - base; 
+            // C++ Safe Modulo applied directly to the math
+            c = base + (((a * x + b) % 26) + 26) % 26; 
         }
     }
     return s;
 }
 
 string affineDecrypt(string s, int a, int b) {
-    int aInv = modInverse(a); // Math required to reverse the multiplication
+    int aInv = modInverse(a); 
     for (char &c : s) {
         if (isalpha(c)) {
             char base = isupper(c) ? 'A' : 'a';
             int x = c - base;
-            // Reverse equation: D(x) = aInv * (x - b) mod 26
-            c = base + (aInv * (x - b + 26)) % 26;
+            // C++ Safe Modulo to handle negative shifts properly
+            c = base + ((aInv * (((x - b) % 26) + 26)) % 26);
         }
     }
     return s;
@@ -1245,6 +1246,16 @@ public:
     eat(TOK_NUMBER);
 
     eat(TOK_SEMI);
+
+    //SANITIZE INPUTS (Fixes massive numbers and negative modulo)
+        affineA = ((affineA % 26) + 26) % 26;
+        affineB = ((affineB % 26) + 26) % 26;
+
+        //SEMANTIC ANALYSIS: Throw Compile Error if 'A' is invalid
+        if (affineA % 2 == 0 || affineA == 13 || affineA == 0) {
+            cerr << "[COMPILE ERROR] Affine 'a' (" << affineA << ") must be coprime to 26!\n";
+            exit(1); // Halt compilation!
+        }
 
     isAffine = true;
     cipherDeclared = true;
