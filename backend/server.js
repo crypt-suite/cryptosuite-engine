@@ -725,7 +725,7 @@ app.get("/api/verify", async (req, res) => {
 
 //------------User Login Route------------//
 const jwt = require("jsonwebtoken");
-const crypto = require("crypto"); // Ensure this is imported!
+
 
 // Optional but highly recommended: Add a rate limiter to login too!
 // const loginLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 10, message: { error: "Too many login attempts." } });
