@@ -21,6 +21,7 @@ const pool = require("./db");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+const cron = require('node-cron');
 
 
 
@@ -1490,6 +1491,34 @@ app.post("/api/integrity/store", upload.single("file"), (req, res) => {
 
 
 
+
+
+
+
+
+
+// ------------ THE AUTOMATED JANITOR ------------ //
+// This cron job runs at minute 0 past every hour (e.g., 1:00, 2:00, 3:00)
+cron.schedule('0 * * * *', async () => {
+    console.log("🧹 Janitor is waking up to check for unverified accounts...");
+    
+    try {
+        const [result] = await pool.execute(`
+            DELETE FROM users 
+            WHERE is_verified = 0 
+            AND created_at < (NOW() - INTERVAL 1 DAY)
+        `);
+        
+        if (result.affectedRows > 0) {
+            console.log(`✅ Janitor successfully swept up ${result.affectedRows} dead account(s).`);
+        } else {
+            console.log("✨ Database is clean. Janitor going back to sleep.");
+        }
+    } catch (err) {
+        console.error("❌ Janitor encountered an error:", err);
+    }
+});
+// ---------------------------------------------- //
 
 
 // Start server
