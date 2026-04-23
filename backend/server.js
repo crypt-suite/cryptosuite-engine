@@ -625,13 +625,8 @@ app.post("/api/register", async (req, res) => {
 
 //------------User Registration Route------------//
 app.post("/api/register", registerLimiter, async (req, res) => {
-  // Added accessCode to your destructured payload
-  const { username, email, password, accessCode } = req.body;
-
-  // 2. THE VIP ACCESS CODE CHECK
-  if (accessCode !== "ENIGMA2026") {
-    return res.status(403).json({ error: "Invalid Access Code." });
-  }
+  
+  const { username, email, password } = req.body;
 
   // 3. Check for missing fields
   if (!username || !email || !password) {
