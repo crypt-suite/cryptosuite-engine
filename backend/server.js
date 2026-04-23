@@ -17,6 +17,11 @@ app.set('trust proxy', 1);
 app.use(cors());
 app.use(express.json());
 
+// The Alarm Clock Route
+app.get("/api/ping", (req, res) => {
+    res.status(200).json({ status: "Awake", message: "Fort Knox is online." });
+});
+
 
 
 const pool = require("./db"); 
