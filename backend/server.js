@@ -664,17 +664,38 @@ app.post("/api/register", registerLimiter, async (req, res) => {
 
     // 8. Dispatch the Verification Email
     const verifyLink = `https://cryptosuite-engine.onrender.com/api/verify?token=${verifyToken}`;
+    
     const mailOptions = {
-        from: process.env.EMAIL_USER,
+        from: '"Cryptography Team" <' + process.env.EMAIL_USER + '>',
         to: email,
-        subject: "Verify your Cryptography Suite Account",
-        html: `<h2>Welcome to the Suite, ${username}!</h2>
-               <p>Please verify your email to unlock your account. This link expires in 24 hours.</p>
-               <a href="${verifyLink}" style="padding: 10px 20px; background: #5a3a1e; color: white; text-decoration: none; border-radius: 5px;">Verify Account</a>`
+        subject: "🔐 Verify your Cryptography Suite Account",
+        text: `Hello ${username},\n\nWelcome to the Cryptography Suite! Please verify your email to activate your account. This link expires in 24 hours.\n\nCopy and paste this link to verify: ${verifyLink}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;">
+            <h2 style="color: #111827; border-bottom: 2px solid #f3f4f6; padding-bottom: 10px;">Welcome to the Cryptography Suite!</h2>
+            <p>Hello <strong>${username}</strong>,</p>
+            <p>Thank you for registering. To ensure the security of the platform, we require all users to verify their email addresses before logging in.</p>
+            <p>Please click the button below to activate your account. This secure link will expire in exactly 24 hours.</p>
+            
+            <div style="text-align: center; margin: 25px 0;">
+              <a href="${verifyLink}" style="display: inline-block; padding: 12px 30px; background-color: #3b82f6; color: #ffffff; text-decoration: none; font-weight: bold; border-radius: 6px; font-size: 16px;">
+                Verify My Account
+              </a>
+            </div>
+            
+            <p style="font-size: 13px; color: #6b7280; margin-top: 20px;">
+              If the button doesn't work, copy and paste this link into your browser:<br>
+              <a href="${verifyLink}" style="color: #3b82f6; word-break: break-all;">${verifyLink}</a>
+            </p>
+            <p style="font-size: 12px; color: #9ca3af; margin-top: 30px; border-top: 1px solid #f3f4f6; padding-top: 10px;">
+              If you did not request this registration, someone may have typed your email by mistake. You can safely ignore this message.
+            </p>
+          </div>
+        `
     };
     
     await transporter.sendMail(mailOptions);
-
+    
     // 9. Success Response
     res.json({ success: true, message: "Registration pending. Please check your email." });
 
