@@ -12,6 +12,8 @@ const { exec } = require("child_process");
 
 
 const app = express();
+//TO TRUST RENDER'S PROXY
+app.set('trust proxy', 1);
 app.use(cors());
 app.use(express.json());
 
