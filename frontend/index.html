@@ -526,7 +526,7 @@ canvas {
     </div>
 
     <div style="z-index: 10; text-align: center;">
-        <h1 id="hero-title" data-value="CRYPTOSUITE" style="font-size: 3.5rem; color: #38bdf8; text-shadow: 0 0 15px rgba(56, 189, 248, 0.6); letter-spacing: 4px; margin-bottom: 5px;">X&^@9!#L$</h1>
+        <h1 id="hero-title" data-value="CRYPTOSUITE" style="font-size: 3.5rem; color: #38bdf8; text-shadow: 0 0 15px rgba(56, 189, 248, 0.6); letter-spacing: 4px; margin-bottom: 5px;">X&^@9!#L$Q*</h1>
         <p style="color: #94a3b8; font-size: 1.1rem; margin-bottom: 40px;">Secure Compiler & Cryptography Architecture</p>
 
         <div style="background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 40px; width: 400px; margin: 0 auto; box-shadow: 0 8px 32px 0 rgba(0,0,0,0.7); display: flex; flex-direction: column; gap: 15px;">
@@ -1125,21 +1125,29 @@ canvas {
 
 
 <script>
-  // --- DECRYPTING TITLE & PARTICLES ---
-    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
-    const title = document.getElementById("hero-title");
+  // --- DECRYPTING TITLE (FIXED SCRIPT) ---
+const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
+const title = document.getElementById("hero-title");
 
-    if (title) {
-        let iteration = 0;
-        let interval = setInterval(() => {
-            title.innerText = title.innerText.split("").map((letter, index) => {
-                if (index < iteration) return title.dataset.value[index];
-                return letters[Math.floor(Math.random() * 26)];
-            }).join("");
-            if (iteration >= title.dataset.value.length) clearInterval(interval);
-            iteration += 1 / 3; 
-        }, 60);
-    }
+if (title) {
+    const targetWord = title.dataset.value; // "CRYPTOSUITE"
+    let iteration = 0;
+    
+    let interval = setInterval(() => {
+        // CRITICAL FIX: We map over the targetWord so it gets the full length!
+        title.innerText = targetWord.split("").map((letter, index) => {
+            if (letter === " ") return " "; // Don't scramble spaces
+            if (index < iteration) return targetWord[index]; // Lock in correct letter
+            return letters[Math.floor(Math.random() * letters.length)]; // Scramble the rest
+        }).join("");
+        
+        if (iteration >= targetWord.length) {
+            clearInterval(interval);
+        }
+        
+        iteration += 1 / 3; // Controls speed (smaller fraction = slower animation)
+    }, 50); // 50ms gives a smooth, cinematic terminal speed
+}
 
     if (document.getElementById("particles-js")) {
         particlesJS("particles-js", {
