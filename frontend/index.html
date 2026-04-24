@@ -2329,12 +2329,21 @@ function toggleSystemLock(isUnlocked) {
     }
 }
 
+// --- AUTO-LOCK ON REFRESH ---
 window.addEventListener("DOMContentLoaded", () => {
-    // If the browser remembers a login token, instantly unlock the front page
-    if (sessionStorage.getItem("authToken")) {
-        toggleSystemLock(true);
-    } else {
-        toggleSystemLock(false);
+    // 1. Destroy any existing session token the moment the page reloads
+    sessionStorage.removeItem("authToken"); 
+    
+    // 2. Force the console light back to RED (Locked)
+    toggleSystemLock(false);
+    
+    // 3. Ensure they are kicked back to the Front Page
+    document.querySelectorAll(".page").forEach(page => page.classList.add("hidden"));
+    document.getElementById("frontPage").classList.remove("hidden");
+    
+    // 4. Reset brute-force tasks if any were running
+    if (typeof resetBruteForce === "function") {
+        resetBruteForce();
     }
 });
 
