@@ -1254,23 +1254,25 @@ canvas {
 
 
 
-
-<div id="enigmaPage" class="page hidden" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; max-width: none; margin: 0; padding: 0; z-index: 1000; background-color: #e2e8f0; overflow: hidden;">
+<div id="enigmaPage" class="page hidden" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; max-width: none; margin: 0; padding: 0; z-index: 1000; background: #ddd; overflow: auto;">
   
-  <div style="position: absolute; top: 20px; left: 20px; z-index: 1001;">
-    <button onclick="goBackFromAbout()" class="cyber-btn-scan" style="background: rgba(2, 6, 23, 0.9); border: 2px solid #f87171; color: #f87171; padding: 12px 20px; font-family: inherit; font-size: 14px; font-weight: bold; cursor: pointer; letter-spacing: 2px; border-radius: 6px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); transition: all 0.3s;">
-      [X] ABORT & RETURN
+  <div style="position: relative; width: 100%; min-width: 1450px; height: 1200px;">
+    
+    <button onclick="goBackFromAbout()" style="position: absolute; top: 20px; left: 20px; z-index: 1001; background: #2b1d12; color: #e0c097; font-family: 'Courier New', monospace; font-weight: bold; font-size: 14px; border: 2px solid #5a3a1e; border-radius: 8px; padding: 8px 16px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: all 0.2s ease;">
+      ⬅ Back
     </button>
+
+    <iframe 
+      id="enigmaIframe"
+      src="" 
+      style="width: 100%; height: 100%; border: none; display: block;" 
+      scrolling="no"
+      title="Enigma Emulator">
+    </iframe>
+
   </div>
-
-  <iframe 
-    src="./enigma/enigma.html" 
-    style="position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; border: none; display: block; background-color: #e2e8f0;" 
-    scrolling="auto"
-    title="Enigma Emulator">
-  </iframe>
-
 </div>
+
 
 
 
