@@ -288,58 +288,80 @@ canvas {
 
 
 /* =========================================
-   8. LIGHT MODE OVERRIDES
+   8. LIGHT MODE OVERRIDES (EYE-STRAIN FIX)
 ========================================= */
 body.light-mode {
-    background-color: #f8fafc;
-    color: #0f172a;
-}
-body.light-mode h1 { color: #0284c7; text-shadow: none; }
-body.light-mode h2 { color: #ea580c; border-color: rgba(234, 88, 12, 0.3); }
-body.light-mode h3 { color: #16a34a; }
-body.light-mode p, body.light-mode small { color: #475569; }
-
-body.light-mode .card, body.light-mode .app-header {
-    background: rgba(255, 255, 255, 0.9);
-    border-color: #cbd5e1;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    background-color: #f1f5f9 !important; /* Soft matte gray/blue, not blinding white */
+    color: #0f172a !important;
 }
 
+/* 1. Crush all neon glowing text effects globally */
+body.light-mode * {
+    text-shadow: none !important;
+    box-shadow: none !important; /* Kills the weird glowing halos */
+}
+
+/* 2. Fix Typography to soft, high-contrast darks */
+body.light-mode h1, body.light-mode #hero-title { color: #0f172a !important; }
+body.light-mode h2 { color: #334155 !important; border-color: #cbd5e1 !important; }
+body.light-mode h3 { color: #0284c7 !important; }
+body.light-mode p, body.light-mode small, body.light-mode span, body.light-mode label { 
+    color: #475569 !important; 
+}
+body.light-mode #systemStatusText { color: #0f172a !important; }
+
+/* 3. Fix the Glass Cards and Headers */
+body.light-mode .card, body.light-mode .app-header, body.light-mode div[style*="rgba(30, 41, 59, 0.6)"] {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+    backdrop-filter: none !important; /* Removes blurry glass effect in light mode */
+}
+
+/* 4. Fix inner inset boxes (Dictionary stats, Affine clues, etc.) */
+body.light-mode div[style*="rgba(15, 23, 42, 0.6)"] {
+    background: #f8fafc !important; 
+    border: 1px solid #e2e8f0 !important; 
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02) !important;
+}
+
+/* 5. Fix Inputs and textareas */
 body.light-mode input, body.light-mode select, body.light-mode textarea {
-    background: #ffffff;
-    color: #0f172a;
-    border-color: #94a3b8;
-    caret-color: #0f172a;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border: 1px solid #cbd5e1 !important;
+    caret-color: #0f172a !important;
 }
 body.light-mode input:focus, body.light-mode select:focus, body.light-mode textarea:focus {
-    border-color: #0284c7;
-    box-shadow: 0 0 10px rgba(2, 132, 199, 0.2);
+    border-color: #0284c7 !important;
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1) !important; /* Soft focus ring */
 }
 
-body.light-mode .infinite-terminal { opacity: 0.05; color: #0f172a; text-shadow: none; }
+/* 6. Fix Buttons (Removes neon borders and glowing text) */
+body.light-mode button, body.light-mode .cyber-btn-scan { 
+    border: 1px solid #cbd5e1 !important; 
+    color: #334155 !important; 
+    background: #ffffff !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+}
+body.light-mode button:hover, body.light-mode .cyber-btn-scan:hover { 
+    background-color: #f1f5f9 !important; 
+    border-color: #94a3b8 !important; 
+}
+body.light-mode .btn-secondary { background: #f8fafc !important; }
+body.light-mode .btn-danger { color: #dc2626 !important; border-color: #fca5a5 !important; background: #fef2f2 !important; }
 
+/* 7. Terminal output and Canvas boxes */
 body.light-mode #cryptoOutput, body.light-mode .output-box, body.light-mode canvas {
-    background: #f1f5f9;
-    color: #0f172a;
-    border-color: #cbd5e1;
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+    background: #f8fafc !important;
+    color: #0f172a !important;
+    border: 1px solid #cbd5e1 !important;
 }
 
-body.light-mode button { border-color: #0284c7; color: #0284c7; }
-body.light-mode button:hover { background-color: #0284c7; color: #ffffff; box-shadow: 0 0 10px rgba(2, 132, 199, 0.4); }
-body.light-mode .btn-secondary { border-color: #64748b; color: #64748b; }
-body.light-mode .btn-secondary:hover { background-color: #64748b; color: #ffffff; }
-body.light-mode .btn-danger { border-color: #dc2626; color: #dc2626; }
-body.light-mode .btn-danger:hover { background-color: #dc2626; color: #ffffff; }
+/* 8. Background Effects (Mute the terminal matrix and floating nodes) */
+body.light-mode .infinite-terminal { opacity: 0.04 !important; color: #000000 !important; }
+body.light-mode .particles-js-canvas-el { opacity: 0.3 !important; filter: grayscale(100%) !important; }
 
-/* Override the inline styles on your glass boxes! */
-body.light-mode div[style*="rgba(15, 23, 42, 0.6)"] {
-    background: #f1f5f9 !important; border-color: #cbd5e1 !important; box-shadow: inset 0 0 10px rgba(0,0,0,0.05) !important;
-}
-body.light-mode div[style*="rgba(30, 41, 59, 0.6)"] {
-    background: rgba(255,255,255,0.9) !important; border-color: #cbd5e1 !important; box-shadow: 0 8px 32px 0 rgba(0,0,0,0.1) !important;
-}
-body.light-mode [style*="color: #94a3b8"] { color: #475569 !important; }
 
 
 </style>
