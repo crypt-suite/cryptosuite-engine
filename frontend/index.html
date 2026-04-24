@@ -396,209 +396,167 @@ canvas {
     </div>
 </div>
 
-
-<div id="aboutPage" class="page hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; max-width: none; margin: 0; background-color: #020617; font-family: 'Courier New', monospace; z-index: 60; padding: 40px 20px; box-sizing: border-box; overflow-y: auto; overflow-x: hidden; text-align: left; line-height: 1.7; display: flex; flex-direction: column; align-items: center;"></div>
-
-  <div style="background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(15px); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 12px; padding: 40px; width: 100%; max-width: 1000px; box-shadow: 0 8px 32px 0 rgba(0,0,0,0.7); color: #e2e8f0;">
+<div id="aboutPage" class="page hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; max-width: none; margin: 0; background-color: #020617; z-index: 60; overflow-y: auto; overflow-x: hidden;">
     
-    <div style="text-align: center; margin-bottom: 40px; border-bottom: 1px dashed rgba(245, 158, 11, 0.4); padding-bottom: 30px;">
-      <h2 style="font-size: 2.2rem; margin-bottom: 10px; color: #f59e0b; text-shadow: 0 0 10px rgba(245, 158, 11, 0.5); letter-spacing: 2px;">CORE ARCHITECTURE & DOCUMENTATION</h2>
-      <p style="color: #94a3b8; font-size: 1.1rem; max-width: 700px; margin: 0 auto;">An intricate, under-the-hood analysis of the cryptographic mathematics, buffer manipulations, and heuristic algorithms powering this system.</p>
-    </div>
+  <div style="min-height: 100%; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; font-family: 'Courier New', monospace; box-sizing: border-box;">
 
-    <div style="background: rgba(2, 6, 23, 0.6); padding: 30px; border-radius: 8px; margin-bottom: 30px; border: 1px solid rgba(56, 189, 248, 0.3);">
-      <h3 style="color: #38bdf8; border-bottom: 1px dashed rgba(56, 189, 248, 0.3); padding-bottom: 10px; font-size: 1.5rem; margin-top: 0;">Module 1: Mathematical & Transposition Ciphers</h3>
+    <div style="background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(15px); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 12px; padding: 40px; width: 100%; max-width: 1000px; box-shadow: 0 8px 32px 0 rgba(0,0,0,0.7); color: #e2e8f0; text-align: left; line-height: 1.7;">
       
-      <div style="margin-top: 20px;">
-        <h4 style="color: #e2e8f0; margin-bottom: 5px; font-size: 1.2rem;">1. Dynamic Caesar Cipher</h4>
-        <p style="color: #94a3b8; margin-top: 0; margin-bottom: 10px;"><strong style="color: #38bdf8;">Core Concept:</strong> A monoalphabetic substitution cipher relying on modular arithmetic.</p>
-        <ul style="color: #94a3b8; margin-left: 20px; font-size: 0.95rem;">
-          <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Dynamic Alphabet Generation:</strong> Unlike standard 26-letter implementations, this engine dynamically constructs the modulo base (up to 62 characters: <code style="background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 4px; color: #22c55e;">A-Z, a-z, 0-9</code>) based on UI checkbox states.</li>
-          <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Mathematical Engine:</strong> For encryption, the engine computes <code style="background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 4px; color: #22c55e;">E(x) = (x + s) mod L</code>, where <code>x</code> is the character index, <code>s</code> is the shift, and <code>L</code> is the dynamic alphabet length.</li>
-          <li><strong style="color: #e2e8f0;">Decryption Wrap-Around:</strong> To handle negative modulo values in JavaScript during decryption, the formula explicitly forces positive wrapping: <code style="background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 4px; color: #22c55e;">D(x) = ((x - s) % L + L) % L</code>.</li>
-        </ul>
+      <div style="text-align: center; margin-bottom: 40px; border-bottom: 1px dashed rgba(245, 158, 11, 0.4); padding-bottom: 30px;">
+        <h2 style="font-size: 2.2rem; margin-bottom: 10px; color: #f59e0b; text-shadow: 0 0 10px rgba(245, 158, 11, 0.5); letter-spacing: 2px; border: none;">CORE ARCHITECTURE & DOCUMENTATION</h2>
+        <p style="color: #94a3b8; font-size: 1.1rem; max-width: 700px; margin: 0 auto;">An intricate, under-the-hood analysis of the cryptographic mathematics, buffer manipulations, and heuristic algorithms powering this system.</p>
       </div>
 
-      <div style="margin-top: 25px;">
-        <h4 style="color: #e2e8f0; margin-bottom: 5px; font-size: 1.2rem;">2. Vigenère Cipher</h4>
-        <p style="color: #94a3b8; margin-top: 0; margin-bottom: 10px;"><strong style="color: #38bdf8;">Core Concept:</strong> A polyalphabetic cipher utilizing a repeating key to flatten frequency analysis.</p>
-        <ul style="color: #94a3b8; margin-left: 20px; font-size: 0.95rem;">
-          <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Index Mapping:</strong> The engine iterates through the plaintext. If a character is alphabetical, it calculates its base offset (65 for Uppercase, 97 for Lowercase).</li>
-          <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Key Pointer:</strong> A separate index <code style="background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 4px; color: #22c55e;">j</code> tracks the key character. It wraps using <code style="background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 4px; color: #22c55e;">j % key.length</code>. The key character's ASCII value is mapped to a 0-25 shift range.</li>
-          <li><strong style="color: #e2e8f0;">Algorithm:</strong> The resulting character is computed as <code style="background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 4px; color: #22c55e;">String.fromCharCode((c.charCodeAt(0) - base + shift) % 26 + base)</code>, strictly preserving case and ignoring symbols/spaces.</li>
-        </ul>
+      <div style="background: rgba(2, 6, 23, 0.6); padding: 30px; border-radius: 8px; margin-bottom: 30px; border: 1px solid rgba(56, 189, 248, 0.3);">
+        <h3 style="color: #38bdf8; border-bottom: 1px dashed rgba(56, 189, 248, 0.3); padding-bottom: 10px; font-size: 1.5rem; margin-top: 0;">Module 1: Mathematical & Transposition Ciphers</h3>
+        
+        <div style="margin-top: 20px;">
+          <h4 style="color: #e2e8f0; margin-bottom: 5px; font-size: 1.2rem;">1. Dynamic Caesar Cipher</h4>
+          <p style="color: #94a3b8; margin-top: 0; margin-bottom: 10px;"><strong style="color: #38bdf8;">Core Concept:</strong> A monoalphabetic substitution cipher relying on modular arithmetic.</p>
+          <ul style="color: #94a3b8; margin-left: 20px; font-size: 0.95rem;">
+            <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Dynamic Alphabet Generation:</strong> Unlike standard 26-letter implementations, this engine dynamically constructs the modulo base (up to 62 characters: <code style="background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 4px; color: #22c55e;">A-Z, a-z, 0-9</code>) based on UI checkbox states.</li>
+            <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Mathematical Engine:</strong> For encryption, the engine computes <code style="background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 4px; color: #22c55e;">E(x) = (x + s) mod L</code>, where <code>x</code> is the character index, <code>s</code> is the shift, and <code>L</code> is the dynamic alphabet length.</li>
+            <li><strong style="color: #e2e8f0;">Decryption Wrap-Around:</strong> To handle negative modulo values in JavaScript during decryption, the formula explicitly forces positive wrapping: <code style="background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 4px; color: #22c55e;">D(x) = ((x - s) % L + L) % L</code>.</li>
+          </ul>
+        </div>
+
+        <div style="margin-top: 25px;">
+          <h4 style="color: #e2e8f0; margin-bottom: 5px; font-size: 1.2rem;">2. Vigenère Cipher</h4>
+          <p style="color: #94a3b8; margin-top: 0; margin-bottom: 10px;"><strong style="color: #38bdf8;">Core Concept:</strong> A polyalphabetic cipher utilizing a repeating key to flatten frequency analysis.</p>
+          <ul style="color: #94a3b8; margin-left: 20px; font-size: 0.95rem;">
+            <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Index Mapping:</strong> The engine iterates through the plaintext. If a character is alphabetical, it calculates its base offset (65 for Uppercase, 97 for Lowercase).</li>
+            <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Key Pointer:</strong> A separate index <code style="background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 4px; color: #22c55e;">j</code> tracks the key character. It wraps using <code style="background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 4px; color: #22c55e;">j % key.length</code>. The key character's ASCII value is mapped to a 0-25 shift range.</li>
+            <li><strong style="color: #e2e8f0;">Algorithm:</strong> The resulting character is computed as <code style="background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 4px; color: #22c55e;">String.fromCharCode((c.charCodeAt(0) - base + shift) % 26 + base)</code>, strictly preserving case and ignoring symbols/spaces.</li>
+          </ul>
+        </div>
+
+        <div style="margin-top: 25px;">
+          <h4 style="color: #e2e8f0; margin-bottom: 5px; font-size: 1.2rem;">3. Affine Cipher (Coprime Verification)</h4>
+          <p style="color: #94a3b8; margin-top: 0; margin-bottom: 10px;"><strong style="color: #38bdf8;">Core Concept:</strong> A substitution cipher combining multiplication and addition. <code style="background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 4px; color: #22c55e;">E(x) = (ax + b) mod 26</code>.</p>
+          <ul style="color: #94a3b8; margin-left: 20px; font-size: 0.95rem;">
+            <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Key 'A' Validation:</strong> Key A must be coprime to 26 (e.g., 1, 3, 5, 7, 9, 11...). The backend enforces this by attempting to calculate the Modular Multiplicative Inverse of A modulo 26. If the loop fails, decryption is mathematically impossible, and the API rejects the request.</li>
+            <li><strong style="color: #e2e8f0;">Decryption Formula:</strong> <code style="background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 4px; color: #22c55e;">D(x) = a⁻¹ * (x - b) mod 26</code>. The JS engine implements a secondary wrap to prevent negative modulo resolution.</li>
+          </ul>
+        </div>
+
+        <div style="margin-top: 25px;">
+          <h4 style="color: #e2e8f0; margin-bottom: 5px; font-size: 1.2rem;">4. Rail Fence Matrix Algorithm</h4>
+          <p style="color: #94a3b8; margin-top: 0; margin-bottom: 10px;"><strong style="color: #38bdf8;">Core Concept:</strong> A transposition cipher that disrupts positional syntax.</p>
+          <ul style="color: #94a3b8; margin-left: 20px; font-size: 0.95rem;">
+            <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Vector Tracking:</strong> The algorithm constructs a 2D array of dimensions <code style="background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 4px; color: #22c55e;">[rails][text.length]</code>.</li>
+            <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Reflection Bounds:</strong> As characters are populated into the matrix, the engine checks for the ceiling or floor rail. Upon hitting them, the vector flips, causing the exact zigzag path.</li>
+            <li><strong style="color: #e2e8f0;">Decryption Reconstruction:</strong> To decrypt, the engine first maps the zigzag path with `*` placeholder tokens, fills them linearly, and traces the path one last time to read out the plaintext.</li>
+          </ul>
+        </div>
       </div>
 
-      <div style="margin-top: 25px;">
-        <h4 style="color: #e2e8f0; margin-bottom: 5px; font-size: 1.2rem;">3. Affine Cipher (Coprime Verification)</h4>
-        <p style="color: #94a3b8; margin-top: 0; margin-bottom: 10px;"><strong style="color: #38bdf8;">Core Concept:</strong> A substitution cipher combining multiplication and addition. <code style="background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 4px; color: #22c55e;">E(x) = (ax + b) mod 26</code>.</p>
-        <ul style="color: #94a3b8; margin-left: 20px; font-size: 0.95rem;">
-          <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Key 'A' Validation:</strong> Key A must be coprime to 26 (e.g., 1, 3, 5, 7, 9, 11...). The backend enforces this by attempting to calculate the Modular Multiplicative Inverse of A modulo 26. If the loop fails, decryption is mathematically impossible, and the API rejects the request.</li>
-          <li><strong style="color: #e2e8f0;">Decryption Formula:</strong> <code style="background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 4px; color: #22c55e;">D(x) = a⁻¹ * (x - b) mod 26</code>. The JS engine implements a secondary wrap to prevent negative modulo resolution.</li>
-        </ul>
+      <div style="background: rgba(2, 6, 23, 0.6); padding: 30px; border-radius: 8px; margin-bottom: 30px; border: 1px solid rgba(248, 113, 113, 0.3);">
+        <h3 style="color: #f87171; border-bottom: 1px dashed rgba(248, 113, 113, 0.3); padding-bottom: 10px; font-size: 1.5rem; margin-top: 0;">Module 2: Offensive Security & Cryptanalysis</h3>
+        
+        <div style="margin-top: 20px;">
+          <h4 style="color: #e2e8f0; margin-bottom: 5px; font-size: 1.2rem;">1. Asynchronous Caesar Brute-Force</h4>
+          <p style="color: #94a3b8; margin-top: 0; margin-bottom: 10px;"><strong style="color: #f87171;">Core Concept:</strong> Exhaustive key-space searching paired with heuristic detection.</p>
+          <ul style="color: #94a3b8; margin-left: 20px; font-size: 0.95rem;">
+            <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Non-Blocking Event Loop:</strong> The UI utilizes <code style="background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 4px; color: #22c55e;">setInterval()</code> to yield control back to the browser render thread between guesses, preventing UI lockups.</li>
+            <li><strong style="color: #e2e8f0;">Heuristic Halting:</strong> The engine scans the lowercased output of each shift against an array of 80+ common English words. If a match is found, the loop automatically halts and flags the key.</li>
+          </ul>
+        </div>
+
+        <div style="margin-top: 25px;">
+          <h4 style="color: #e2e8f0; margin-bottom: 5px; font-size: 1.2rem;">2. The Mutation Dictionary Attack</h4>
+          <p style="color: #94a3b8; margin-top: 0; margin-bottom: 10px;"><strong style="color: #f87171;">Core Concept:</strong> A multi-layered password cracking simulator predicting human habits.</p>
+          <ul style="color: #94a3b8; margin-left: 20px; font-size: 0.95rem;">
+            <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Layer 1 (File Input):</strong> Parses user-uploaded <code>.txt</code> dictionary files asynchronously.</li>
+            <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Layer 2 (Heuristic Substitution Map):</strong> Feeds base words into a recursive generator mapping characters to Leetspeak.</li>
+            <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Layer 3 (Pattern Injection):</strong> Appends predictable human suffixes (1, 123, 2023) and tests common keyboard geometric patterns (qazwsx).</li>
+            <li><strong style="color: #e2e8f0;">Layer 4 (Raw Permutation Generator):</strong> Falls back to a <code style="background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 4px; color: #22c55e;">yield*</code> generator to systematically test every single character combination up to the max length.</li>
+          </ul>
+        </div>
       </div>
 
-      <div style="margin-top: 25px;">
-        <h4 style="color: #e2e8f0; margin-bottom: 5px; font-size: 1.2rem;">4. Rail Fence Matrix Algorithm</h4>
-        <p style="color: #94a3b8; margin-top: 0; margin-bottom: 10px;"><strong style="color: #38bdf8;">Core Concept:</strong> A transposition cipher that disrupts positional syntax.</p>
-        <ul style="color: #94a3b8; margin-left: 20px; font-size: 0.95rem;">
-          <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Vector Tracking:</strong> The algorithm constructs a 2D array of dimensions <code style="background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 4px; color: #22c55e;">[rails][text.length]</code>.</li>
-          <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Reflection Bounds:</strong> As characters are populated into the matrix, the engine checks for the ceiling or floor rail. Upon hitting them, the vector flips, causing the exact zigzag path.</li>
-          <li><strong style="color: #e2e8f0;">Decryption Reconstruction:</strong> To decrypt, the engine first maps the zigzag path with `*` placeholder tokens, fills them linearly, and traces the path one last time to read out the plaintext.</li>
-        </ul>
+      <div style="background: rgba(2, 6, 23, 0.6); padding: 30px; border-radius: 8px; margin-bottom: 30px; border: 1px solid rgba(34, 197, 94, 0.3);">
+        <h3 style="color: #22c55e; border-bottom: 1px dashed rgba(34, 197, 94, 0.3); padding-bottom: 10px; font-size: 1.5rem; margin-top: 0;">Module 3: Secure Vault & Deep-Buffer Integrity</h3>
+        
+        <div style="margin-top: 20px;">
+          <h4 style="color: #e2e8f0; margin-bottom: 5px; font-size: 1.2rem;">1. Split-Key Buffer Encryption</h4>
+          <p style="color: #94a3b8; margin-top: 0; margin-bottom: 10px;"><strong style="color: #22c55e;">Core Concept:</strong> Two-factor physical file fragmentation via AES-256-CBC.</p>
+          <ul style="color: #94a3b8; margin-left: 20px; font-size: 0.95rem;">
+            <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Key Derivation (PBKDF2):</strong> User passwords are never used directly as keys. The backend generates a secure salt and applies PBKDF2 with 100,000 iterations.</li>
+            <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Cipher Initialization:</strong> A 16-byte random IV ensures identical files encrypt to entirely different ciphertexts.</li>
+            <li><strong style="color: #e2e8f0;">Buffer Slicing:</strong> The final ciphertext buffer is severed in half and bundled with a UUID text file into a downloadable ZIP.</li>
+          </ul>
+        </div>
+
+        <div style="margin-top: 25px;">
+          <h4 style="color: #e2e8f0; margin-bottom: 5px; font-size: 1.2rem;">2. Granular SHA-256 Integrity Validation</h4>
+          <p style="color: #94a3b8; margin-top: 0; margin-bottom: 10px;"><strong style="color: #22c55e;">Core Concept:</strong> Cryptographic hashing and tokenized array diffing.</p>
+          <ul style="color: #94a3b8; margin-left: 20px; font-size: 0.95rem;">
+            <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">File-Level Hashing:</strong> The entire buffer is passed through Node's SHA-256 to generate a signature of the absolute binary state.</li>
+            <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Tokenized Word Hashing:</strong> The backend splits normalized text into a massive array and calculates the hash for <em>every single word</em>.</li>
+            <li><strong style="color: #e2e8f0;">Array Diffing:</strong> During integrity checks, the backend maps the indices of mismatched hashes and returns them to the frontend to render targeted visual alerts.</li>
+          </ul>
+        </div>
       </div>
+
+      <div style="background: rgba(2, 6, 23, 0.6); padding: 30px; border-radius: 8px; margin-bottom: 30px; border: 1px solid rgba(232, 121, 249, 0.3);">
+        <h3 style="color: #e879f9; border-bottom: 1px dashed rgba(232, 121, 249, 0.3); padding-bottom: 10px; font-size: 1.5rem; margin-top: 0;">Module 4: Visual Cryptography Sub-Pixel Engine</h3>
+        
+        <div style="margin-top: 20px;">
+          <h4 style="color: #e2e8f0; margin-bottom: 5px; font-size: 1.2rem;">HTML5 Canvas Pixel Manipulation</h4>
+          <p style="color: #94a3b8; margin-top: 0; margin-bottom: 10px;"><strong style="color: #e879f9;">Core Concept:</strong> 2-out-of-2 secret sharing scheme reliant on human optical overlay.</p>
+          <ul style="color: #94a3b8; margin-left: 20px; font-size: 0.95rem;">
+            <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Pixel Expansion:</strong> Output canvases are scaled up (Width × 2, Height × 2) to fit noise data.</li>
+            <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Boolean Assignment:</strong> Black pixels receive a random subpixel pattern for Share 1, and the bitwise complement for Share 2. White pixels receive identical patterns.</li>
+            <li><strong style="color: #e2e8f0;">Logical OR Overlay:</strong> The code simulates transparencies stacking by applying a logical OR operation across the pixel data, causing the secret image to emerge.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="background: rgba(2, 6, 23, 0.6); padding: 30px; border-radius: 8px; margin-bottom: 30px; border: 1px solid rgba(245, 158, 11, 0.3);">
+        <h3 style="color: #f59e0b; border-bottom: 1px dashed rgba(245, 158, 11, 0.3); padding-bottom: 10px; font-size: 1.5rem; margin-top: 0;">Module 5: Enigma Machine Emulator</h3>
+        
+        <div style="margin-top: 20px;">
+          <h4 style="color: #e2e8f0; margin-bottom: 5px; font-size: 1.2rem;">1. Component & State Architecture</h4>
+          <p style="color: #94a3b8; margin-top: 0; margin-bottom: 10px;"><strong style="color: #f59e0b;">Core Concept:</strong> Strict MVC-patterned simulation severing cryptographic logic from DOM updates.</p>
+          <ul style="color: #94a3b8; margin-left: 20px; font-size: 0.95rem;">
+            <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">State Isolation:</strong> Hardware variables are contained in an immutable <code style="background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 4px; color: #22c55e;">enigmaState</code> object.</li>
+            <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Logic Separation:</strong> The core operates blindly to the DOM, returning an output payload.</li>
+            <li><strong style="color: #e2e8f0;">Visualization Bridging:</strong> SVG matrix transformations calculate absolute coordinates to render electron flow.</li>
+          </ul>
+        </div>
+
+        <div style="margin-top: 25px;">
+          <h4 style="color: #e2e8f0; margin-bottom: 5px; font-size: 1.2rem;">2. The Cryptographic Pipeline</h4>
+          <p style="color: #94a3b8; margin-top: 0; margin-bottom: 10px;"><strong style="color: #f59e0b;">Core Concept:</strong> Index mapping modeling conductivity through physical rotating discs.</p>
+          <ul style="color: #94a3b8; margin-left: 20px; font-size: 0.95rem;">
+            <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Forward Rotor Substitution:</strong> Calculates rotation and ring offset via <code style="background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 4px; color: #22c55e;">(i + pos - ring + 26) % 26</code>.</li>
+            <li><strong style="color: #e2e8f0;">Inverse Backward Pass:</strong> Simulates reverse flow by finding the index of the letter in the wiring array.</li>
+          </ul>
+        </div>
+
+        <div style="margin-top: 25px;">
+          <h4 style="color: #e2e8f0; margin-bottom: 5px; font-size: 1.2rem;">3. The Odometer Anomaly</h4>
+          <p style="color: #94a3b8; margin-top: 0; margin-bottom: 10px;"><strong style="color: #f59e0b;">Core Concept:</strong> Accurate emulation of the physical double-stepping flaw.</p>
+          <ul style="color: #94a3b8; margin-left: 20px; font-size: 0.95rem;">
+            <li><strong style="color: #e2e8f0;">The Mechanical Flaw:</strong> Replicates the "Double Step" phenomenon caused by pawl-and-ratchet design, advancing the middle rotor twice in a row when triggered.</li>
+          </ul>
+        </div>
+
+        <div style="margin-top: 25px;">
+          <h4 style="color: #e2e8f0; margin-bottom: 5px; font-size: 1.2rem;">4. The SVG Sub-Pixel Routing</h4>
+          <p style="color: #94a3b8; margin-top: 0; margin-bottom: 10px;"><strong style="color: #f59e0b;">Core Concept:</strong> Dynamic trigonometric plotting simulating real-time electron pathing.</p>
+          <ul style="color: #94a3b8; margin-left: 20px; font-size: 0.95rem;">
+            <li><strong style="color: #e2e8f0;">Trigonometric Pin Detection:</strong> Utilizes sine and cosine functions to find screen coordinates of pins, converted via <code style="background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 4px; color: #22c55e;">matrixTransform()</code>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
+        <button onclick="goHome()" onmouseover="this.style.background='#f59e0b'; this.style.color='#020617'; this.style.boxShadow='0 0 15px #f59e0b'" onmouseout="this.style.background='transparent'; this.style.color='#f59e0b'; this.style.boxShadow='none'" style="background: transparent; border: 1px solid #f59e0b; color: #f59e0b; padding: 15px 30px; font-family: inherit; font-size: 1.1rem; font-weight: bold; cursor: pointer; letter-spacing: 2px; transition: all 0.3s; border-radius: 4px;">RETURN TO DASHBOARD</button>
+      </div>
+
     </div>
-
-    <div style="background: rgba(2, 6, 23, 0.6); padding: 30px; border-radius: 8px; margin-bottom: 30px; border: 1px solid rgba(248, 113, 113, 0.3);">
-      <h3 style="color: #f87171; border-bottom: 1px dashed rgba(248, 113, 113, 0.3); padding-bottom: 10px; font-size: 1.5rem; margin-top: 0;">Module 2: Offensive Security & Cryptanalysis</h3>
-      
-      <div style="margin-top: 20px;">
-        <h4 style="color: #e2e8f0; margin-bottom: 5px; font-size: 1.2rem;">1. Asynchronous Caesar Brute-Force</h4>
-        <p style="color: #94a3b8; margin-top: 0; margin-bottom: 10px;"><strong style="color: #f87171;">Core Concept:</strong> Exhaustive key-space searching paired with heuristic detection.</p>
-        <ul style="color: #94a3b8; margin-left: 20px; font-size: 0.95rem;">
-          <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Non-Blocking Event Loop:</strong> The UI utilizes <code style="background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 4px; color: #22c55e;">setInterval()</code> to yield control back to the browser render thread between guesses, preventing UI lockups.</li>
-          <li><strong style="color: #e2e8f0;">Heuristic Halting:</strong> The engine scans the lowercased output of each shift against an array of 80+ common English words. If a match is found, the loop automatically halts and flags the key.</li>
-        </ul>
-      </div>
-
-      <div style="margin-top: 25px;">
-        <h4 style="color: #e2e8f0; margin-bottom: 5px; font-size: 1.2rem;">2. The Mutation Dictionary Attack</h4>
-        <p style="color: #94a3b8; margin-top: 0; margin-bottom: 10px;"><strong style="color: #f87171;">Core Concept:</strong> A multi-layered password cracking simulator predicting human habits.</p>
-        <ul style="color: #94a3b8; margin-left: 20px; font-size: 0.95rem;">
-          <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Layer 1 (File Input):</strong> Parses user-uploaded <code>.txt</code> dictionary files asynchronously.</li>
-          <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Layer 2 (Heuristic Substitution Map):</strong> Feeds base words into a recursive generator mapping characters to Leetspeak.</li>
-          <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Layer 3 (Pattern Injection):</strong> Appends predictable human suffixes (1, 123, 2023) and tests common keyboard geometric patterns (qazwsx).</li>
-          <li><strong style="color: #e2e8f0;">Layer 4 (Raw Permutation Generator):</strong> Falls back to a <code style="background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 4px; color: #22c55e;">yield*</code> generator to systematically test every single character combination up to the max length.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="background: rgba(2, 6, 23, 0.6); padding: 30px; border-radius: 8px; margin-bottom: 30px; border: 1px solid rgba(34, 197, 94, 0.3);">
-      <h3 style="color: #22c55e; border-bottom: 1px dashed rgba(34, 197, 94, 0.3); padding-bottom: 10px; font-size: 1.5rem; margin-top: 0;">Module 3: Secure Vault & Deep-Buffer Integrity</h3>
-      
-      <div style="margin-top: 20px;">
-        <h4 style="color: #e2e8f0; margin-bottom: 5px; font-size: 1.2rem;">1. Split-Key Buffer Encryption</h4>
-        <p style="color: #94a3b8; margin-top: 0; margin-bottom: 10px;"><strong style="color: #22c55e;">Core Concept:</strong> Two-factor physical file fragmentation via AES-256-CBC.</p>
-        <ul style="color: #94a3b8; margin-left: 20px; font-size: 0.95rem;">
-          <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Key Derivation (PBKDF2):</strong> User passwords are never used directly as keys. The backend generates a secure salt and applies PBKDF2 with 100,000 iterations.</li>
-          <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Cipher Initialization:</strong> A 16-byte random IV ensures identical files encrypt to entirely different ciphertexts.</li>
-          <li><strong style="color: #e2e8f0;">Buffer Slicing:</strong> The final ciphertext buffer is severed in half and bundled with a UUID text file into a downloadable ZIP.</li>
-        </ul>
-      </div>
-
-      <div style="margin-top: 25px;">
-        <h4 style="color: #e2e8f0; margin-bottom: 5px; font-size: 1.2rem;">2. Granular SHA-256 Integrity Validation</h4>
-        <p style="color: #94a3b8; margin-top: 0; margin-bottom: 10px;"><strong style="color: #22c55e;">Core Concept:</strong> Cryptographic hashing and tokenized array diffing.</p>
-        <ul style="color: #94a3b8; margin-left: 20px; font-size: 0.95rem;">
-          <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">File-Level Hashing:</strong> The entire buffer is passed through Node's SHA-256 to generate a signature of the absolute binary state.</li>
-          <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Tokenized Word Hashing:</strong> The backend splits normalized text into a massive array and calculates the hash for <em>every single word</em>.</li>
-          <li><strong style="color: #e2e8f0;">Array Diffing:</strong> During integrity checks, the backend maps the indices of mismatched hashes and returns them to the frontend to render targeted visual alerts.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="background: rgba(2, 6, 23, 0.6); padding: 30px; border-radius: 8px; margin-bottom: 30px; border: 1px solid rgba(232, 121, 249, 0.3);">
-      <h3 style="color: #e879f9; border-bottom: 1px dashed rgba(232, 121, 249, 0.3); padding-bottom: 10px; font-size: 1.5rem; margin-top: 0;">Module 4: Visual Cryptography Sub-Pixel Engine</h3>
-      
-      <div style="margin-top: 20px;">
-        <h4 style="color: #e2e8f0; margin-bottom: 5px; font-size: 1.2rem;">HTML5 Canvas Pixel Manipulation</h4>
-        <p style="color: #94a3b8; margin-top: 0; margin-bottom: 10px;"><strong style="color: #e879f9;">Core Concept:</strong> 2-out-of-2 secret sharing scheme reliant on human optical overlay.</p>
-        <ul style="color: #94a3b8; margin-left: 20px; font-size: 0.95rem;">
-          <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Pixel Expansion:</strong> Output canvases are scaled up (Width × 2, Height × 2) to fit noise data.</li>
-          <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Boolean Assignment:</strong> Black pixels receive a random subpixel pattern for Share 1, and the bitwise complement for Share 2. White pixels receive identical patterns.</li>
-          <li><strong style="color: #e2e8f0;">Logical OR Overlay:</strong> The code simulates transparencies stacking by applying a logical OR operation across the pixel data, causing the secret image to emerge.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="background: rgba(2, 6, 23, 0.6); padding: 30px; border-radius: 8px; margin-bottom: 30px; border: 1px solid rgba(245, 158, 11, 0.3);">
-      <h3 style="color: #f59e0b; border-bottom: 1px dashed rgba(245, 158, 11, 0.3); padding-bottom: 10px; font-size: 1.5rem; margin-top: 0;">Module 5: Enigma Machine Emulator</h3>
-      
-      <div style="margin-top: 20px;">
-        <h4 style="color: #e2e8f0; margin-bottom: 5px; font-size: 1.2rem;">1. Component & State Architecture</h4>
-        <p style="color: #94a3b8; margin-top: 0; margin-bottom: 10px;"><strong style="color: #f59e0b;">Core Concept:</strong> Strict MVC-patterned simulation severing cryptographic logic from DOM updates.</p>
-        <ul style="color: #94a3b8; margin-left: 20px; font-size: 0.95rem;">
-          <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">State Isolation:</strong> Hardware variables are contained in an immutable <code style="background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 4px; color: #22c55e;">enigmaState</code> object.</li>
-          <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Logic Separation:</strong> The core operates blindly to the DOM, returning an output payload.</li>
-          <li><strong style="color: #e2e8f0;">Visualization Bridging:</strong> SVG matrix transformations calculate absolute coordinates to render electron flow.</li>
-        </ul>
-      </div>
-
-      <div style="margin-top: 25px;">
-        <h4 style="color: #e2e8f0; margin-bottom: 5px; font-size: 1.2rem;">2. The Cryptographic Pipeline</h4>
-        <p style="color: #94a3b8; margin-top: 0; margin-bottom: 10px;"><strong style="color: #f59e0b;">Core Concept:</strong> Index mapping modeling conductivity through physical rotating discs.</p>
-        <ul style="color: #94a3b8; margin-left: 20px; font-size: 0.95rem;">
-          <li style="margin-bottom: 5px;"><strong style="color: #e2e8f0;">Forward Rotor Substitution:</strong> Calculates rotation and ring offset via <code style="background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 4px; color: #22c55e;">(i + pos - ring + 26) % 26</code>.</li>
-          <li><strong style="color: #e2e8f0;">Inverse Backward Pass:</strong> Simulates reverse flow by finding the index of the letter in the wiring array.</li>
-        </ul>
-      </div>
-
-      <div style="margin-top: 25px;">
-        <h4 style="color: #e2e8f0; margin-bottom: 5px; font-size: 1.2rem;">3. The Odometer Anomaly</h4>
-        <p style="color: #94a3b8; margin-top: 0; margin-bottom: 10px;"><strong style="color: #f59e0b;">Core Concept:</strong> Accurate emulation of the physical double-stepping flaw.</p>
-        <ul style="color: #94a3b8; margin-left: 20px; font-size: 0.95rem;">
-          <li><strong style="color: #e2e8f0;">The Mechanical Flaw:</strong> Replicates the "Double Step" phenomenon caused by pawl-and-ratchet design, advancing the middle rotor twice in a row when triggered.</li>
-        </ul>
-      </div>
-
-      <div style="margin-top: 25px;">
-        <h4 style="color: #e2e8f0; margin-bottom: 5px; font-size: 1.2rem;">4. The SVG Sub-Pixel Routing</h4>
-        <p style="color: #94a3b8; margin-top: 0; margin-bottom: 10px;"><strong style="color: #f59e0b;">Core Concept:</strong> Dynamic trigonometric plotting simulating real-time electron pathing.</p>
-        <ul style="color: #94a3b8; margin-left: 20px; font-size: 0.95rem;">
-          <li><strong style="color: #e2e8f0;">Trigonometric Pin Detection:</strong> Utilizes sine and cosine functions to find screen coordinates of pins, converted via <code style="background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 4px; color: #22c55e;">matrixTransform()</code>.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
-      <button onclick="goHome()" onmouseover="this.style.background='#f59e0b'; this.style.color='#020617'; this.style.boxShadow='0 0 15px #f59e0b'" onmouseout="this.style.background='transparent'; this.style.color='#f59e0b'; this.style.boxShadow='none'" style="background: transparent; border: 1px solid #f59e0b; color: #f59e0b; padding: 15px 30px; font-family: inherit; font-size: 1.1rem; font-weight: bold; cursor: pointer; letter-spacing: 2px; transition: all 0.3s; border-radius: 4px;">RETURN TO DASHBOARD</button>
-    </div>
-
   </div>
-</div>
-  <!--registration page-->
-<div id="registerPage" class="page hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; max-width: none; margin: 0; background-color: #020617; font-family: 'Courier New', monospace; z-index: 60; display: flex; align-items: center; justify-content: center; box-sizing: border-box; overflow-x: hidden;">
-    
-    <div style="position: relative; z-index: 10; background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 40px; width: 420px; max-width: 90%; box-shadow: 0 8px 32px 0 rgba(0,0,0,0.7); text-align: center;">
-        
-        <h2 style="color: #38bdf8; font-size: 2rem; margin-top: 0; margin-bottom: 5px; letter-spacing: 2px; border: none; text-shadow: 0 0 10px rgba(56,189,248,0.5);">REQUEST CLEARANCE</h2>
-        <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 25px;">Register new operator credentials.</p>
-        
-        <div style="text-align: left; margin-bottom: 15px;">
-            <label style="color: #38bdf8; font-size: 0.8rem; margin-bottom: 5px; display: block; text-transform: uppercase;">Operator Name</label>
-            <input type="text" id="regUsername" placeholder="Username" style="width: 100%; background: rgba(2, 6, 23, 0.7); border: 1px solid #334155; color: #22c55e; padding: 12px; font-family: inherit; font-size: 1rem; outline: none; border-radius: 4px; box-sizing: border-box;" />
-        </div>
-
-        <div style="text-align: left; margin-bottom: 15px;">
-            <label style="color: #38bdf8; font-size: 0.8rem; margin-bottom: 5px; display: block; text-transform: uppercase;">Secure Email</label>
-            <input type="email" id="regEmail" placeholder="operator@secure.net" style="width: 100%; background: rgba(2, 6, 23, 0.7); border: 1px solid #334155; color: #22c55e; padding: 12px; font-family: inherit; font-size: 1rem; outline: none; border-radius: 4px; box-sizing: border-box;" />
-        </div>
-
-        <div style="text-align: left; margin-bottom: 15px; position: relative;">
-            <label style="color: #38bdf8; font-size: 0.8rem; margin-bottom: 5px; display: block; text-transform: uppercase;">Passkey</label>
-            <input type="password" id="regPassword" placeholder="••••••••" oninput="checkPasswordStrength(this.value)" style="width: 100%; background: rgba(2, 6, 23, 0.7); border: 1px solid #334155; color: #22c55e; padding: 12px; padding-right: 45px; font-family: inherit; font-size: 1rem; outline: none; border-radius: 4px; box-sizing: border-box;" />
-            
-            <svg onclick="toggleVisibility('regPassword', this)" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; right: 12px; top: 38px; cursor: pointer; transition: stroke 0.3s;" onmouseover="this.style.stroke='#38bdf8'" onmouseout="this.style.stroke='#94a3b8'">
-                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" />
-                <circle cx="12" cy="12" r="3" />
-            </svg>
-        </div>
-
-        <div style="text-align: left; margin-bottom: 25px;">
-            <div id="strengthBar" style="height: 6px; background: #334155; border-radius: 3px; margin-top: 5px; overflow: hidden;">
-                <div id="strengthFill" style="height: 100%; width: 0%; background: #f87171; border-radius: 3px; transition: width 0.3s ease, background-color 0.3s ease;"></div>
-            </div>
-            <small id="strengthText" style="color: #94a3b8; font-size: 0.8rem; display: block; margin-top: 5px;">Password strength: </small>
-        </div>
-
-        <div style="display: flex; flex-direction: column; gap: 12px;">
-            <button onclick="suggestPassword()" onmouseover="this.style.background='#f59e0b'; this.style.color='#020617'" onmouseout="this.style.background='transparent'; this.style.color='#f59e0b'" style="background: transparent; border: 1px solid #f59e0b; color: #f59e0b; padding: 10px; font-family: inherit; font-size: 0.9rem; cursor: pointer; transition: all 0.3s; border-radius: 4px; width: 100%;">Suggest Strong Passkey</button>
-            
-            <button onclick="completeRegistration()" onmouseover="this.style.background='#38bdf8'; this.style.color='#020617'" onmouseout="this.style.background='transparent'; this.style.color='#38bdf8'" style="background: transparent; border: 1px solid #38bdf8; color: #38bdf8; padding: 12px; font-family: inherit; font-size: 1rem; font-weight: bold; cursor: pointer; letter-spacing: 2px; transition: all 0.3s; border-radius: 4px; width: 100%;">SUBMIT REGISTRATION</button>
-            
-            <button onclick="goHome()" onmouseover="this.style.background='#64748b'; this.style.color='#020617'" onmouseout="this.style.background='transparent'; this.style.color='#64748b'" style="background: transparent; border: 1px solid #64748b; color: #64748b; padding: 10px; font-family: inherit; font-size: 0.9rem; cursor: pointer; transition: all 0.3s; border-radius: 4px; width: 100%;">Abort & Return</button>
-        </div>
-    </div>
 </div>
 
 
