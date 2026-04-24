@@ -397,7 +397,7 @@ canvas {
 </div>
 
 
-<div id="aboutPage" class="page hidden" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #020617; font-family: 'Courier New', monospace; z-index: 60; padding: 40px 20px; box-sizing: border-box; overflow-y: auto; text-align: left; line-height: 1.7; display: flex; flex-direction: column; align-items: center;">
+<div id="aboutPage" class="page hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; max-width: none; margin: 0; background-color: #020617; font-family: 'Courier New', monospace; z-index: 60; padding: 40px 20px; box-sizing: border-box; overflow-y: auto; overflow-x: hidden; text-align: left; line-height: 1.7; display: flex; flex-direction: column; align-items: center;"></div>
 
   <div style="background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(15px); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 12px; padding: 40px; width: 100%; max-width: 1000px; box-shadow: 0 8px 32px 0 rgba(0,0,0,0.7); color: #e2e8f0;">
     
@@ -556,14 +556,12 @@ canvas {
 
   </div>
 </div>
-  
-<div id="registerPage" class="page hidden" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #020617; font-family: 'Courier New', monospace; z-index: 60; display: flex; align-items: center; justify-content: center;">
+  <!--registration page-->
+<div id="registerPage" class="page hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; max-width: none; margin: 0; background-color: #020617; font-family: 'Courier New', monospace; z-index: 60; display: flex; align-items: center; justify-content: center; box-sizing: border-box; overflow-x: hidden;">
     
-    <div id="particles-js-reg" style="position: absolute; width: 100%; height: 100%; z-index: 1;"></div>
-
-    <div style="position: relative; z-index: 10; background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 40px; width: 420px; max-width: 90vw; box-shadow: 0 8px 32px 0 rgba(0,0,0,0.7); text-align: center;">
+    <div style="position: relative; z-index: 10; background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 40px; width: 420px; max-width: 90%; box-shadow: 0 8px 32px 0 rgba(0,0,0,0.7); text-align: center;">
         
-        <h2 style="color: #38bdf8; font-size: 2rem; margin-top: 0; margin-bottom: 5px; letter-spacing: 2px; text-shadow: 0 0 10px rgba(56,189,248,0.5);">REQUEST CLEARANCE</h2>
+        <h2 style="color: #38bdf8; font-size: 2rem; margin-top: 0; margin-bottom: 5px; letter-spacing: 2px; border: none; text-shadow: 0 0 10px rgba(56,189,248,0.5);">REQUEST CLEARANCE</h2>
         <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 25px;">Register new operator credentials.</p>
         
         <div style="text-align: left; margin-bottom: 15px;">
@@ -578,7 +576,6 @@ canvas {
 
         <div style="text-align: left; margin-bottom: 15px; position: relative;">
             <label style="color: #38bdf8; font-size: 0.8rem; margin-bottom: 5px; display: block; text-transform: uppercase;">Passkey</label>
-            
             <input type="password" id="regPassword" placeholder="••••••••" oninput="checkPasswordStrength(this.value)" style="width: 100%; background: rgba(2, 6, 23, 0.7); border: 1px solid #334155; color: #22c55e; padding: 12px; padding-right: 45px; font-family: inherit; font-size: 1rem; outline: none; border-radius: 4px; box-sizing: border-box;" />
             
             <svg onclick="toggleVisibility('regPassword', this)" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; right: 12px; top: 38px; cursor: pointer; transition: stroke 0.3s;" onmouseover="this.style.stroke='#38bdf8'" onmouseout="this.style.stroke='#94a3b8'">
@@ -595,14 +592,16 @@ canvas {
         </div>
 
         <div style="display: flex; flex-direction: column; gap: 12px;">
-            <button onclick="suggestPassword()" onmouseover="this.style.background='#f59e0b'; this.style.color='#020617'" onmouseout="this.style.background='transparent'; this.style.color='#f59e0b'" style="background: transparent; border: 1px solid #f59e0b; color: #f59e0b; padding: 10px; font-family: inherit; font-size: 0.9rem; cursor: pointer; transition: all 0.3s; border-radius: 4px;">Suggest Strong Passkey</button>
+            <button onclick="suggestPassword()" onmouseover="this.style.background='#f59e0b'; this.style.color='#020617'" onmouseout="this.style.background='transparent'; this.style.color='#f59e0b'" style="background: transparent; border: 1px solid #f59e0b; color: #f59e0b; padding: 10px; font-family: inherit; font-size: 0.9rem; cursor: pointer; transition: all 0.3s; border-radius: 4px; width: 100%;">Suggest Strong Passkey</button>
             
-            <button onclick="completeRegistration()" onmouseover="this.style.background='#38bdf8'; this.style.color='#020617'" onmouseout="this.style.background='transparent'; this.style.color='#38bdf8'" style="background: transparent; border: 1px solid #38bdf8; color: #38bdf8; padding: 12px; font-family: inherit; font-size: 1rem; font-weight: bold; cursor: pointer; letter-spacing: 2px; transition: all 0.3s; border-radius: 4px;">SUBMIT REGISTRATION</button>
+            <button onclick="completeRegistration()" onmouseover="this.style.background='#38bdf8'; this.style.color='#020617'" onmouseout="this.style.background='transparent'; this.style.color='#38bdf8'" style="background: transparent; border: 1px solid #38bdf8; color: #38bdf8; padding: 12px; font-family: inherit; font-size: 1rem; font-weight: bold; cursor: pointer; letter-spacing: 2px; transition: all 0.3s; border-radius: 4px; width: 100%;">SUBMIT REGISTRATION</button>
             
-            <button onclick="goHome()" onmouseover="this.style.background='#64748b'; this.style.color='#020617'" onmouseout="this.style.background='transparent'; this.style.color='#64748b'" style="background: transparent; border: 1px solid #64748b; color: #64748b; padding: 10px; font-family: inherit; font-size: 0.9rem; cursor: pointer; transition: all 0.3s; border-radius: 4px;">Abort & Return</button>
+            <button onclick="goHome()" onmouseover="this.style.background='#64748b'; this.style.color='#020617'" onmouseout="this.style.background='transparent'; this.style.color='#64748b'" style="background: transparent; border: 1px solid #64748b; color: #64748b; padding: 10px; font-family: inherit; font-size: 0.9rem; cursor: pointer; transition: all 0.3s; border-radius: 4px; width: 100%;">Abort & Return</button>
         </div>
     </div>
 </div>
+
+
 <!-- LOGIN PAGE -->
 <div id="loginPage" class="page hidden">
   <h2>Login</h2>
