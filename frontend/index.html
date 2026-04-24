@@ -402,6 +402,36 @@ body.light-mode #aboutPage code {
     text-shadow: none !important;
 }
 
+
+
+
+
+
+/* =========================================
+   10. FRONT PAGE & LOGIN UI BLEND FIX
+========================================= */
+/* 1. Force all the full-screen backgrounds to turn light! */
+body.light-mode #frontPage, 
+body.light-mode #loginPage, 
+body.light-mode #registerPage {
+    background-color: #f1f5f9 !important; 
+}
+
+/* 2. Make the center glass module blend beautifully */
+body.light-mode div[style*="rgba(30, 41, 59, 0.6)"] {
+    background: rgba(255, 255, 255, 0.7) !important; /* Brighter, cleaner frosted white */
+    backdrop-filter: blur(16px) !important; /* Smoother blur */
+    border: 1px solid rgba(255, 255, 255, 0.8) !important; /* Crisp white edge */
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06) !important; /* Very soft, elegant shadow */
+}
+
+/* 3. Soften the "SYSTEM LOCKED" text wrapper so it doesn't look harsh */
+body.light-mode #systemStatus {
+    border-bottom: 1px dashed rgba(148, 163, 184, 0.4) !important;
+}
+
+
+
 </style>
 </head>
 <body>
