@@ -2291,14 +2291,22 @@ async function completeRegistration() {
 
 
 
+
+
+
+
+
+
 function toggleSystemLock(isUnlocked) {
     const statusDot = document.getElementById("systemStatusDot");
     const statusText = document.getElementById("systemStatusText");
-    const authGroup = document.getElementById("authButtonsGroup");
     const enterBtn = document.getElementById("enterBtn");
 
-    // Safety check
-    if (!statusDot || !statusText || !authGroup || !enterBtn) return;
+    // Safety check - Notice we removed authGroup so it won't crash anymore!
+    if (!statusDot || !statusText || !enterBtn) {
+        console.log("Missing UI elements for System Lock.");
+        return;
+    }
 
     if (isUnlocked) {
         // GREEN STATE (Logged In)
@@ -2307,8 +2315,9 @@ function toggleSystemLock(isUnlocked) {
         statusText.innerText = "SYSTEM UNLOCKED";
         statusText.style.color = "#22c55e";
         
-        authGroup.style.display = "none";  // Hides the Login & Register buttons
-        enterBtn.style.display = "block";  // Shows the "Access Dashboard" button
+        // Reveals the 4th button (Access Dashboard)
+        // The other 3 buttons remain completely untouched and visible!
+        enterBtn.style.display = "block";  
     } else {
         // RED STATE (Logged Out)
         statusDot.style.backgroundColor = "#f87171";
@@ -2316,8 +2325,8 @@ function toggleSystemLock(isUnlocked) {
         statusText.innerText = "SYSTEM LOCKED";
         statusText.style.color = "#f87171";
         
-        authGroup.style.display = "flex"; // Restores Login & Register buttons
-        enterBtn.style.display = "none";  // Hides the "Access Dashboard" button
+        // Hides the 4th button, dropping it back to just the 3 original buttons!
+        enterBtn.style.display = "none";  
     }
 }
 
