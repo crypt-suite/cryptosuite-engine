@@ -1084,9 +1084,9 @@ canvas {
 <div class="card full-width" id="affineGameCard">
   <h2>🎮 Crack the Affine Cipher!</h2>
   <p>You intercepted a message. You know it was encrypted using the Affine cipher. Can you guess Key A and Key B to decrypt it?</p>
-  <div style="background: #f9fafb; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
-    <p><strong>Plaintext Clue:</strong> <span id="gamePlaintext">APPLE</span></p>
-    <p><strong>Ciphertext:</strong> <span id="gameCiphertext" style="color: red; font-weight: bold; font-family: monospace;">...</span></p>
+  <div style="background: rgba(15, 23, 42, 0.6); border: 1px dashed #334155; padding: 15px; border-radius: 8px; margin-bottom: 15px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5);">
+    <p style="color: #94a3b8;"><strong>Plaintext Clue:</strong> <span id="gamePlaintext" style="color: #22c55e;">APPLE</span></p>
+    <p style="color: #94a3b8;"><strong>Ciphertext:</strong> <span id="gameCiphertext" style="color: #f87171; font-weight: bold; font-family: monospace;">...</span></p>
   </div>
   <div style="display: flex; gap: 10px;">
     <input type="number" id="guessA" placeholder="Guess Key A">
@@ -1139,13 +1139,12 @@ canvas {
         <button class="btn-danger" onclick="stopCracking = true">Stop</button>
       </div>
 
-      <div style="background:#f3f4f6; padding:15px; border-radius:8px; margin-top:15px; font-family:monospace;">
-        <p>Cracked: <span id="crackedPassword" style="font-weight:bold; color:red;">-</span></p>
-        <p>Attempts: <span id="attemptCount">0</span></p>
-        <p>Time (ms): <span id="elapsedTime">0.00</span></p>
+      <div style="background: rgba(15, 23, 42, 0.6); border: 1px dashed #334155; padding: 15px; border-radius: 8px; margin-top: 15px; font-family: 'Courier New', monospace; box-shadow: inset 0 0 10px rgba(0,0,0,0.5);">
+        <p style="color: #94a3b8;">Cracked: <span id="crackedPassword" style="font-weight:bold; color: #f87171;">-</span></p>
+        <p style="color: #94a3b8;">Attempts: <span id="attemptCount" style="color: #38bdf8;">0</span></p>
+        <p style="color: #94a3b8;">Time (ms): <span id="elapsedTime" style="color: #38bdf8;">0.00</span></p>
         <progress id="progressBar" max="100" value="0"></progress>
       </div>
-    </div>
 
     <div class="card full-width">
       <h2>Secure File Vault</h2>
@@ -1209,18 +1208,17 @@ canvas {
             <button id="overlayBtn" class="btn-secondary" disabled>Overlay Shares</button>
           </div>
           
-          <div style="margin-top:20px; padding:15px; background:#f9fafb; border-radius:8px;">
-            <h3 style="margin-top:0;">Animation Controls</h3>
-            <div style="display:flex; gap:10px; margin-bottom: 15px;">
+          <div style="margin-top: 20px; padding: 15px; background: rgba(15, 23, 42, 0.6); border: 1px dashed #334155; border-radius: 8px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5);">
+            <h3 style="margin-top: 0; color: #e879f9;">Animation Controls</h3>
+            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
               <button id="stepBtn" disabled>Next Pixel</button>
               <button id="autoPlayBtn" disabled>Auto Play</button>
               <button id="vcPauseBtn" class="btn-danger" disabled>Pause VC</button>
             </div>
-            <label for="speedSlider" style="font-weight:600;">Speed:</label>
-            <input type="range" id="speedSlider" min="0" max="100" value="5" style="width:100%; margin-top:10px; cursor:pointer;" />
-            <span id="speedLabel" style="display:block; text-align:right; font-size:13px;">20 ms/pixel</span>
+            <label for="speedSlider" style="font-weight: 600; color: #94a3b8;">Speed:</label>
+            <input type="range" id="speedSlider" min="0" max="100" value="5" style="width: 100%; margin-top: 10px; cursor: pointer; accent-color: #e879f9;" />
+            <span id="speedLabel" style="display: block; text-align: right; font-size: 13px; color: #94a3b8;">20 ms/pixel</span>
           </div>
-        </div>
 
         <div style="flex: 2; display: flex; flex-direction: column; gap: 15px; min-width: 300px;">
           <div style="display: flex; gap: 15px; flex-wrap: wrap;">
