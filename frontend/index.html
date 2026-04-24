@@ -361,42 +361,57 @@ canvas {
    VAULT UI ANIMATIONS & EFFECTS
 ========================================= */
 
-/* 1. Infinite Terminal Overlay (UPGRADED) */
+/* 1. Infinite Terminal Overlay (FULL SCREEN MULTI-THREAD) */
 .infinite-terminal {
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
     overflow: hidden;
     z-index: 2; 
     pointer-events: none; 
-    opacity: 0.25; /* Slightly brighter so the fade looks better */
+    opacity: 0.15; /* Keeps it subtle in the background */
     color: #22c55e;
     font-family: 'Courier New', monospace;
-    font-size: 14px;
-    line-height: 1.6;
+    font-size: 13px; /* Slightly smaller to fit more data */
+    line-height: 1.5;
     text-shadow: 0 0 5px #22c55e;
     
-    /* THE MAGIC: Fades the text out at the top and bottom of the screen! */
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
-    mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+    /* Fades out smoothly at the top and bottom */
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
 }
 
 .terminal-scroll {
     display: flex;
     flex-direction: column;
-    /* Slowed down slightly for a more realistic feel */
-    animation: terminalScroll 35s linear infinite; 
+    /* 60 seconds makes it a slow, unreadable, highly cinematic crawl */
+    animation: terminalScroll 60s linear infinite; 
+    width: 100%;
 }
 
-.terminal-scroll pre {
+/* This grid creates 3 columns of code across your screen! */
+.terminal-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 40px;
+    padding: 0 40px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.terminal-grid pre {
     margin: 0;
-    padding: 20px 0;
+    padding: 0;
+    overflow: hidden; /* Prevents text from breaking columns */
 }
 
 @keyframes terminalScroll {
     0% { transform: translateY(0); }
-    /* By moving exactly -50%, the two identical text blocks loop flawlessly without snapping */
+    /* Moves exactly 50% so Block 1 perfectly replaces Block 2 without a stutter */
     100% { transform: translateY(-50%); } 
 }
+
+
+
 
 /* 2. Sneak Peek Hover Cards */
 .sneak-peek-grid {
@@ -493,37 +508,134 @@ canvas {
     <div id="particles-js" style="position: absolute; width: 100%; height: 100%; z-index: 1;"></div>
 
     <div class="infinite-terminal">
-        <div class="terminal-scroll">
+    <div class="terminal-scroll">
+        
+        <div class="terminal-grid">
             <pre>
-[SYS] BOOT SEQUENCE INITIATED... [OK]
-[SYS] ALLOCATING RAM TO VIRTUAL MACHINE... 1024MB [OK]
-[VM] KERNEL AWAKE
-[0x00] GOTO __main
-[0x01] LABEL __main
-[0x02] LOAD t1 "enc_protocol_alpha"
-[0x03] STORE cipher_mode t1
-[0x04] OP_VIGENERE t1 msg key
-[SYS] ENCRYPTION CYCLE COMPLETE. 
-[MEM] TRACING HEAP... 
-[0x0A] OP_SHA256 t2 digest
-[0x0B] JMP 0x00
+[THREAD_0] INIT SYSTEM BOOT... [OK]
+[THREAD_0] ALLOCATING RAM... 4096MB
+[THREAD_0] MOUNTING KERNEL MEMORY
+[0x00A1] SYS_REQ_AUTH_TOKEN
+[0x00A2] LOAD_REGISTER EAX 0x01
+[0x00A3] ALLOC_BUFFER 256
+[THREAD_0] INJECTING DEPENDENCIES
+[0x00B1] CALL _crypt_engine
+[0x00B2] PUSH RBP
+[0x00B3] MOV RBP, RSP
+[0x00B4] SUB RSP, 32
+[THREAD_0] PARSING ABSTRACT SYNTAX
+[0x00C1] LEXICAL_TOKEN_FOUND : IDENTIFIER
+[0x00C2] LEXICAL_TOKEN_FOUND : OPERATOR
+[0x00C3] CONSTRUCT_CFG_NODE
+[0x00C4] LINK_NODE 0xFA TO 0xFB
+[THREAD_0] BUFFER INTEGRITY CHECK: PASS
+[THREAD_0] COMPILER READY.
             </pre>
             <pre>
-[SYS] BOOT SEQUENCE INITIATED... [OK]
-[SYS] ALLOCATING RAM TO VIRTUAL MACHINE... 1024MB [OK]
-[VM] KERNEL AWAKE
-[0x00] GOTO __main
-[0x01] LABEL __main
-[0x02] LOAD t1 "enc_protocol_alpha"
-[0x03] STORE cipher_mode t1
-[0x04] OP_VIGENERE t1 msg key
-[SYS] ENCRYPTION CYCLE COMPLETE. 
-[MEM] TRACING HEAP... 
-[0x0A] OP_SHA256 t2 digest
-[0x0B] JMP 0x00
+[THREAD_1] CRYPTO DAEMON AWAKE
+[THREAD_1] INITIALIZING ENIGMA ROTORS
+[ROTOR_I] POS: A | RING: 01
+[ROTOR_II] POS: D | RING: 14
+[ROTOR_III] POS: X | RING: 22
+[THREAD_1] ENGAGING REFLECTOR UKW-B
+[0x102A] SIGNAL INPUT: 0x4B (K)
+[0x102B] FWD_PASS: 0x4B -> 0x51
+[0x102C] FWD_PASS: 0x51 -> 0x33
+[0x102D] REFLECT: 0x33 -> 0x1A
+[0x102E] REV_PASS: 0x1A -> 0x22
+[0x102F] REV_PASS: 0x22 -> 0x44 (D)
+[THREAD_1] ODOMETER STEP TRIGGERED
+[ROTOR_III] ADVANCING -> Y
+[THREAD_1] VIGENERE MATRICES LOADED
+[0x110A] SHIFT_OFFSET CALC: +14
+[THREAD_1] AWAITING NEXT BYTESTREAM...
+            </pre>
+            <pre>
+[THREAD_2] VAULT SECURITY ONLINE
+[THREAD_2] AWAITING FILE STREAM...
+[0x20F1] READ_BUFFER_STREAM
+[0x20F2] GEN_SALT_PBKDF2_100K
+[0x20F3] SALT: 8a9f2c4e... [OK]
+[0x20F4] GEN_IV_AES256: e4b2... [OK]
+[THREAD_2] INITIATING BLOCK CIPHER
+[0x21A1] ENCRYPT_BLOCK 0-256
+[0x21A2] ENCRYPT_BLOCK 256-512
+[0x21A3] ENCRYPT_BLOCK 512-768
+[THREAD_2] CIPHERTEXT GENERATED
+[0x21B1] SLICING BUFFER AT MIDPOINT
+[0x21B2] FRAGMENT_1 -> disk_A
+[0x21B3] FRAGMENT_2 -> disk_B
+[THREAD_2] SECURE FILE SPLIT COMPLETE
+[0x22C1] SHA256_HASH_VALIDATION
+[0x22C2] DIGEST: f4a8c901... MATCH
+[THREAD_2] STANDBY.
             </pre>
         </div>
+
+        <div class="terminal-grid">
+            <pre>
+[THREAD_0] INIT SYSTEM BOOT... [OK]
+[THREAD_0] ALLOCATING RAM... 4096MB
+[THREAD_0] MOUNTING KERNEL MEMORY
+[0x00A1] SYS_REQ_AUTH_TOKEN
+[0x00A2] LOAD_REGISTER EAX 0x01
+[0x00A3] ALLOC_BUFFER 256
+[THREAD_0] INJECTING DEPENDENCIES
+[0x00B1] CALL _crypt_engine
+[0x00B2] PUSH RBP
+[0x00B3] MOV RBP, RSP
+[0x00B4] SUB RSP, 32
+[THREAD_0] PARSING ABSTRACT SYNTAX
+[0x00C1] LEXICAL_TOKEN_FOUND : IDENTIFIER
+[0x00C2] LEXICAL_TOKEN_FOUND : OPERATOR
+[0x00C3] CONSTRUCT_CFG_NODE
+[0x00C4] LINK_NODE 0xFA TO 0xFB
+[THREAD_0] BUFFER INTEGRITY CHECK: PASS
+[THREAD_0] COMPILER READY.
+            </pre>
+            <pre>
+[THREAD_1] CRYPTO DAEMON AWAKE
+[THREAD_1] INITIALIZING ENIGMA ROTORS
+[ROTOR_I] POS: A | RING: 01
+[ROTOR_II] POS: D | RING: 14
+[ROTOR_III] POS: X | RING: 22
+[THREAD_1] ENGAGING REFLECTOR UKW-B
+[0x102A] SIGNAL INPUT: 0x4B (K)
+[0x102B] FWD_PASS: 0x4B -> 0x51
+[0x102C] FWD_PASS: 0x51 -> 0x33
+[0x102D] REFLECT: 0x33 -> 0x1A
+[0x102E] REV_PASS: 0x1A -> 0x22
+[0x102F] REV_PASS: 0x22 -> 0x44 (D)
+[THREAD_1] ODOMETER STEP TRIGGERED
+[ROTOR_III] ADVANCING -> Y
+[THREAD_1] VIGENERE MATRICES LOADED
+[0x110A] SHIFT_OFFSET CALC: +14
+[THREAD_1] AWAITING NEXT BYTESTREAM...
+            </pre>
+            <pre>
+[THREAD_2] VAULT SECURITY ONLINE
+[THREAD_2] AWAITING FILE STREAM...
+[0x20F1] READ_BUFFER_STREAM
+[0x20F2] GEN_SALT_PBKDF2_100K
+[0x20F3] SALT: 8a9f2c4e... [OK]
+[0x20F4] GEN_IV_AES256: e4b2... [OK]
+[THREAD_2] INITIATING BLOCK CIPHER
+[0x21A1] ENCRYPT_BLOCK 0-256
+[0x21A2] ENCRYPT_BLOCK 256-512
+[0x21A3] ENCRYPT_BLOCK 512-768
+[THREAD_2] CIPHERTEXT GENERATED
+[0x21B1] SLICING BUFFER AT MIDPOINT
+[0x21B2] FRAGMENT_1 -> disk_A
+[0x21B3] FRAGMENT_2 -> disk_B
+[THREAD_2] SECURE FILE SPLIT COMPLETE
+[0x22C1] SHA256_HASH_VALIDATION
+[0x22C2] DIGEST: f4a8c901... MATCH
+[THREAD_2] STANDBY.
+            </pre>
+        </div>
+
     </div>
+</div>
 
     <div style="z-index: 10; text-align: center;">
         <h1 id="hero-title" data-value="CRYPTOSUITE" style="font-size: 3.5rem; color: #38bdf8; text-shadow: 0 0 15px rgba(56, 189, 248, 0.6); letter-spacing: 4px; margin-bottom: 5px;">X&^@9!#L$Q*</h1>
@@ -724,27 +836,134 @@ canvas {
     <div id="particles-js-reg" style="position: absolute; width: 100%; height: 100%; z-index: 1;"></div>
 
     <div class="infinite-terminal">
-        <div class="terminal-scroll">
+    <div class="terminal-scroll">
+        
+        <div class="terminal-grid">
             <pre>
-[SYS] REGISTRATION PROTOCOL INITIATED...
-[SYS] GENERATING NEW OPERATOR UUID... [OK]
-[VM] ALLOCATING SECURE MEMORY BLOCK
-[0x1A] LOAD_VAR t1 new_passkey
-[0x1B] CALL generate_salt
-[0x1C] OP_PBKDF2 t1 salt 100000
-[0x1D] STORE secure_db digest
+[THREAD_0] INIT SYSTEM BOOT... [OK]
+[THREAD_0] ALLOCATING RAM... 4096MB
+[THREAD_0] MOUNTING KERNEL MEMORY
+[0x00A1] SYS_REQ_AUTH_TOKEN
+[0x00A2] LOAD_REGISTER EAX 0x01
+[0x00A3] ALLOC_BUFFER 256
+[THREAD_0] INJECTING DEPENDENCIES
+[0x00B1] CALL _crypt_engine
+[0x00B2] PUSH RBP
+[0x00B3] MOV RBP, RSP
+[0x00B4] SUB RSP, 32
+[THREAD_0] PARSING ABSTRACT SYNTAX
+[0x00C1] LEXICAL_TOKEN_FOUND : IDENTIFIER
+[0x00C2] LEXICAL_TOKEN_FOUND : OPERATOR
+[0x00C3] CONSTRUCT_CFG_NODE
+[0x00C4] LINK_NODE 0xFA TO 0xFB
+[THREAD_0] BUFFER INTEGRITY CHECK: PASS
+[THREAD_0] COMPILER READY.
             </pre>
             <pre>
-[SYS] REGISTRATION PROTOCOL INITIATED...
-[SYS] GENERATING NEW OPERATOR UUID... [OK]
-[VM] ALLOCATING SECURE MEMORY BLOCK
-[0x1A] LOAD_VAR t1 new_passkey
-[0x1B] CALL generate_salt
-[0x1C] OP_PBKDF2 t1 salt 100000
-[0x1D] STORE secure_db digest
+[THREAD_1] CRYPTO DAEMON AWAKE
+[THREAD_1] INITIALIZING ENIGMA ROTORS
+[ROTOR_I] POS: A | RING: 01
+[ROTOR_II] POS: D | RING: 14
+[ROTOR_III] POS: X | RING: 22
+[THREAD_1] ENGAGING REFLECTOR UKW-B
+[0x102A] SIGNAL INPUT: 0x4B (K)
+[0x102B] FWD_PASS: 0x4B -> 0x51
+[0x102C] FWD_PASS: 0x51 -> 0x33
+[0x102D] REFLECT: 0x33 -> 0x1A
+[0x102E] REV_PASS: 0x1A -> 0x22
+[0x102F] REV_PASS: 0x22 -> 0x44 (D)
+[THREAD_1] ODOMETER STEP TRIGGERED
+[ROTOR_III] ADVANCING -> Y
+[THREAD_1] VIGENERE MATRICES LOADED
+[0x110A] SHIFT_OFFSET CALC: +14
+[THREAD_1] AWAITING NEXT BYTESTREAM...
+            </pre>
+            <pre>
+[THREAD_2] VAULT SECURITY ONLINE
+[THREAD_2] AWAITING FILE STREAM...
+[0x20F1] READ_BUFFER_STREAM
+[0x20F2] GEN_SALT_PBKDF2_100K
+[0x20F3] SALT: 8a9f2c4e... [OK]
+[0x20F4] GEN_IV_AES256: e4b2... [OK]
+[THREAD_2] INITIATING BLOCK CIPHER
+[0x21A1] ENCRYPT_BLOCK 0-256
+[0x21A2] ENCRYPT_BLOCK 256-512
+[0x21A3] ENCRYPT_BLOCK 512-768
+[THREAD_2] CIPHERTEXT GENERATED
+[0x21B1] SLICING BUFFER AT MIDPOINT
+[0x21B2] FRAGMENT_1 -> disk_A
+[0x21B3] FRAGMENT_2 -> disk_B
+[THREAD_2] SECURE FILE SPLIT COMPLETE
+[0x22C1] SHA256_HASH_VALIDATION
+[0x22C2] DIGEST: f4a8c901... MATCH
+[THREAD_2] STANDBY.
             </pre>
         </div>
+
+        <div class="terminal-grid">
+            <pre>
+[THREAD_0] INIT SYSTEM BOOT... [OK]
+[THREAD_0] ALLOCATING RAM... 4096MB
+[THREAD_0] MOUNTING KERNEL MEMORY
+[0x00A1] SYS_REQ_AUTH_TOKEN
+[0x00A2] LOAD_REGISTER EAX 0x01
+[0x00A3] ALLOC_BUFFER 256
+[THREAD_0] INJECTING DEPENDENCIES
+[0x00B1] CALL _crypt_engine
+[0x00B2] PUSH RBP
+[0x00B3] MOV RBP, RSP
+[0x00B4] SUB RSP, 32
+[THREAD_0] PARSING ABSTRACT SYNTAX
+[0x00C1] LEXICAL_TOKEN_FOUND : IDENTIFIER
+[0x00C2] LEXICAL_TOKEN_FOUND : OPERATOR
+[0x00C3] CONSTRUCT_CFG_NODE
+[0x00C4] LINK_NODE 0xFA TO 0xFB
+[THREAD_0] BUFFER INTEGRITY CHECK: PASS
+[THREAD_0] COMPILER READY.
+            </pre>
+            <pre>
+[THREAD_1] CRYPTO DAEMON AWAKE
+[THREAD_1] INITIALIZING ENIGMA ROTORS
+[ROTOR_I] POS: A | RING: 01
+[ROTOR_II] POS: D | RING: 14
+[ROTOR_III] POS: X | RING: 22
+[THREAD_1] ENGAGING REFLECTOR UKW-B
+[0x102A] SIGNAL INPUT: 0x4B (K)
+[0x102B] FWD_PASS: 0x4B -> 0x51
+[0x102C] FWD_PASS: 0x51 -> 0x33
+[0x102D] REFLECT: 0x33 -> 0x1A
+[0x102E] REV_PASS: 0x1A -> 0x22
+[0x102F] REV_PASS: 0x22 -> 0x44 (D)
+[THREAD_1] ODOMETER STEP TRIGGERED
+[ROTOR_III] ADVANCING -> Y
+[THREAD_1] VIGENERE MATRICES LOADED
+[0x110A] SHIFT_OFFSET CALC: +14
+[THREAD_1] AWAITING NEXT BYTESTREAM...
+            </pre>
+            <pre>
+[THREAD_2] VAULT SECURITY ONLINE
+[THREAD_2] AWAITING FILE STREAM...
+[0x20F1] READ_BUFFER_STREAM
+[0x20F2] GEN_SALT_PBKDF2_100K
+[0x20F3] SALT: 8a9f2c4e... [OK]
+[0x20F4] GEN_IV_AES256: e4b2... [OK]
+[THREAD_2] INITIATING BLOCK CIPHER
+[0x21A1] ENCRYPT_BLOCK 0-256
+[0x21A2] ENCRYPT_BLOCK 256-512
+[0x21A3] ENCRYPT_BLOCK 512-768
+[THREAD_2] CIPHERTEXT GENERATED
+[0x21B1] SLICING BUFFER AT MIDPOINT
+[0x21B2] FRAGMENT_1 -> disk_A
+[0x21B3] FRAGMENT_2 -> disk_B
+[THREAD_2] SECURE FILE SPLIT COMPLETE
+[0x22C1] SHA256_HASH_VALIDATION
+[0x22C2] DIGEST: f4a8c901... MATCH
+[THREAD_2] STANDBY.
+            </pre>
+        </div>
+
     </div>
+</div>
 
     <div style="position: relative; z-index: 10; background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 40px; width: 420px; max-width: 90%; box-shadow: 0 8px 32px 0 rgba(0,0,0,0.7); text-align: center;">
         
@@ -1218,6 +1437,16 @@ const vaultParticlesConfig = {
 if (document.getElementById("particles-js")) particlesJS("particles-js", vaultParticlesConfig);
 if (document.getElementById("particles-js-login")) particlesJS("particles-js-login", vaultParticlesConfig);
 if (document.getElementById("particles-js-reg")) particlesJS("particles-js-reg", vaultParticlesConfig);
+
+// ==========================================
+    // 3. THE FIX FOR INVISIBLE NODES ON LOGIN/REG
+    // ==========================================
+    // This forces the canvas to redraw when you click navigation buttons
+    document.addEventListener("click", () => {
+        setTimeout(() => {
+            window.dispatchEvent(new Event("resize"));
+        }, 50);
+    });
 
 
 
