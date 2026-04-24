@@ -2271,6 +2271,10 @@ let storedPassword = "";
 // 1. Helper function that instantly hides EVERY page
 function hideAllPages() {
   document.querySelectorAll(".page").forEach(page => page.classList.add("hidden"));
+  
+  // RESTORE THE THEME BUTTON: Whenever we leave a page, make sure the button comes back!
+  const themeBtn = document.getElementById("themeToggleBtn");
+  if (themeBtn) themeBtn.style.display = "block";
 }
 
 function showRegister() {
@@ -2291,6 +2295,10 @@ function showAboutPage() {
 function showEnigmaPage() {
   hideAllPages();
   document.getElementById("enigmaPage").classList.remove("hidden");
+  
+  // HIDE THE THEME BUTTON: Only on the Enigma page to protect the immersion!
+  const themeBtn = document.getElementById("themeToggleBtn");
+  if (themeBtn) themeBtn.style.display = "none";
 }
 
 function goHome() {
@@ -2430,7 +2438,7 @@ window.addEventListener("DOMContentLoaded", () => {
             toggleBtn.style.color = "#0284c7";
         }
     }
-    
+
     // 1. Destroy any existing session token the moment the page reloads
     sessionStorage.removeItem("authToken"); 
     
