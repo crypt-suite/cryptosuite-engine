@@ -310,12 +310,12 @@ body.light-mode p, body.light-mode small, body.light-mode span, body.light-mode 
 }
 body.light-mode #systemStatusText { color: #0f172a !important; }
 
-/* 3. Fix the Glass Cards and Headers */
+/* 3. Fix the Glass Cards and Headers (RESTORE FROSTED GLASS) */
 body.light-mode .card, body.light-mode .app-header, body.light-mode div[style*="rgba(30, 41, 59, 0.6)"] {
-    background: #ffffff !important;
-    border: 1px solid #cbd5e1 !important;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
-    backdrop-filter: none !important; /* Removes blurry glass effect in light mode */
+    background: rgba(255, 255, 255, 0.65) !important; /* Semi-transparent white */
+    backdrop-filter: blur(12px) !important; /* Restores the glass blur! */
+    border: 1px solid rgba(203, 213, 225, 0.8) !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05) !important;
 }
 
 /* 4. Fix inner inset boxes (Dictionary stats, Affine clues, etc.) */
@@ -363,6 +363,44 @@ body.light-mode .infinite-terminal { opacity: 0.04 !important; color: #000000 !i
 body.light-mode .particles-js-canvas-el { opacity: 0.3 !important; filter: grayscale(100%) !important; }
 
 
+
+
+
+
+/* =========================================
+   9. DOCUMENTATION PAGE LIGHT MODE FIX
+========================================= */
+/* 1. Change the main page background */
+body.light-mode #aboutPage {
+    background-color: #f8fafc !important;
+}
+
+/* 2. Change the main frosted glass wrapper */
+body.light-mode #aboutPage div[style*="rgba(30, 41, 59, 0.7)"] {
+    background: rgba(255, 255, 255, 0.75) !important;
+    border-color: #cbd5e1 !important;
+    color: #0f172a !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important;
+}
+
+/* 3. Change the inner Module boxes */
+body.light-mode #aboutPage div[style*="rgba(2, 6, 23, 0.6)"] {
+    background: #f1f5f9 !important;
+    border: 1px solid #e2e8f0 !important;
+}
+
+/* 4. Fix text colors for lists and bold words inside the docs */
+body.light-mode #aboutPage li, 
+body.light-mode #aboutPage strong {
+    color: #334155 !important;
+}
+
+/* 5. Invert the little inline code snippets (like `E(x) = (ax + b)`) so they are readable */
+body.light-mode #aboutPage code {
+    background: #e2e8f0 !important;
+    color: #ea580c !important; /* Orange text for code snippets */
+    text-shadow: none !important;
+}
 
 </style>
 </head>
