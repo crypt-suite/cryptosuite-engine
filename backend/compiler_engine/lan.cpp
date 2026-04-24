@@ -2833,9 +2833,12 @@ void runVM() {
     cout << "  PC   |  OPCODE         |  DEST       |  SRC / EXTRA    \n";
     cout << "=========================================================\n";
     for (size_t i = 0; i < bytecode.size(); i++) {
-        cout << " 0x" << setfill('0') << setw(2) << hex << i << "  |  ";
-        cout << setw(13) << left << getOpcodeName(bytecode[i].op) << " |  ";
-        cout << setw(9) << left << bytecode[i].dst << "  |  ";
+        // Force RIGHT alignment and '0' fill just for the Hex number
+        cout << " 0x" << right << setfill('0') << setw(2) << hex << i << "  |  ";
+        
+        // IMMEDIATELY switch back to LEFT alignment and SPACE fill for the text!
+        cout << left << setfill(' ') << setw(13) << getOpcodeName(bytecode[i].op) << " |  ";
+        cout << setw(9) << bytecode[i].dst << "  |  ";
         
         string src_extra = bytecode[i].src;
         if (bytecode[i].extra != "") {
