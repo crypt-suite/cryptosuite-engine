@@ -279,9 +279,73 @@ canvas {
 .cyber-btn-scan:hover::before { animation: scanSweep 1.2s infinite linear; }
 @keyframes scanSweep { 0% { left: -100%; } 100% { left: 200%; } }
 
+
+
+
+
+
+
+
+
+/* =========================================
+   8. LIGHT MODE OVERRIDES
+========================================= */
+body.light-mode {
+    background-color: #f8fafc;
+    color: #0f172a;
+}
+body.light-mode h1 { color: #0284c7; text-shadow: none; }
+body.light-mode h2 { color: #ea580c; border-color: rgba(234, 88, 12, 0.3); }
+body.light-mode h3 { color: #16a34a; }
+body.light-mode p, body.light-mode small { color: #475569; }
+
+body.light-mode .card, body.light-mode .app-header {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: #cbd5e1;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+body.light-mode input, body.light-mode select, body.light-mode textarea {
+    background: #ffffff;
+    color: #0f172a;
+    border-color: #94a3b8;
+    caret-color: #0f172a;
+}
+body.light-mode input:focus, body.light-mode select:focus, body.light-mode textarea:focus {
+    border-color: #0284c7;
+    box-shadow: 0 0 10px rgba(2, 132, 199, 0.2);
+}
+
+body.light-mode .infinite-terminal { opacity: 0.05; color: #0f172a; text-shadow: none; }
+
+body.light-mode #cryptoOutput, body.light-mode .output-box, body.light-mode canvas {
+    background: #f1f5f9;
+    color: #0f172a;
+    border-color: #cbd5e1;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+}
+
+body.light-mode button { border-color: #0284c7; color: #0284c7; }
+body.light-mode button:hover { background-color: #0284c7; color: #ffffff; box-shadow: 0 0 10px rgba(2, 132, 199, 0.4); }
+body.light-mode .btn-secondary { border-color: #64748b; color: #64748b; }
+body.light-mode .btn-secondary:hover { background-color: #64748b; color: #ffffff; }
+body.light-mode .btn-danger { border-color: #dc2626; color: #dc2626; }
+body.light-mode .btn-danger:hover { background-color: #dc2626; color: #ffffff; }
+
+/* Override the inline styles on your glass boxes! */
+body.light-mode div[style*="rgba(15, 23, 42, 0.6)"] {
+    background: #f1f5f9 !important; border-color: #cbd5e1 !important; box-shadow: inset 0 0 10px rgba(0,0,0,0.05) !important;
+}
+body.light-mode div[style*="rgba(30, 41, 59, 0.6)"] {
+    background: rgba(255,255,255,0.9) !important; border-color: #cbd5e1 !important; box-shadow: 0 8px 32px 0 rgba(0,0,0,0.1) !important;
+}
+body.light-mode [style*="color: #94a3b8"] { color: #475569 !important; }
+
+
 </style>
 </head>
 <body>
+<button id="themeToggleBtn" onclick="toggleTheme()" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; background: rgba(15, 23, 42, 0.8); border: 1px solid #38bdf8; color: #38bdf8; padding: 10px 15px; border-radius: 30px; backdrop-filter: blur(8px); box-shadow: 0 4px 10px rgba(0,0,0,0.5);">☀️ Light Mode</button>
 
 <!-- FRONT PAGE  -->
 
@@ -1283,7 +1347,30 @@ canvas {
 
 <script>
   
-
+// --- LIGHT/DARK MODE TOGGLE ---
+function toggleTheme() {
+    // Toggle the class on the body
+    document.body.classList.toggle("light-mode");
+    
+    // Check if we are currently in light mode
+    const isLight = document.body.classList.contains("light-mode");
+    const toggleBtn = document.getElementById("themeToggleBtn");
+    
+    // Update the button text and colors
+    if (isLight) {
+        localStorage.setItem("vaultTheme", "light");
+        toggleBtn.innerText = "🌙 Dark Mode";
+        toggleBtn.style.background = "rgba(255, 255, 255, 0.9)";
+        toggleBtn.style.borderColor = "#0284c7";
+        toggleBtn.style.color = "#0284c7";
+    } else {
+        localStorage.setItem("vaultTheme", "dark");
+        toggleBtn.innerText = "☀️ Light Mode";
+        toggleBtn.style.background = "rgba(15, 23, 42, 0.8)";
+        toggleBtn.style.borderColor = "#38bdf8";
+        toggleBtn.style.color = "#38bdf8";
+    }
+}
 
 
 
@@ -2331,6 +2418,19 @@ function toggleSystemLock(isUnlocked) {
 
 // --- AUTO-LOCK ON REFRESH ---
 window.addEventListener("DOMContentLoaded", () => {
+
+  // THEME CHECK: Apply Light Mode if they selected it previously
+    if (localStorage.getItem("vaultTheme") === "light") {
+        document.body.classList.add("light-mode");
+        const toggleBtn = document.getElementById("themeToggleBtn");
+        if (toggleBtn) {
+            toggleBtn.innerText = "🌙 Dark Mode";
+            toggleBtn.style.background = "rgba(255, 255, 255, 0.9)";
+            toggleBtn.style.borderColor = "#0284c7";
+            toggleBtn.style.color = "#0284c7";
+        }
+    }
+    
     // 1. Destroy any existing session token the moment the page reloads
     sessionStorage.removeItem("authToken"); 
     
