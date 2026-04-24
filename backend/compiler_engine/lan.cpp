@@ -2602,6 +2602,51 @@ struct Instr {
     string extra;   // Secondary input (e.g., the right side of an addition, or jump target)
 };
 
+
+// --- BYTECODE HELPER: Converts Enums back to Strings for the UI ---
+string getOpcodeName(OpCode op) {
+    switch (op) {
+        case OP_LOAD: return "LOAD";
+        case OP_LOAD_VAR: return "LOAD_VAR";
+        case OP_LOAD_NUM: return "LOAD_NUM";
+        case OP_STORE: return "STORE";
+        case OP_ADD: return "ADD";
+        case OP_SUB: return "SUB";
+        case OP_MUL: return "MUL";
+        case OP_DIV: return "DIV";
+        case OP_GT: return "GT";
+        case OP_LT: return "LT";
+        case OP_EQ: return "EQ";
+        case OP_NEQ: return "NEQ";
+        case OP_LTE: return "LTE";
+        case OP_GTE: return "GTE";
+        case OP_AND: return "AND";
+        case OP_TO_BOOL: return "TO_BOOL";
+        case OP_OR: return "OR";
+        case OP_IF_FALSE_GOTO: return "IF_FALSE_GOTO";
+        case OP_GOTO: return "GOTO";
+        case OP_LABEL: return "LABEL";
+        case OP_CALL: return "CALL";
+        case OP_RET: return "RET";
+        case OP_POP_PARAM: return "POP_PARAM";
+        case OP_PRINT: return "PRINT";
+        case OP_CAESAR: return "CAESAR";
+        case OP_ATBASH: return "ATBASH";
+        case OP_BINARY: return "BINARY";
+        case OP_BINARY_DEC: return "BINARY_DEC";
+        case OP_MORSE: return "MORSE";
+        case OP_MORSE_DEC: return "MORSE_DEC";
+        case OP_BASE64: return "BASE64";
+        case OP_BASE64_DEC: return "BASE64_DEC";
+        case OP_VIGENERE: return "VIGENERE";
+        case OP_VIGENERE_DEC: return "VIGENERE_DEC";
+        case OP_AFFINE: return "AFFINE";
+        case OP_AFFINE_DEC: return "AFFINE_DEC";
+        case OP_SHA256: return "SHA256";
+        default: return "UNKNOWN";
+    }
+}
+
 // ============================================================================
 // BYTECODE GENERATOR (THE ASSEMBLER)
 // ============================================================================
@@ -2780,6 +2825,27 @@ unordered_map<string, string> VM;
 
 void runVM() {
     cout << "\n=== Bytecode Execution ===\n";
+
+
+    //  THE BYTECODE BRIDGE 
+    cout << "\n[BYTECODE_START]\n";
+    cout << "=========================================================\n";
+    cout << "  PC   |  OPCODE         |  DEST       |  SRC / EXTRA    \n";
+    cout << "=========================================================\n";
+    for (size_t i = 0; i < bytecode.size(); i++) {
+        cout << " 0x" << setfill('0') << setw(2) << hex << i << "  |  ";
+        cout << setw(13) << left << getOpcodeName(bytecode[i].op) << " |  ";
+        cout << setw(9) << left << bytecode[i].dst << "  |  ";
+        
+        string src_extra = bytecode[i].src;
+        if (bytecode[i].extra != "") {
+            src_extra += " " + bytecode[i].extra;
+        }
+        cout << src_extra << "\n";
+    }
+    cout << "[BYTECODE_END]\n";
+    cout << dec; // Reset cout back to decimal mode!
+    //  END BYTECODE BRIDGE 
 
     // --- NEW: Buffer output so it doesn't interrupt the JSON ---
     string consoleOutput = "";
