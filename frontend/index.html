@@ -426,9 +426,10 @@ canvas {
         <p style="color: #94a3b8; font-size: 1.1rem; margin-bottom: 40px;">Secure Compiler & Cryptography Architecture</p>
 
         <div style="background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 40px; width: 400px; margin: 0 auto; box-shadow: 0 8px 32px 0 rgba(0,0,0,0.7); display: flex; flex-direction: column; gap: 15px;">
+            
             <div style="color: #f87171; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px dashed rgba(148, 163, 184, 0.3); font-size: 0.85rem; letter-spacing: 1px; display: flex; justify-content: center; align-items: center; gap: 10px;">
-                <span style="height: 8px; width: 8px; background-color: #f87171; border-radius: 50%; box-shadow: 0 0 8px #f87171;"></span>
-                SYSTEM LOCKED
+                <span id="systemStatusDot" style="height: 8px; width: 8px; background-color: #f87171; border-radius: 50%; box-shadow: 0 0 8px #f87171;"></span>
+                <span id="systemStatusText">SYSTEM LOCKED</span>
             </div>
             
             <button onclick="showLogin()" class="cyber-btn-scan" style="background: transparent; border: 1px solid #38bdf8; color: #38bdf8; padding: 12px; font-family: inherit; font-size: 1rem; font-weight: bold; cursor: pointer; letter-spacing: 2px; transition: all 0.3s;">INITIATE LOGIN</button>
@@ -2296,15 +2297,14 @@ async function completeRegistration() {
 
 
 
-
 function toggleSystemLock(isUnlocked) {
     const statusDot = document.getElementById("systemStatusDot");
     const statusText = document.getElementById("systemStatusText");
     const enterBtn = document.getElementById("enterBtn");
 
-    // Safety check - Notice we removed authGroup so it won't crash anymore!
+    // Safety check - we removed authGroup so it won't fail!
     if (!statusDot || !statusText || !enterBtn) {
-        console.log("Missing UI elements for System Lock.");
+        console.log("Waiting for UI to load...");
         return;
     }
 
@@ -2315,8 +2315,7 @@ function toggleSystemLock(isUnlocked) {
         statusText.innerText = "SYSTEM UNLOCKED";
         statusText.style.color = "#22c55e";
         
-        // Reveals the 4th button (Access Dashboard)
-        // The other 3 buttons remain completely untouched and visible!
+        // Unhides the 4th button. The other 3 stay right where they are!
         enterBtn.style.display = "block";  
     } else {
         // RED STATE (Logged Out)
@@ -2325,7 +2324,7 @@ function toggleSystemLock(isUnlocked) {
         statusText.innerText = "SYSTEM LOCKED";
         statusText.style.color = "#f87171";
         
-        // Hides the 4th button, dropping it back to just the 3 original buttons!
+        // Hides the 4th button again.
         enterBtn.style.display = "none";  
     }
 }
