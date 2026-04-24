@@ -433,7 +433,11 @@ canvas {
             
             <button onclick="showLogin()" class="cyber-btn-scan" style="background: transparent; border: 1px solid #38bdf8; color: #38bdf8; padding: 12px; font-family: inherit; font-size: 1rem; font-weight: bold; cursor: pointer; letter-spacing: 2px; transition: all 0.3s;">INITIATE LOGIN</button>
             <button onclick="showRegister()" class="cyber-btn-scan" style="background: transparent; border: 1px solid #64748b; color: #64748b; padding: 10px; font-family: inherit; font-size: 0.9rem; cursor: pointer; transition: all 0.3s;">Request Clearance</button>
-            <button id="enterBtn" class="cyber-btn-scan" style="display: none; background: transparent; border: 1px solid #22c55e; color: #22c55e; padding: 12px; font-family: inherit; font-size: 1rem; font-weight: bold; cursor: pointer; letter-spacing: 2px; transition: all 0.3s; box-shadow: inset 0 0 10px rgba(34, 197, 94, 0.2);">ACCESS DASHBOARD</button>
+            
+            <button id="enterBtn" onclick="document.getElementById('frontPage').classList.add('hidden'); document.getElementById('playgroundPage').classList.remove('hidden');" class="cyber-btn-scan" style="display: none; background: transparent; border: 1px solid #22c55e; color: #22c55e; padding: 12px; font-family: inherit; font-size: 1rem; font-weight: bold; cursor: pointer; letter-spacing: 2px; transition: all 0.3s; box-shadow: inset 0 0 10px rgba(34, 197, 94, 0.2);">
+                ACCESS DASHBOARD
+            </button>
+            
             <button onclick="showAboutPage()" class="cyber-btn-scan" style="background: transparent; border: 1px solid #f59e0b; color: #f59e0b; padding: 10px; font-family: inherit; font-size: 0.9rem; cursor: pointer; transition: all 0.3s;">📖 Core Documentation</button>
         </div>
 
