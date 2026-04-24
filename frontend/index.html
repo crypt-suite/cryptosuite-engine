@@ -8,9 +8,11 @@
 <style>
   
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Courier+New:wght@400;700&display=swap');
 
-/* Reset & base */
+/* =========================================
+   1. GLOBAL RESET & DARK THEME
+========================================= */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -18,47 +20,49 @@
 }
 
 body {
-  font-family: 'Inter', sans-serif;
-  background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
-  color: #333;
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #020617; /* Deep Slate Background */
+  color: #e2e8f0;
   line-height: 1.6;
   min-height: 100vh;
   padding: 30px 15px;
 }
 
 /* Typography */
-h1, h2, h3 {
-  color: #111827;
+h1, h2, h3, h4 {
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: 1px;
   margin-bottom: 15px;
 }
+h1 { font-size: 2.2rem; color: #38bdf8; text-shadow: 0 0 10px rgba(56,189,248,0.5); }
+h2 { font-size: 1.5rem; color: #f59e0b; border-bottom: 1px dashed rgba(245,158,11,0.3); padding-bottom: 8px; margin-bottom: 20px;}
+h3 { font-size: 1.2rem; color: #22c55e; margin-top: 15px;}
+p, small { color: #94a3b8; }
 
-h1 { font-size: 2.2rem; }
-h2 { font-size: 1.5rem; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px; margin-bottom: 20px;}
-h3 { font-size: 1.2rem; margin-top: 15px;}
-p, small { color: #4b5563; }
+/* Utilities */
+.hidden { display: none !important; }
+hr { border: 0; border-top: 1px dashed #334155; margin: 25px 0; }
 
 /* Containers */
 .page {
-  max-width: 1200px;
+  max-width: 1300px;
   margin: 0 auto;
 }
 
-.hidden { display: none !important; }
-
-
-
-/* Dashboard Header */
+/* =========================================
+   2. DASHBOARD & GLASS CARDS
+========================================= */
 .app-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #fff;
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(12px);
   padding: 15px 25px;
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-  margin-bottom: 25px;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.5);
+  margin-bottom: 30px;
 }
 
 .header-actions {
@@ -66,7 +70,6 @@ p, small { color: #4b5563; }
   gap: 10px;
 }
 
-/* Dashboard Grid */
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -74,428 +77,207 @@ p, small { color: #4b5563; }
   align-items: start;
 }
 
-/* Cards */
 .card {
-  background: #ffffff;
+  background: rgba(2, 6, 23, 0.6);
+  backdrop-filter: blur(8px);
   padding: 25px;
   border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-  border: 1px solid #f3f4f6;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  transition: all 0.3s ease;
 }
 
 .card:hover {
-  box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+  border-color: rgba(56, 189, 248, 0.4);
+  box-shadow: 0 8px 25px rgba(56, 189, 248, 0.15);
 }
 
-.card.full-width {
-  grid-column: 1 / -1;
-}
+.card.full-width { grid-column: 1 / -1; }
 
-/* Inputs & Selects */
-input[type="text"], input[type="number"], input[type="password"], input[type="file"], select, textarea {
+/* =========================================
+   3. CYBER INPUTS & FORMS
+========================================= */
+input[type="text"], input[type="number"], input[type="password"], input[type="email"], input[type="file"], select, textarea {
   width: 100%;
   padding: 12px 15px;
   margin-top: 8px;
   margin-bottom: 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
+  border: 1px solid #334155;
+  border-radius: 6px;
   font-size: 15px;
   font-family: inherit;
-  background: #f9fafb;
+  background: rgba(15, 23, 42, 0.8);
+  color: #22c55e; /* Hacker green text */
+  caret-color: #22c55e;
   transition: all 0.2s ease;
-}
-
-input:focus, select:focus, textarea:focus {
-  border-color: #3b82f6;
-  background: #fff;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
   outline: none;
 }
 
-/* Buttons */
+input:focus, select:focus, textarea:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+}
+
+input::placeholder, textarea::placeholder {
+  color: #475569;
+}
+
+/* =========================================
+   4. BUTTONS (HACKER NEON STYLE)
+========================================= */
 button {
   cursor: pointer;
   padding: 12px 20px;
   font-size: 15px;
-  font-weight: 600;
-  border: none;
-  border-radius: 8px;
-  background-color: #3b82f6;
-  color: #fff;
-  transition: all 0.2s ease;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  margin-top: 5px;
+  font-weight: bold;
+  font-family: inherit;
+  border: 1px solid #38bdf8;
+  border-radius: 6px;
+  background-color: transparent;
+  color: #38bdf8;
+  transition: all 0.3s ease;
+  letter-spacing: 1px;
 }
 
-button:hover { background-color: #2563eb; transform: translateY(-1px); }
-button:active { transform: translateY(0); }
-button:disabled { background-color: #9ca3af; cursor: not-allowed; transform: none; }
+button:hover { background-color: #38bdf8; color: #020617; box-shadow: 0 0 15px rgba(56, 189, 248, 0.6); }
+button:active { transform: scale(0.98); }
+button:disabled { border-color: #475569; color: #475569; cursor: not-allowed; box-shadow: none; }
+button:disabled:hover { background-color: transparent; color: #475569; }
 
-.btn-secondary { background-color: #f3f4f6; color: #374151; }
-.btn-secondary:hover { background-color: #e5e7eb; }
-.btn-danger { background-color: #ef4444; }
-.btn-danger:hover { background-color: #dc2626; }
+.btn-secondary { border-color: #94a3b8; color: #94a3b8; }
+.btn-secondary:hover { background-color: #94a3b8; color: #020617; box-shadow: 0 0 15px rgba(148, 163, 184, 0.6); }
 
-/* Output Box */
+.btn-danger { border-color: #f87171; color: #f87171; }
+.btn-danger:hover { background-color: #f87171; color: #020617; box-shadow: 0 0 15px rgba(248, 113, 113, 0.6); }
+
+/* =========================================
+   5. TERMINAL OUTPUT BOXES
+========================================= */
 #cryptoOutput, .output-box {
   white-space: pre-wrap;
-  background: #1f2937;
+  background: #0f172a;
   color: #10b981;
   padding: 15px;
   margin-top: 15px;
+  border: 1px solid #1e293b;
   border-radius: 8px;
   min-height: 100px;
   font-family: 'Courier New', Courier, monospace;
   font-size: 14px;
   overflow-x: auto;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
 }
 
-/* Utilities & Progress */
-hr { border: 0; border-top: 1px solid #e5e7eb; margin: 20px 0; }
-.same { color: #059669; font-weight: 600; }
-.diff { color: #dc2626; font-weight: 600; background: #fee2e2; padding: 0 2px; border-radius: 3px; }
-
-
-
-
-
-
-
-
-
-
-.same { color: #059669; font-weight: 600; }
-.diff { color: #dc2626; font-weight: 600; background: #fee2e2; padding: 0 2px; border-radius: 3px; }
-
-/* The styling for the deleted gap! */
-.diff-space { 
-  background-color: #fca5a5; 
-  display: inline-block; 
-  width: 12px; 
-  height: 14px; 
-  margin: 0 4px; 
-  border-radius: 2px; 
-  cursor: help; 
-  vertical-align: middle;
-}
-
-
-
-
+.same { color: #22c55e; font-weight: 600; }
+.diff { color: #ef4444; font-weight: 600; background: rgba(239, 68, 68, 0.1); padding: 0 4px; border-radius: 3px; border: 1px dashed #ef4444;}
+.diff-space { background-color: rgba(239, 68, 68, 0.3); display: inline-block; width: 12px; height: 14px; margin: 0 4px; border-radius: 2px; }
 
 progress {
-  width: 100%;
-  height: 8px;
-  border-radius: 4px;
-  overflow: hidden;
-  margin-top: 10px;
+  width: 100%; height: 8px; border-radius: 4px; overflow: hidden; margin-top: 10px; background-color: #1e293b; border: 1px solid #334155;
 }
-progress::-webkit-progress-bar { background-color: #e5e7eb; }
-progress::-webkit-progress-value { background-color: #3b82f6; }
+progress::-webkit-progress-bar { background-color: transparent; }
+progress::-webkit-progress-value { background-color: #38bdf8; box-shadow: 0 0 10px #38bdf8; }
 
 canvas {
-  max-width: 100%;
-  border-radius: 6px;
-  border: 1px dashed #cbd5e1;
-  margin: 10px 0;
+  max-width: 100%; border-radius: 6px; border: 1px dashed #475569; margin: 10px 0; background: #0f172a;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-/* CrypTool Styles */
+/* =========================================
+   6. CRYPTOOL VISUALIZERS (TABLES & MATRICES)
+========================================= */
 .cryptool-card {
-  background-color: #1e222b;
-  border: 1px solid #2d3340;
+  background-color: rgba(15, 23, 42, 0.8);
+  border: 1px solid #334155;
   border-radius: 8px;
-  color: #e4e4e7;
-  font-family: 'Inter', sans-serif;
+  color: #e2e8f0;
   margin-top: 20px;
   overflow: hidden;
 }
 
 .cryptool-toggle-btn {
-  background-color: #2d3340;
-  color: #e4e4e7;
-  border: none;
-  width: 100%;
-  text-align: left;
-  padding: 10px 15px;
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  border-bottom: 1px solid #1e222b;
+  background-color: #1e293b;
+  color: #38bdf8;
+  border: none; border-bottom: 1px solid #334155;
+  width: 100%; text-align: left; padding: 12px 15px;
+  font-size: 14px; border-radius: 0; box-shadow: none;
 }
+.cryptool-toggle-btn:hover { background-color: #334155; color: #e2e8f0; }
 
-.cryptool-toggle-btn:hover { background-color: #3f4759; }
-
-.cryptool-content {
-  padding: 20px;
-  display: block; /* Toggled via JS */
-}
-
-.cryptool-header h3 {
-  color: white;
-  margin: 0 0 10px 0;
-  font-size: 1.2rem;
-}
+.cryptool-content { padding: 20px; display: block; }
+.cryptool-header h3 { color: #f87171; margin: 0 0 10px 0; font-size: 1.2rem; border: none; }
 
 .badge-container { display: flex; gap: 8px; margin-bottom: 25px; }
-.badge {
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 600;
-}
-.badge.green { background-color: #22c55e; color: #000; }
-.badge.grey { background-color: #4b5563; color: #fff; }
+.badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+.badge.green { background-color: rgba(34, 197, 94, 0.2); color: #22c55e; border: 1px solid #22c55e; }
+.badge.grey { background-color: rgba(148, 163, 184, 0.2); color: #94a3b8; border: 1px solid #94a3b8; }
 
-/* The Simple Tabular Mapping */
-.cryptool-table-wrapper {
-  overflow-x: auto;
-  margin-top: 30px;
-  border: 1px solid #3f4759;
-  border-radius: 6px;
-}
+.cryptool-table-wrapper { overflow-x: auto; margin-top: 30px; border: 1px solid #334155; border-radius: 6px; }
+.cryptool-table { width: max-content; border-collapse: collapse; font-family: monospace; font-size: 14px; }
+.cryptool-table th, .cryptool-table td { padding: 6px 10px; border: 1px solid #334155; text-align: center; min-width: 30px; }
+.cryptool-table tr:first-child { background-color: #1e293b; color: #38bdf8; }
+.cryptool-table tr:last-child { background-color: #0f172a; color: #e2e8f0; }
 
-.cryptool-table {
-  width: max-content;
-  border-collapse: collapse;
-  font-family: monospace;
-  font-size: 14px;
-}
+.rail-grid-table { border-collapse: collapse; font-family: monospace; font-size: 14px; font-weight: bold; margin: 0 auto; white-space: nowrap; }
+.rail-grid-table td { min-width: 22px; height: 26px; padding: 2px 4px; text-align: center; vertical-align: middle; border: 1px solid rgba(56, 189, 248, 0.2); }
+.rail-char { color: #22c55e; background-color: rgba(34, 197, 94, 0.15); text-shadow: 0 0 5px #22c55e; }
+.rail-dot { color: #334155; }
 
-.cryptool-table th, .cryptool-table td {
-  padding: 6px 10px;
-  border: 1px solid #3f4759;
-  text-align: center;
-  min-width: 30px;
-}
-
-.cryptool-table tr:first-child { background-color: #1e222b; color: white; }
-.cryptool-table tr:last-child { background-color: #1e222b; color: #a1a1aa; }
-
-/* Rail Fence Specific */
-.rail-grid-table {
-  border-collapse: collapse;
-  font-family: monospace;
-  font-size: 14px; /* Slightly smaller text */
-  font-weight: bold;
-  margin: 0 auto;
-  white-space: nowrap;
-}
-.rail-grid-table td {
-  min-width: 22px; /* Reduced from 35px */
-  height: 26px;    /* Reduced from 35px */
-  padding: 2px 4px; /* Tighter padding */
-  text-align: center;
-  vertical-align: middle;
-  border: 1px solid rgba(63, 71, 89, 0.3);
-}
-.rail-char { color: #22c55e; background-color: rgba(34, 197, 94, 0.08); }
-.rail-dot { color: #3f4759; }
-
-
-
-
-
-
-
-/* Caesar Viz Options */
 .caesar-options {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin: 15px 0;
-  background: #1a1e24;
-  padding: 12px;
-  border-radius: 6px;
-  border: 1px solid #2d3340;
+  display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin: 15px 0;
+  background: #0f172a; padding: 12px; border-radius: 6px; border: 1px dashed #334155;
 }
-.caesar-options label {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  cursor: pointer;
-  color: #e4e4e7;
-  user-select: none;
-}
-.caesar-options input[type="checkbox"] {
-  accent-color: #22c55e;
-  width: 15px;
-  height: 15px;
-  margin: 0;
-  cursor: pointer;
-}
-
-
-
-
-
-
-
-
-
-
-
-
+.caesar-options label { display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; color: #94a3b8; }
+.caesar-options input[type="checkbox"] { accent-color: #38bdf8; width: 15px; height: 15px; cursor: pointer; }
 
 /* =========================================
-   VAULT UI ANIMATIONS & EFFECTS
+   7. VAULT UI ANIMATIONS & EFFECTS
 ========================================= */
-
-/* 1. Infinite Terminal Overlay (FULL SCREEN MULTI-THREAD) */
 .infinite-terminal {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    overflow: hidden;
-    z-index: 2; 
-    pointer-events: none; 
-    opacity: 0.15; /* Keeps it subtle in the background */
-    color: #22c55e;
-    font-family: 'Courier New', monospace;
-    font-size: 13px; /* Slightly smaller to fit more data */
-    line-height: 1.5;
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    overflow: hidden; z-index: 2; pointer-events: none; opacity: 0.15;
+    color: #22c55e; font-family: 'Courier New', monospace; font-size: 13px; line-height: 1.5;
     text-shadow: 0 0 5px #22c55e;
-    
-    /* Fades out smoothly at the top and bottom */
     -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
     mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
 }
 
 .terminal-scroll {
-    display: flex;
-    flex-direction: column;
-    /* 60 seconds makes it a slow, unreadable, highly cinematic crawl */
-    animation: terminalScroll 60s linear infinite; 
-    width: 100%;
+    display: flex; flex-direction: column; animation: terminalScroll 60s linear infinite; width: 100%;
 }
-
-/* This grid creates 3 columns of code across your screen! */
 .terminal-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 40px;
-    padding: 0 40px;
-    width: 100%;
-    box-sizing: border-box;
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; padding: 0 40px; width: 100%; box-sizing: border-box;
 }
-
-.terminal-grid pre {
-    margin: 0;
-    padding: 0;
-    overflow: hidden; /* Prevents text from breaking columns */
-}
+.terminal-grid pre { margin: 0; padding: 0; overflow: hidden; }
 
 @keyframes terminalScroll {
     0% { transform: translateY(0); }
-    /* Moves exactly 50% so Block 1 perfectly replaces Block 2 without a stutter */
     100% { transform: translateY(-50%); } 
 }
 
-
-
-
-/* 2. Sneak Peek Hover Cards */
-.sneak-peek-grid {
-    display: flex; 
-    gap: 20px; 
-    justify-content: center; 
-    margin-top: 40px; 
-    z-index: 10;
-}
-
+.sneak-peek-grid { display: flex; gap: 20px; justify-content: center; margin-top: 40px; z-index: 10; }
 .sneak-peek-card {
-    width: 220px; 
-    height: 130px;
-    background: rgba(30, 41, 59, 0.4);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(56, 189, 248, 0.2);
-    border-radius: 8px;
-    transition: all 0.4s ease;
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    justify-content: center;
-    color: #94a3b8; 
-    font-size: 0.8rem; 
-    cursor: pointer;
-    overflow: hidden;
-    background-size: cover;
-    background-position: center;
-    position: relative;
+    width: 220px; height: 130px; background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(8px);
+    border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 8px; transition: all 0.4s ease;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: #94a3b8; font-size: 0.8rem; cursor: pointer; overflow: hidden;
+    background-size: cover; background-position: center; position: relative;
 }
-
 .sneak-peek-card::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(2, 6, 23, 0.6); /* Dark tint over the image */
-    transition: all 0.4s ease;
-    z-index: 1;
+    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(2, 6, 23, 0.7); transition: all 0.4s ease; z-index: 1;
 }
+.sneak-peek-text { z-index: 2; text-align: center; font-weight: bold; letter-spacing: 1px; }
+.sneak-peek-card:hover { border-color: #38bdf8; box-shadow: 0 0 25px rgba(56, 189, 248, 0.4); transform: translateY(-5px); color: #38bdf8; }
+.sneak-peek-card:hover::after { background: rgba(2, 6, 23, 0.1); }
 
-.sneak-peek-text {
-    z-index: 2; /* Keeps text above the dark tint */
-    text-align: center;
-    font-weight: bold;
-    letter-spacing: 1px;
-}
-
-.sneak-peek-card:hover {
-    border-color: #38bdf8;
-    box-shadow: 0 0 25px rgba(56, 189, 248, 0.4);
-    transform: translateY(-5px);
-    color: #38bdf8;
-}
-
-.sneak-peek-card:hover::after {
-    background: rgba(2, 6, 23, 0.2); /* Tint fades away to reveal image */
-}
-
-/* 3. Scanner Sweep Button Effect */
-.cyber-btn-scan {
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-}
-
+.cyber-btn-scan { position: relative; overflow: hidden; z-index: 1; }
 .cyber-btn-scan::before {
-    content: '';
-    position: absolute;
-    top: 0; left: -100%; 
-    width: 50%; height: 100%;
-    /* Creates the glowing vertical laser line */
+    content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
     background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.6), transparent);
-    z-index: -1;
-    transition: none;
+    z-index: -1; transition: none;
 }
-
-.cyber-btn-scan:hover::before {
-    animation: scanSweep 1.2s infinite linear;
-}
-
-@keyframes scanSweep {
-    0% { left: -100%; }
-    100% { left: 200%; }
-}
+.cyber-btn-scan:hover::before { animation: scanSweep 1.2s infinite linear; }
+@keyframes scanSweep { 0% { left: -100%; } 100% { left: 200%; } }
 
 </style>
 </head>
