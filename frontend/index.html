@@ -355,44 +355,203 @@ canvas {
   cursor: pointer;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================
+   VAULT UI ANIMATIONS & EFFECTS
+========================================= */
+
+/* 1. Infinite Terminal Overlay */
+.infinite-terminal {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    overflow: hidden;
+    z-index: 2; /* Sits above particles, below the glass console */
+    pointer-events: none; /* Prevents it from blocking clicks */
+    opacity: 0.12; /* Faded ghost text */
+    color: #22c55e;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    text-shadow: 0 0 5px #22c55e;
+}
+
+.terminal-scroll {
+    position: absolute;
+    bottom: -100%; /* Start off-screen at the bottom */
+    width: 100%;
+    animation: terminalScroll 25s linear infinite;
+}
+
+@keyframes terminalScroll {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-200%); } /* Scroll upward infinitely */
+}
+
+/* 2. Sneak Peek Hover Cards */
+.sneak-peek-grid {
+    display: flex; 
+    gap: 20px; 
+    justify-content: center; 
+    margin-top: 40px; 
+    z-index: 10;
+}
+
+.sneak-peek-card {
+    width: 220px; 
+    height: 130px;
+    background: rgba(30, 41, 59, 0.4);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    border-radius: 8px;
+    transition: all 0.4s ease;
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center;
+    color: #94a3b8; 
+    font-size: 0.8rem; 
+    cursor: pointer;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.sneak-peek-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(2, 6, 23, 0.6); /* Dark tint over the image */
+    transition: all 0.4s ease;
+    z-index: 1;
+}
+
+.sneak-peek-text {
+    z-index: 2; /* Keeps text above the dark tint */
+    text-align: center;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.sneak-peek-card:hover {
+    border-color: #38bdf8;
+    box-shadow: 0 0 25px rgba(56, 189, 248, 0.4);
+    transform: translateY(-5px);
+    color: #38bdf8;
+}
+
+.sneak-peek-card:hover::after {
+    background: rgba(2, 6, 23, 0.2); /* Tint fades away to reveal image */
+}
+
+/* 3. Scanner Sweep Button Effect */
+.cyber-btn-scan {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.cyber-btn-scan::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%; 
+    width: 50%; height: 100%;
+    /* Creates the glowing vertical laser line */
+    background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.6), transparent);
+    z-index: -1;
+    transition: none;
+}
+
+.cyber-btn-scan:hover::before {
+    animation: scanSweep 1.2s infinite linear;
+}
+
+@keyframes scanSweep {
+    0% { left: -100%; }
+    100% { left: 200%; }
+}
+
 </style>
 </head>
 <body>
 
 <!-- FRONT PAGE  -->
 
-<div id="frontPage" class="page" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #020617; margin: 0; max-width: none; border-radius: 0; display: flex; align-items: center; justify-content: center; font-family: 'Courier New', monospace; z-index: 50;">
+<div id="frontPage" class="page" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; max-width: none; margin: 0; background-color: #020617; font-family: 'Courier New', monospace; z-index: 50; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden;">
     
     <div id="particles-js" style="position: absolute; width: 100%; height: 100%; z-index: 1;"></div>
+
+    <div class="infinite-terminal">
+        <div class="terminal-scroll">
+            <pre>
+[SYS] BOOT SEQUENCE INITIATED... [OK]
+[SYS] ALLOCATING RAM TO VIRTUAL MACHINE... 1024MB [OK]
+[VM] KERNEL AWAKE
+[0x00] GOTO __main
+[0x01] LABEL __main
+[0x02] LOAD t1 "enc_protocol_alpha"
+[0x03] STORE cipher_mode t1
+[0x04] OP_VIGENERE t1 msg key
+[SYS] ENCRYPTION CYCLE COMPLETE. 
+[MEM] TRACING HEAP... 
+[0x0A] OP_SHA256 t2 digest
+[0x0B] JMP 0x00
+            </pre>
+            <pre>
+[SYS] BOOT SEQUENCE INITIATED... [OK]
+[SYS] ALLOCATING RAM TO VIRTUAL MACHINE... 1024MB [OK]
+[VM] KERNEL AWAKE
+[0x00] GOTO __main
+[0x01] LABEL __main
+[0x02] LOAD t1 "enc_protocol_alpha"
+[0x03] STORE cipher_mode t1
+[0x04] OP_VIGENERE t1 msg key
+[SYS] ENCRYPTION CYCLE COMPLETE. 
+[MEM] TRACING HEAP... 
+[0x0A] OP_SHA256 t2 digest
+[0x0B] JMP 0x00
+            </pre>
+        </div>
+    </div>
 
     <div style="z-index: 10; text-align: center;">
         <h1 id="hero-title" data-value="CRYPTOSUITE" style="font-size: 3.5rem; color: #38bdf8; text-shadow: 0 0 15px rgba(56, 189, 248, 0.6); letter-spacing: 4px; margin-bottom: 5px;">X&^@9!#L$</h1>
         <p style="color: #94a3b8; font-size: 1.1rem; margin-bottom: 40px;">Secure Compiler & Cryptography Architecture</p>
 
-        <div style="background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 40px; width: 400px; margin: 0 auto; box-shadow: 0 8px 32px 0 rgba(0,0,0,0.7);">
-            <div style="color: #f87171; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px dashed rgba(148, 163, 184, 0.3); font-size: 0.85rem; letter-spacing: 1px; display: flex; justify-content: center; align-items: center; gap: 10px;">
+        <div style="background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 40px; width: 400px; margin: 0 auto; box-shadow: 0 8px 32px 0 rgba(0,0,0,0.7); display: flex; flex-direction: column; gap: 15px;">
+            <div style="color: #f87171; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px dashed rgba(148, 163, 184, 0.3); font-size: 0.85rem; letter-spacing: 1px; display: flex; justify-content: center; align-items: center; gap: 10px;">
                 <span style="height: 8px; width: 8px; background-color: #f87171; border-radius: 50%; box-shadow: 0 0 8px #f87171;"></span>
                 SYSTEM LOCKED
             </div>
             
-            <div style="text-align: left; margin-bottom: 20px;">
-                <label style="color: #38bdf8; font-size: 0.9rem; margin-bottom: 8px; display: block; text-transform: uppercase;">Identification</label>
-                <input type="text" id="loginUsername" placeholder="Username" style="width: 100%; background: rgba(2, 6, 23, 0.7); border: 1px solid #334155; color: #22c55e; padding: 12px; font-family: inherit; font-size: 1rem; outline: none; border-radius: 4px;" />
-            </div>
-            
-            <div style="text-align: left; margin-bottom: 30px;">
-                <label style="color: #38bdf8; font-size: 0.9rem; margin-bottom: 8px; display: block; text-transform: uppercase;">Passkey</label>
-                <input type="password" id="loginPassword" placeholder="••••••••" style="width: 100%; background: rgba(2, 6, 23, 0.7); border: 1px solid #334155; color: #22c55e; padding: 12px; font-family: inherit; font-size: 1rem; outline: none; border-radius: 4px;" />
-            </div>
+            <button onclick="showLogin()" class="cyber-btn-scan" style="background: transparent; border: 1px solid #38bdf8; color: #38bdf8; padding: 12px; font-family: inherit; font-size: 1rem; font-weight: bold; cursor: pointer; letter-spacing: 2px; transition: all 0.3s;">INITIATE LOGIN</button>
+            <button onclick="showRegister()" class="cyber-btn-scan" style="background: transparent; border: 1px solid #64748b; color: #64748b; padding: 10px; font-family: inherit; font-size: 0.9rem; cursor: pointer; transition: all 0.3s;">Request Clearance</button>
+            <button onclick="showAboutPage()" class="cyber-btn-scan" style="background: transparent; border: 1px solid #f59e0b; color: #f59e0b; padding: 10px; font-family: inherit; font-size: 0.9rem; cursor: pointer; transition: all 0.3s;">📖 Core Documentation</button>
+        </div>
 
-            <div style="display: flex; flex-direction: column; gap: 15px;">
-                <button onclick="attemptLogin()" onmouseover="this.style.background='#38bdf8'; this.style.color='#020617'" onmouseout="this.style.background='transparent'; this.style.color='#38bdf8'" style="background: transparent; border: 1px solid #38bdf8; color: #38bdf8; padding: 12px; font-family: inherit; font-size: 1rem; font-weight: bold; cursor: pointer; letter-spacing: 2px; transition: all 0.3s;">INITIATE LOGIN</button>
-                
-                <button onclick="showRegister()" onmouseover="this.style.background='#64748b'; this.style.color='#020617'" onmouseout="this.style.background='transparent'; this.style.color='#64748b'" style="background: transparent; border: 1px solid #64748b; color: #64748b; padding: 10px; font-family: inherit; font-size: 0.9rem; cursor: pointer; transition: all 0.3s;">Request Clearance (Register)</button>
-                
-                <button onclick="showAboutPage()" onmouseover="this.style.background='#f59e0b'; this.style.color='#020617'" onmouseout="this.style.background='transparent'; this.style.color='#f59e0b'" style="background: transparent; border: 1px solid #f59e0b; color: #f59e0b; padding: 10px; font-family: inherit; font-size: 0.9rem; cursor: pointer; transition: all 0.3s;">📖 Core Documentation</button>
+        <div class="sneak-peek-grid">
+            <div class="sneak-peek-card" style="background-image: url('assets/cfg-screenshot.png');">
+                <span class="sneak-peek-text">D3.js Control<br>Flow Graph</span>
+            </div>
+            <div class="sneak-peek-card" style="background-image: url('assets/enigma-screenshot.png');">
+                <span class="sneak-peek-text">Electromechanical<br>Enigma Emulator</span>
+            </div>
+            <div class="sneak-peek-card" style="background-image: url('assets/bytecode-screenshot.png');">
+                <span class="sneak-peek-text">Live C++ VM<br>Bytecode Execution</span>
             </div>
         </div>
+
     </div>
 </div>
 
