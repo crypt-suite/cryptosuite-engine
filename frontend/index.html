@@ -8,7 +8,6 @@
 <style>
   
 
-
 /* =========================================
    1. GLOBAL RESET & REFINED DARK THEME
 ========================================= */
@@ -47,6 +46,49 @@ hr { border: 0; border-top: 1px solid #1e293b; margin: 25px 0; }
   max-width: 1300px; /* Restored original container width */
   margin: 0 auto;
 }
+
+/* =========================================
+   2. DASHBOARD & MODERN UI CARDS
+========================================= */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1e293b; /* Solid surface instead of glass */
+  padding: 15px 25px; /* Restored original padding */
+  border-radius: 12px; /* Restored original radius */
+  border: 1px solid #334155;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px; /* Restored original margin */
+}
+
+.header-actions {
+  display: flex;
+  gap: 10px; /* Restored original gap */
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* RESTORED original column width */
+  gap: 25px; /* RESTORED original grid spacing */
+  align-items: start;
+}
+
+.card {
+  background: #1e293b; /* Solid surface */
+  padding: 25px; /* Restored original padding */
+  border-radius: 12px; /* Restored original radius */
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  border: 1px solid #334155;
+  transition: border-color 0.2s ease;
+}
+
+.card:hover {
+  border-color: #475569; /* Subtle border highlight */
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1); /* Keeps box from expanding, no neon */
+}
+
+.card.full-width { grid-column: 1 / -1; }
 
 /* =========================================
    2. DASHBOARD & MODERN UI CARDS
