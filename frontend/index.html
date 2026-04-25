@@ -564,6 +564,22 @@ body.light-mode #affineGameCard div[style*="background: #f9fafb"] {
 body.light-mode .same { color: #059669 !important; font-weight: 700 !important; }
 body.light-mode .diff { color: #dc2626 !important; font-weight: 700 !important; }
 
+
+
+
+/* =========================================
+   15. DARK MODE NODE VISIBILITY FIX
+========================================= */
+/* Target the nodes ONLY when light mode is NOT active */
+body:not(.light-mode) .particles-js-canvas-el {
+    opacity: 0.7 !important; /* Boost the base visibility of the canvas */
+    
+    /* Brightens the lines and adds a subtle hacker-green/cyan glow */
+    filter: brightness(1.5) drop-shadow(0 0 3px rgba(56, 189, 248, 0.4)) !important; 
+}
+
+
+
 /* =========================================
    13. NODE INTERACTIVITY FIX
 ========================================= */
