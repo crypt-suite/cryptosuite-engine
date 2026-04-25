@@ -462,6 +462,71 @@ body.light-mode #playgroundPage div[style*="background:#f3f4f6"] {
 body.light-mode #playgroundPage progress::-webkit-progress-bar { background-color: #e5e7eb !important; }
 body.light-mode #playgroundPage progress::-webkit-progress-value { background-color: #3b82f6 !important; box-shadow: none !important; }
 
+
+
+
+
+
+/* =========================================
+   13. CRYPTOOL VISUALIZER FIX (LIGHT MODE)
+========================================= */
+/* 1. Ensure the outer card looks clean */
+body.light-mode #playgroundPage .cryptool-card {
+    background-color: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02) !important;
+    overflow: hidden !important;
+}
+
+/* 2. Fix the Toggle Button - Remove the solid blue and rounded corners! */
+body.light-mode #playgroundPage .cryptool-toggle-btn {
+    background-color: #f8fafc !important; /* Soft, clean header color */
+    color: #3b82f6 !important; /* Blue text to match original vibe */
+    border: none !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    border-radius: 0 !important; /* Make it square so it fits flush */
+    box-shadow: none !important;
+    text-align: left !important;
+    font-weight: 600 !important;
+    width: 100% !important;
+}
+
+/* 3. Stop the button from "jumping" when you hover over it */
+body.light-mode #playgroundPage .cryptool-toggle-btn:hover {
+    background-color: #f1f5f9 !important;
+    color: #2563eb !important;
+    transform: none !important; 
+}
+
+/* 4. Fix the Matrices and Tables inside so they look good in Light Mode */
+body.light-mode #playgroundPage .cryptool-table th, 
+body.light-mode #playgroundPage .cryptool-table td,
+body.light-mode #playgroundPage .rail-grid-table td { 
+    border-color: #e5e7eb !important; 
+}
+body.light-mode #playgroundPage .cryptool-table tr:first-child { 
+    background-color: #f8fafc !important; 
+    color: #111827 !important; 
+}
+body.light-mode #playgroundPage .cryptool-table tr:last-child { 
+    background-color: #ffffff !important; 
+    color: #4b5563 !important; 
+}
+body.light-mode #playgroundPage .rail-char {
+    background-color: #dcfce7 !important; 
+    color: #166534 !important; 
+    text-shadow: none !important;
+}
+
+/* 5. Fix the Caesar Checkbox Options box */
+body.light-mode #playgroundPage .caesar-options {
+    background: #f8fafc !important;
+    border: 1px dashed #cbd5e1 !important;
+}
+
+
+
 /* =========================================
    13. NODE INTERACTIVITY FIX
 ========================================= */
