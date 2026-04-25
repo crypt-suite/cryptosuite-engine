@@ -528,6 +528,43 @@ body.light-mode #playgroundPage .caesar-options {
 
 
 /* =========================================
+   14. READABILITY & AFFINE GAME COLOR FIXES
+========================================= */
+
+/* 1. Darken all general gray text globally for excellent readability */
+body.light-mode p, 
+body.light-mode small, 
+body.light-mode label,
+body.light-mode span,
+body.light-mode li { 
+    color: #334155 !important; /* Deepened to a rich, dark slate */
+}
+
+/* 2. Bring vibrant colors back to the Affine Game Clues! */
+body.light-mode #gamePlaintext {
+    color: #059669 !important; /* Bold Emerald Green */
+    font-weight: 800 !important;
+    font-size: 1.1em !important;
+}
+
+body.light-mode #gameCiphertext {
+    color: #dc2626 !important; /* Bold Crimson Red */
+    font-weight: 800 !important;
+    font-size: 1.1em !important;
+    letter-spacing: 1px !important; 
+}
+
+/* 3. Darken the clue box background slightly so the white text boxes pop more */
+body.light-mode #affineGameCard div[style*="background: #f9fafb"] {
+    background: #f1f5f9 !important;
+    border: 1px solid #cbd5e1 !important;
+}
+
+/* 4. Ensure the diff-checker text (same/diff) stays colorful in the Integrity section */
+body.light-mode .same { color: #059669 !important; font-weight: 700 !important; }
+body.light-mode .diff { color: #dc2626 !important; font-weight: 700 !important; }
+
+/* =========================================
    13. NODE INTERACTIVITY FIX
 ========================================= */
 /* This brings the nodes forward so they sit over the page background, allowing your mouse to interact with them! */
