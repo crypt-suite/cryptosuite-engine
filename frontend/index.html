@@ -290,20 +290,19 @@ canvas {
 /* =========================================
    8. LIGHT MODE OVERRIDES (MODERN SAAS DASHBOARD)
 ========================================= */
-/* The calm, gradient background */
 body.light-mode {
     background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%) !important;
     color: #333 !important;
 }
 
-/* 1. Soften all typography */
+/* 1. Global Typography Reset */
 body.light-mode * { text-shadow: none !important; box-shadow: none !important; }
 body.light-mode h1 { color: #111827 !important; }
 body.light-mode h2 { color: #111827 !important; border-bottom: 2px solid #e5e7eb !important; }
 body.light-mode h3 { color: #111827 !important; }
 body.light-mode p, body.light-mode small, body.light-mode label { color: #4b5563 !important; }
 
-/* 2. Dashboard Cards & Header (Crisp White with Soft Shadows) */
+/* 2. Dashboard Cards (The crisp white you liked) */
 body.light-mode .card, body.light-mode .app-header {
     background: #ffffff !important;
     border: 1px solid #f3f4f6 !important;
@@ -317,7 +316,7 @@ body.light-mode .card:hover {
     transform: translateY(-2px);
 }
 
-/* 3. Clean Inputs & Selects */
+/* 3. Inputs & Selects */
 body.light-mode input, body.light-mode select, body.light-mode textarea {
     background: #f9fafb !important;
     border: 1px solid #d1d5db !important;
@@ -343,25 +342,12 @@ body.light-mode #playgroundPage button:hover {
     background-color: #2563eb !important;
     transform: translateY(-1px) !important;
 }
+body.light-mode #playgroundPage .btn-secondary { background-color: #f3f4f6 !important; color: #374151 !important; box-shadow: none !important; }
+body.light-mode #playgroundPage .btn-secondary:hover { background-color: #e5e7eb !important; }
+body.light-mode #playgroundPage .btn-danger { background-color: #ef4444 !important; color: white !important; }
+body.light-mode #playgroundPage .btn-danger:hover { background-color: #dc2626 !important; }
 
-/* Secondary and Danger Buttons */
-body.light-mode #playgroundPage .btn-secondary {
-    background-color: #f3f4f6 !important;
-    color: #374151 !important;
-    box-shadow: none !important;
-}
-body.light-mode #playgroundPage .btn-secondary:hover {
-    background-color: #e5e7eb !important;
-}
-body.light-mode #playgroundPage .btn-danger {
-    background-color: #ef4444 !important;
-    color: white !important;
-}
-body.light-mode #playgroundPage .btn-danger:hover {
-    background-color: #dc2626 !important;
-}
-
-/* 5. Contrast Terminal Box (Dark slate with green text inside Light Mode) */
+/* 5. Contrast Terminal Box inside Dashboard */
 body.light-mode #cryptoOutput, body.light-mode .output-box {
     background: #1f2937 !important;
     color: #10b981 !important;
@@ -370,7 +356,7 @@ body.light-mode #cryptoOutput, body.light-mode .output-box {
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.1) !important;
 }
 
-/* 6. Clean up inner sub-boxes (Like the brute force stats) */
+/* 6. Dashboard Sub-boxes */
 body.light-mode div[style*="background:#f3f4f6"] {
     background: #ffffff !important;
     border: 1px solid #e5e7eb !important;
@@ -381,106 +367,92 @@ body.light-mode div[style*="background:#f3f4f6"] {
 body.light-mode progress::-webkit-progress-bar { background-color: #e5e7eb !important; }
 body.light-mode progress::-webkit-progress-value { background-color: #3b82f6 !important; box-shadow: none !important; }
 
-
-
-
 /* =========================================
-   9. SPLASH PAGES (FRONT, LOGIN, REG) LIGHT MODE
+   9. SPLASH PAGES (TRUE FROSTED GLASS FIX)
 ========================================= */
 
-/* 1. Force the gradient background over the inline dark colors */
+/* Ensure the splash pages have the gradient */
 body.light-mode #frontPage, 
 body.light-mode #loginPage, 
 body.light-mode #registerPage {
     background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%) !important;
 }
 
-/* 2. Style the center Glass Boxes (SaaS Style) */
-body.light-mode div[style*="rgba(30, 41, 59, 0.6)"] {
-    background: rgba(255, 255, 255, 0.9) !important;
-    backdrop-filter: blur(10px) !important;
-    border: 1px solid #ffffff !important;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05) !important;
+/* The Glaring White Box Fix: Drop opacity to 40% and increase blur to 24px */
+body.light-mode #frontPage div[style*="rgba(30, 41, 59, 0.6)"],
+body.light-mode #loginPage div[style*="rgba(30, 41, 59, 0.6)"],
+body.light-mode #registerPage div[style*="rgba(30, 41, 59, 0.6)"] {
+    background: rgba(255, 255, 255, 0.4) !important; 
+    backdrop-filter: blur(24px) !important; 
+    border: 1px solid rgba(255, 255, 255, 0.8) !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255,255,255,0.6) !important;
     border-radius: 16px !important;
 }
 
-/* 3. Tone down the Infinite Terminal text behind the box */
+/* Soften the Hacker Background Elements */
 body.light-mode .infinite-terminal {
-    opacity: 0.08 !important; /* Very subtle */
-    color: #475569 !important; /* Slate gray instead of neon green */
+    opacity: 0.08 !important; 
+    color: #64748b !important; /* Soft slate gray */
     text-shadow: none !important;
 }
 
-/* 4. Soften the floating Particles (Dots & Lines) */
 body.light-mode .particles-js-canvas-el {
-    opacity: 0.4 !important;
-    /* Inverts the cyan/green into soft, warm grays that look great on light backgrounds */
-    filter: invert(1) grayscale(100%) brightness(1.2) !important; 
+    opacity: 0.5 !important;
+    filter: invert(1) grayscale(100%) brightness(1.2) !important; /* Turns cyan/green into soft grays */
 }
 
-/* 5. Fix the Hero Title */
-body.light-mode #hero-title {
+/* Ensure Headers and Text on Splash Pages are sharp */
+body.light-mode #hero-title,
+body.light-mode #frontPage h2,
+body.light-mode #loginPage h2,
+body.light-mode #registerPage h2 {
     color: #111827 !important;
     text-shadow: none !important;
 }
 
-/* 6. Primary Action Buttons (Login, Submit, Enter Dash) -> Professional Blue */
+body.light-mode #frontPage p,
+body.light-mode #loginPage p,
+body.light-mode #registerPage p {
+    color: #4b5563 !important;
+}
+
+/* Primary Splash Buttons (Login, Register, Enter) */
 body.light-mode button[onclick="showLogin()"],
+body.light-mode button[onclick="attemptLogin()"],
+body.light-mode button[onclick="completeRegistration()"],
+body.light-mode #enterBtn,
+body.light-mode button[onclick="showRegister()"],
+body.light-mode button[onclick="showAboutPage()"],
+body.light-mode button[onclick="goHome()"] {
+    background-color: #ffffff !important;
+    color: #374151 !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+}
+
+body.light-mode button[onclick="showLogin()"]:hover,
+body.light-mode button[onclick="attemptLogin()"]:hover,
+body.light-mode button[onclick="completeRegistration()"]:hover,
+body.light-mode #enterBtn:hover,
+body.light-mode button[onclick="showRegister()"]:hover,
+body.light-mode button[onclick="showAboutPage()"]:hover,
+body.light-mode button[onclick="goHome()"]:hover {
+    background-color: #f3f4f6 !important;
+}
+
+/* Keep the Main Action Buttons Blue */
 body.light-mode button[onclick="attemptLogin()"],
 body.light-mode button[onclick="completeRegistration()"],
 body.light-mode #enterBtn {
     background-color: #3b82f6 !important;
     color: #ffffff !important;
     border: none !important;
-    border-radius: 8px !important;
-    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2) !important;
-    font-weight: 600 !important;
 }
-body.light-mode button[onclick="showLogin()"]:hover,
 body.light-mode button[onclick="attemptLogin()"]:hover,
 body.light-mode button[onclick="completeRegistration()"]:hover,
 body.light-mode #enterBtn:hover {
     background-color: #2563eb !important;
-    transform: translateY(-1px) !important;
-}
-
-/* 7. Secondary Action Buttons (Register, Docs, Back) -> Soft Gray */
-body.light-mode button[onclick="showRegister()"],
-body.light-mode button[onclick="showAboutPage()"],
-body.light-mode button[onclick="goHome()"] {
-    background-color: #f3f4f6 !important;
-    color: #374151 !important;
-    border: 1px solid #d1d5db !important;
-    border-radius: 8px !important;
-    box-shadow: none !important;
-}
-body.light-mode button[onclick="showRegister()"]:hover,
-body.light-mode button[onclick="showAboutPage()"]:hover,
-body.light-mode button[onclick="goHome()"]:hover {
-    background-color: #e5e7eb !important;
-}
-
-/* 8. Fix the "SYSTEM LOCKED" Header line inside the box */
-body.light-mode div[style*="border-bottom: 1px dashed rgba(148, 163, 184, 0.3)"] {
-    border-bottom: 2px solid #e5e7eb !important;
-    color: #4b5563 !important;
-}
-body.light-mode #systemStatusDot {
-    box-shadow: none !important; /* Removes the neon glow from the red/green dot */
-}
-
-/* 9. Fix inputs on the Login & Register pages */
-body.light-mode #loginPage input,
-body.light-mode #registerPage input {
-    background: #f9fafb !important;
-    border: 1px solid #d1d5db !important;
-    color: #111827 !important;
-}
-body.light-mode #loginPage input:focus,
-body.light-mode #registerPage input:focus {
-    background: #ffffff !important;
-    border-color: #3b82f6 !important;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
 }
 
 
