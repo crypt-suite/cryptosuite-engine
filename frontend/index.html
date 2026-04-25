@@ -367,92 +367,100 @@ body.light-mode div[style*="background:#f3f4f6"] {
 body.light-mode progress::-webkit-progress-bar { background-color: #e5e7eb !important; }
 body.light-mode progress::-webkit-progress-value { background-color: #3b82f6 !important; box-shadow: none !important; }
 
+
+
+
+
+
 /* =========================================
-   9. SPLASH PAGES (TRUE FROSTED GLASS FIX)
+   9. SPLASH PAGES (MATCHING DASHBOARD UI)
 ========================================= */
 
-/* Ensure the splash pages have the gradient */
+/* 1. Turn the splash pages into exact copies of the Dashboard Cards */
 body.light-mode #frontPage, 
 body.light-mode #loginPage, 
 body.light-mode #registerPage {
-    background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%) !important;
+    background: #ffffff !important; /* Solid crisp white */
+    backdrop-filter: none !important; /* Kill the glass effect entirely! */
+    border: 1px solid #f3f4f6 !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03) !important; /* Soft dashboard shadow */
+    border-radius: 12px !important;
 }
 
-/* The Glaring White Box Fix: Drop opacity to 40% and increase blur to 24px */
-body.light-mode #frontPage div[style*="rgba(30, 41, 59, 0.6)"],
-body.light-mode #loginPage div[style*="rgba(30, 41, 59, 0.6)"],
-body.light-mode #registerPage div[style*="rgba(30, 41, 59, 0.6)"] {
-    background: rgba(255, 255, 255, 0.4) !important; 
-    backdrop-filter: blur(24px) !important; 
-    border: 1px solid rgba(255, 255, 255, 0.8) !important;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255,255,255,0.6) !important;
-    border-radius: 16px !important;
-}
-
-/* Soften the Hacker Background Elements */
-body.light-mode .infinite-terminal {
-    opacity: 0.08 !important; 
-    color: #64748b !important; /* Soft slate gray */
-    text-shadow: none !important;
-}
-
+/* 2. Hide the hacker background animations in Light Mode! 
+      (They clash with the clean SaaS aesthetic and cause visual clutter) */
+body.light-mode .infinite-terminal,
 body.light-mode .particles-js-canvas-el {
-    opacity: 0.5 !important;
-    filter: invert(1) grayscale(100%) brightness(1.2) !important; /* Turns cyan/green into soft grays */
+    display: none !important;
 }
 
-/* Ensure Headers and Text on Splash Pages are sharp */
+/* 3. Sharp, clean typography */
+body.light-mode #frontPage h1,
 body.light-mode #hero-title,
-body.light-mode #frontPage h2,
 body.light-mode #loginPage h2,
 body.light-mode #registerPage h2 {
     color: #111827 !important;
     text-shadow: none !important;
 }
-
 body.light-mode #frontPage p,
 body.light-mode #loginPage p,
 body.light-mode #registerPage p {
     color: #4b5563 !important;
 }
 
-/* Primary Splash Buttons (Login, Register, Enter) */
-body.light-mode button[onclick="showLogin()"],
-body.light-mode button[onclick="attemptLogin()"],
-body.light-mode button[onclick="completeRegistration()"],
+/* 4. Match the Dashboard Inputs */
+body.light-mode #loginPage input,
+body.light-mode #registerPage input {
+    background: #f9fafb !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 8px !important;
+    color: #111827 !important;
+    box-shadow: none !important;
+}
+body.light-mode #loginPage input:focus,
+body.light-mode #registerPage input:focus {
+    background: #ffffff !important;
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
+}
+
+/* 5. Match the Dashboard Buttons exactly */
+body.light-mode #frontPage button,
+body.light-mode #loginPage button,
+body.light-mode #registerPage button {
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    border: none !important;
+    box-shadow: none !important;
+    transition: all 0.2s ease !important;
+}
+
+/* Primary actions (Login, Submit, Enter Playground) -> Blue */
 body.light-mode #enterBtn,
+body.light-mode button[onclick="attemptLogin()"],
+body.light-mode button[onclick="completeRegistration()"] {
+    background-color: #3b82f6 !important;
+    color: #ffffff !important;
+}
+body.light-mode #enterBtn:hover,
+body.light-mode button[onclick="attemptLogin()"]:hover,
+body.light-mode button[onclick="completeRegistration()"]:hover {
+    background-color: #2563eb !important;
+}
+
+/* Secondary actions (Register, About, Back) -> Gray */
+body.light-mode button[onclick="showLogin()"],
 body.light-mode button[onclick="showRegister()"],
 body.light-mode button[onclick="showAboutPage()"],
 body.light-mode button[onclick="goHome()"] {
-    background-color: #ffffff !important;
+    background-color: #f3f4f6 !important;
     color: #374151 !important;
-    border: 1px solid #d1d5db !important;
-    border-radius: 8px !important;
-    font-weight: 600 !important;
 }
-
 body.light-mode button[onclick="showLogin()"]:hover,
-body.light-mode button[onclick="attemptLogin()"]:hover,
-body.light-mode button[onclick="completeRegistration()"]:hover,
-body.light-mode #enterBtn:hover,
 body.light-mode button[onclick="showRegister()"]:hover,
 body.light-mode button[onclick="showAboutPage()"]:hover,
 body.light-mode button[onclick="goHome()"]:hover {
-    background-color: #f3f4f6 !important;
-}
-
-/* Keep the Main Action Buttons Blue */
-body.light-mode button[onclick="attemptLogin()"],
-body.light-mode button[onclick="completeRegistration()"],
-body.light-mode #enterBtn {
-    background-color: #3b82f6 !important;
-    color: #ffffff !important;
-    border: none !important;
-}
-body.light-mode button[onclick="attemptLogin()"]:hover,
-body.light-mode button[onclick="completeRegistration()"]:hover,
-body.light-mode #enterBtn:hover {
-    background-color: #2563eb !important;
+    background-color: #e5e7eb !important;
 }
 
 
