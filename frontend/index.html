@@ -431,6 +431,34 @@ body.light-mode #systemStatus {
 }
 
 
+/* =========================================
+   11. DOCUMENTATION HEADER & GLASS FIX
+========================================= */
+/* 1. Make the main Documentation box match the beautiful Front Page glass */
+body.light-mode #aboutPage div[style*="rgba(30, 41, 59, 0.7)"] {
+    background: rgba(255, 255, 255, 0.7) !important;
+    backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.8) !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* 2. Fix the bright orange header so it is actually readable! */
+body.light-mode #aboutPage h2 {
+    color: #ea580c !important; /* Deep burnt orange */
+    text-shadow: none !important; /* Kill the blurry glow */
+}
+
+/* 3. Darken the dashed orange line under the header */
+body.light-mode #aboutPage div[style*="border-bottom: 1px dashed rgba(245, 158, 11, 0.4)"] {
+    border-bottom: 1px dashed rgba(234, 88, 12, 0.4) !important;
+}
+
+/* 4. Ensure the sub-header text is dark slate instead of light gray */
+body.light-mode #aboutPage p {
+    color: #475569 !important;
+}
+
+
 
 </style>
 </head>
