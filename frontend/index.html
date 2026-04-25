@@ -575,9 +575,23 @@ body:not(.light-mode) .particles-js-canvas-el {
     opacity: 0.7 !important; /* Boost the base visibility of the canvas */
     
     /* Brightens the lines and adds a subtle hacker-green/cyan glow */
-    filter: brightness(1.5) drop-shadow(0 0 3px rgba(56, 189, 248, 0.4)) !important; 
+    filter: brightness(03) contrast(120%) drop-shadow(0 0 3px rgba(56, 189, 248, 0.4)) !important; 
 }
 
+
+
+/* =========================================
+   16. LIGHT MODE NODE VISIBILITY FIX
+========================================= */
+body.light-mode .particles-js-canvas-el {
+    opacity: 0.7 !important; /* Boosted from 0.3 so the lines are solidly visible */
+    
+    /* 1. invert(1) flips the bright neon lines to dark lines.
+       2. grayscale(100%) keeps them a professional gray/slate.
+       3. brightness(0.7) & contrast(150%) makes the lines sharp and defined.
+       4. drop-shadow adds a faint dark glow so they stand out from the background. */
+    /*filter: invert(1) grayscale(0%) brightness(0.7) contrast(150%) drop-shadow(0 0 2px rgba(15, 23, 42, 0.15)) !important; */
+}
 
 
 /* =========================================
