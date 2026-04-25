@@ -9,9 +9,8 @@
   
 
 
-
 /* =========================================
-   1. GLOBAL RESET & DARK THEME
+   1. GLOBAL RESET & REFINED DARK THEME
 ========================================= */
 * {
   box-sizing: border-box;
@@ -20,79 +19,103 @@
 }
 
 body {
-  font-family: 'Courier New', Courier, monospace;
-  background-color: #020617; /* Deep Slate Background */
-  color: #e2e8f0;
-  line-height: 1.6;
+  /* Using a clean sans-serif for UI, keeping monospace for terminal data only */
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #0f172a; /* Lighter Slate Navy */
+  color: #f1f5f9;
+  line-height: 1.5;
   min-height: 100vh;
-  padding: 30px 15px;
+  padding: 30px 20px;
 }
 
-/* Typography */
+/* Professional Typography */
 h1, h2, h3, h4 {
-  font-weight: 700;
-  letter-spacing: 1px;
-  margin-bottom: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: 12px;
 }
-h1 { font-size: 2.2rem; color: #38bdf8; text-shadow: 0 0 10px rgba(56,189,248,0.5); }
-h2 { font-size: 1.5rem; color: #f59e0b; border-bottom: 1px dashed rgba(245,158,11,0.3); padding-bottom: 8px; margin-bottom: 20px;}
-h3 { font-size: 1.2rem; color: #22c55e; margin-top: 15px;}
+h1 { font-size: 1.75rem; color: #f8fafc; } /* Clean white title */
+h2 { font-size: 1.25rem; color: #f1f5f9; border-bottom: 1px solid #1e293b; padding-bottom: 12px; margin-bottom: 20px;}
+h3 { font-size: 1.1rem; color: #38bdf8; margin-top: 15px;}
 p, small { color: #94a3b8; }
 
 /* Utilities */
 .hidden { display: none !important; }
-hr { border: 0; border-top: 1px dashed #334155; margin: 25px 0; }
+hr { border: 0; border-top: 1px solid #1e293b; margin: 25px 0; }
 
 /* Containers */
 .page {
-  max-width: 1300px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
 /* =========================================
-   2. DASHBOARD & GLASS CARDS
+   2. DASHBOARD & MODERN UI CARDS
 ========================================= */
 .app-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(30, 41, 59, 0.7);
-  backdrop-filter: blur(12px);
-  padding: 15px 25px;
-  border-radius: 12px;
-  border: 1px solid rgba(56, 189, 248, 0.3);
-  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.5);
-  margin-bottom: 30px;
+  background: #1e293b; /* Solid surface for professionalism */
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  margin-bottom: 32px;
 }
 
 .header-actions {
   display: flex;
-  gap: 10px;
+  gap: 12px;
 }
 
 .dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 25px;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 24px;
   align-items: start;
 }
 
 .card {
-  background: rgba(2, 6, 23, 0.6);
-  backdrop-filter: blur(8px);
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-  border: 1px solid rgba(148, 163, 184, 0.2);
-  transition: all 0.3s ease;
+  background: #1e293b;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  border: 1px solid #334155;
+  transition: border-color 0.2s ease;
 }
 
 .card:hover {
-  border-color: rgba(56, 189, 248, 0.4);
-  box-shadow: 0 8px 25px rgba(56, 189, 248, 0.15);
+  border-color: #475569; /* Subtle border highlight instead of glow */
 }
 
-.card.full-width { grid-column: 1 / -1; }
+/* Specific button style for the dashboard to keep it professional */
+button {
+  font-family: inherit;
+  font-weight: 500;
+  background-color: #0f172a;
+  border: 1px solid #334155;
+  color: #f1f5f9;
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  letter-spacing: 0;
+  transition: all 0.2s;
+}
+
+button:hover {
+  background-color: #38bdf8;
+  color: #0f172a;
+  border-color: #38bdf8;
+  box-shadow: none; /* Removed the neon shadow */
+}
+
+/* Keep the monospaced font ONLY for the output areas */
+#cryptoOutput, .output-box, .terminal-grid pre, .rail-grid-table {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace !important;
+}
+
+
 
 /* =========================================
    3. CYBER INPUTS & FORMS
