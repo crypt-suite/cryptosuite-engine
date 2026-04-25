@@ -283,89 +283,80 @@ canvas {
 
 
 
-
-
-
-
 /* =========================================
-   8. LIGHT MODE OVERRIDES (MODERN SAAS DASHBOARD)
+   8. LIGHT MODE OVERRIDES (EYE-STRAIN FIX)
 ========================================= */
 body.light-mode {
-    background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%) !important;
-    color: #333 !important;
+    background-color: #f1f5f9 !important; /* Soft matte gray/blue, not blinding white */
+    color: #0f172a !important;
 }
 
-/* 1. Global Typography Reset */
-body.light-mode * { text-shadow: none !important; box-shadow: none !important; }
-body.light-mode h1 { color: #111827 !important; }
-body.light-mode h2 { color: #111827 !important; border-bottom: 2px solid #e5e7eb !important; }
-body.light-mode h3 { color: #111827 !important; }
-body.light-mode p, body.light-mode small, body.light-mode label { color: #4b5563 !important; }
-
-/* 2. Dashboard Cards (The crisp white you liked) */
-body.light-mode .card, body.light-mode .app-header {
-    background: #ffffff !important;
-    border: 1px solid #f3f4f6 !important;
-    border-radius: 12px !important;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.03) !important;
-    backdrop-filter: none !important;
-    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
-}
-body.light-mode .card:hover {
-    box-shadow: 0 8px 25px rgba(0,0,0,0.06) !important;
-    transform: translateY(-2px);
+/* 1. Crush all neon glowing text effects globally */
+body.light-mode * {
+    text-shadow: none !important;
+    box-shadow: none !important; /* Kills the weird glowing halos */
 }
 
-/* 3. Inputs & Selects */
+/* 2. Fix Typography to soft, high-contrast darks */
+body.light-mode h1, body.light-mode #hero-title { color: #0f172a !important; }
+body.light-mode h2 { color: #334155 !important; border-color: #cbd5e1 !important; }
+body.light-mode h3 { color: #0284c7 !important; }
+body.light-mode p, body.light-mode small, body.light-mode span, body.light-mode label { 
+    color: #475569 !important; 
+}
+body.light-mode #systemStatusText { color: #0f172a !important; }
+
+/* 3. Fix the Glass Cards and Headers (RESTORE FROSTED GLASS) */
+body.light-mode .card, body.light-mode .app-header, body.light-mode div[style*="rgba(30, 41, 59, 0.6)"] {
+    background: rgba(255, 255, 255, 0.65) !important; /* Semi-transparent white */
+    backdrop-filter: blur(12px) !important; /* Restores the glass blur! */
+    border: 1px solid rgba(203, 213, 225, 0.8) !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05) !important;
+}
+
+/* 4. Fix inner inset boxes (Dictionary stats, Affine clues, etc.) */
+body.light-mode div[style*="rgba(15, 23, 42, 0.6)"] {
+    background: #f8fafc !important; 
+    border: 1px solid #e2e8f0 !important; 
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02) !important;
+}
+
+/* 5. Fix Inputs and textareas */
 body.light-mode input, body.light-mode select, body.light-mode textarea {
-    background: #f9fafb !important;
-    border: 1px solid #d1d5db !important;
-    border-radius: 8px !important;
-    color: #111827 !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border: 1px solid #cbd5e1 !important;
+    caret-color: #0f172a !important;
 }
 body.light-mode input:focus, body.light-mode select:focus, body.light-mode textarea:focus {
+    border-color: #0284c7 !important;
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1) !important; /* Soft focus ring */
+}
+
+/* 6. Fix Buttons (Removes neon borders and glowing text) */
+body.light-mode button, body.light-mode .cyber-btn-scan { 
+    border: 1px solid #cbd5e1 !important; 
+    color: #334155 !important; 
     background: #ffffff !important;
-    border-color: #3b82f6 !important;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+}
+body.light-mode button:hover, body.light-mode .cyber-btn-scan:hover { 
+    background-color: #f1f5f9 !important; 
+    border-color: #94a3b8 !important; 
+}
+body.light-mode .btn-secondary { background: #f8fafc !important; }
+body.light-mode .btn-danger { color: #dc2626 !important; border-color: #fca5a5 !important; background: #fef2f2 !important; }
+
+/* 7. Terminal output and Canvas boxes */
+body.light-mode #cryptoOutput, body.light-mode .output-box, body.light-mode canvas {
+    background: #f8fafc !important;
+    color: #0f172a !important;
+    border: 1px solid #cbd5e1 !important;
 }
 
-/* 4. Professional Blue Buttons (Scoped to Dashboard only!) */
-body.light-mode #playgroundPage button {
-    background-color: #3b82f6 !important;
-    color: #ffffff !important;
-    border: none !important;
-    border-radius: 8px !important;
-    font-weight: 600 !important;
-    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2) !important;
-}
-body.light-mode #playgroundPage button:hover {
-    background-color: #2563eb !important;
-    transform: translateY(-1px) !important;
-}
-body.light-mode #playgroundPage .btn-secondary { background-color: #f3f4f6 !important; color: #374151 !important; box-shadow: none !important; }
-body.light-mode #playgroundPage .btn-secondary:hover { background-color: #e5e7eb !important; }
-body.light-mode #playgroundPage .btn-danger { background-color: #ef4444 !important; color: white !important; }
-body.light-mode #playgroundPage .btn-danger:hover { background-color: #dc2626 !important; }
-
-/* 5. Contrast Terminal Box inside Dashboard */
-body.light-mode #cryptoOutput, body.light-mode .output-box {
-    background: #1f2937 !important;
-    color: #10b981 !important;
-    border-radius: 8px !important;
-    border: none !important;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1) !important;
-}
-
-/* 6. Dashboard Sub-boxes */
-body.light-mode div[style*="background:#f3f4f6"] {
-    background: #ffffff !important;
-    border: 1px solid #e5e7eb !important;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.02) !important;
-}
-
-/* 7. Progress Bar */
-body.light-mode progress::-webkit-progress-bar { background-color: #e5e7eb !important; }
-body.light-mode progress::-webkit-progress-value { background-color: #3b82f6 !important; box-shadow: none !important; }
+/* 8. Background Effects (Mute the terminal matrix and floating nodes) */
+body.light-mode .infinite-terminal { opacity: 0.04 !important; color: #000000 !important; }
+body.light-mode .particles-js-canvas-el { opacity: 0.3 !important; filter: grayscale(100%) !important; }
 
 
 
@@ -373,113 +364,38 @@ body.light-mode progress::-webkit-progress-value { background-color: #3b82f6 !im
 
 
 /* =========================================
-   9. SPLASH PAGES (DEFINED BOUNDARIES & ACCENTS)
+   9. DOCUMENTATION PAGE LIGHT MODE FIX
 ========================================= */
-
-/* 1. The Center Box - Crisp boundary, solid white, floating above background */
-body.light-mode #frontPage, 
-body.light-mode #loginPage, 
-body.light-mode #registerPage {
-    background: #ffffff !important; 
-    
-    /* THE BOUNDARY FIX: A stronger, darker gray border so the edges don't vanish */
-    border: 1px solid #cbd5e1 !important; 
-    border-top: 4px solid #3b82f6 !important; /* The premium blue accent stripe */
-    
-    /* A deeper, neutral shadow (no blue glow) to definitively separate it from the background */
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1) !important; 
-    border-radius: 12px !important;
-    backdrop-filter: none !important; 
-    
-    position: relative;
-    z-index: 10; /* Keeps the solid white box strictly above the background nodes */
+/* 1. Change the main page background */
+body.light-mode #aboutPage {
+    background-color: #f8fafc !important;
 }
 
-/* 2. Background Elements - Alive but safely behind the box */
-body.light-mode .infinite-terminal {
-    display: block !important;
-    opacity: 0.15 !important;
-    color: #475569 !important; /* Darker slate so it's readable but soft */
-    text-shadow: none !important;
-    z-index: 1;
-}
-
-body.light-mode .particles-js-canvas-el {
-    display: block !important;
-    opacity: 0.3 !important;
-    /* Inverts the neon into dark, sleek web nodes */
-    filter: invert(1) grayscale(100%) contrast(150%) !important;
-    z-index: 2;
-}
-
-/* 3. Sharp Text inside the Box */
-body.light-mode #frontPage h1,
-body.light-mode #hero-title,
-body.light-mode #loginPage h2,
-body.light-mode #registerPage h2 {
-    color: #0f172a !important; /* Very dark slate for maximum readability */
-    text-shadow: none !important;
-}
-body.light-mode #frontPage p,
-body.light-mode #loginPage p,
-body.light-mode #registerPage p {
-    color: #4b5563 !important;
-}
-
-/* 4. Inputs */
-body.light-mode #loginPage input,
-body.light-mode #registerPage input {
-    background: #f8fafc !important;
-    border: 1px solid #cbd5e1 !important; /* Stronger input borders */
-    border-radius: 8px !important;
+/* 2. Change the main frosted glass wrapper */
+body.light-mode #aboutPage div[style*="rgba(30, 41, 59, 0.7)"] {
+    background: rgba(255, 255, 255, 0.75) !important;
+    border-color: #cbd5e1 !important;
     color: #0f172a !important;
-}
-body.light-mode #loginPage input:focus,
-body.light-mode #registerPage input:focus {
-    background: #ffffff !important;
-    border-color: #3b82f6 !important;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important;
 }
 
-/* 5. Buttons - Vibrant Gradients */
-body.light-mode #frontPage button,
-body.light-mode #loginPage button,
-body.light-mode #registerPage button {
-    border-radius: 8px !important;
-    font-weight: 600 !important;
-    border: none !important;
-    transition: all 0.2s ease !important;
+/* 3. Change the inner Module boxes */
+body.light-mode #aboutPage div[style*="rgba(2, 6, 23, 0.6)"] {
+    background: #f1f5f9 !important;
+    border: 1px solid #e2e8f0 !important;
 }
 
-/* Primary Actions */
-body.light-mode #enterBtn,
-body.light-mode button[onclick="attemptLogin()"],
-body.light-mode button[onclick="completeRegistration()"] {
-    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
-    color: #ffffff !important;
-    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3) !important;
-}
-body.light-mode #enterBtn:hover,
-body.light-mode button[onclick="attemptLogin()"]:hover,
-body.light-mode button[onclick="completeRegistration()"]:hover {
-    box-shadow: 0 6px 15px rgba(59, 130, 246, 0.4) !important;
-    transform: translateY(-2px) !important;
-}
-
-/* Secondary Actions */
-body.light-mode button[onclick="showLogin()"],
-body.light-mode button[onclick="showRegister()"],
-body.light-mode button[onclick="showAboutPage()"],
-body.light-mode button[onclick="goHome()"] {
-    background-color: #f1f5f9 !important;
+/* 4. Fix text colors for lists and bold words inside the docs */
+body.light-mode #aboutPage li, 
+body.light-mode #aboutPage strong {
     color: #334155 !important;
-    border: 1px solid #cbd5e1 !important; /* Give secondary buttons a boundary too! */
 }
-body.light-mode button[onclick="showLogin()"]:hover,
-body.light-mode button[onclick="showRegister()"]:hover,
-body.light-mode button[onclick="showAboutPage()"]:hover,
-body.light-mode button[onclick="goHome()"]:hover {
-    background-color: #e2e8f0 !important;
+
+/* 5. Invert the little inline code snippets (like `E(x) = (ax + b)`) so they are readable */
+body.light-mode #aboutPage code {
+    background: #e2e8f0 !important;
+    color: #ea580c !important; /* Orange text for code snippets */
+    text-shadow: none !important;
 }
 
 
