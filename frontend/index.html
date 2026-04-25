@@ -373,28 +373,51 @@ body.light-mode progress::-webkit-progress-value { background-color: #3b82f6 !im
 
 
 /* =========================================
-   9. SPLASH PAGES (MATCHING DASHBOARD UI)
+   9. SPLASH PAGES (PREMIUM SAAS WITH ACCENTS)
 ========================================= */
 
-/* 1. Turn the splash pages into exact copies of the Dashboard Cards */
+/* 1. Ensure the background gradient is set */
 body.light-mode #frontPage, 
 body.light-mode #loginPage, 
 body.light-mode #registerPage {
-    background: #ffffff !important; /* Solid crisp white */
-    backdrop-filter: none !important; /* Kill the glass effect entirely! */
-    border: 1px solid #f3f4f6 !important;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.03) !important; /* Soft dashboard shadow */
+    background: #ffffff !important; 
+    
+    /* THE ACCENT: A vibrant blue stripe at the top of the box */
+    border-top: 4px solid #3b82f6 !important; 
+    border-bottom: 1px solid #e5e7eb !important;
+    border-left: 1px solid #e5e7eb !important;
+    border-right: 1px solid #e5e7eb !important;
+    
+    /* THE GLOW: A soft, colorful blue shadow to make the box float */
+    box-shadow: 0 15px 35px -5px rgba(59, 130, 246, 0.15), 0 5px 15px rgba(0,0,0,0.05) !important; 
     border-radius: 12px !important;
+    backdrop-filter: none !important; 
+    z-index: 10; /* Keeps the box above the particles */
+    position: relative;
 }
 
-/* 2. Hide the hacker background animations in Light Mode! 
-      (They clash with the clean SaaS aesthetic and cause visual clutter) */
+/* 2. BRING BACK THE TERMINAL AND NODES! */
 body.light-mode .infinite-terminal,
 body.light-mode .particles-js-canvas-el {
-    display: none !important;
+    display: block !important; /* Un-hide them! */
+    pointer-events: none; /* Make sure you can still click the box */
 }
 
-/* 3. Sharp, clean typography */
+/* Style the terminal to look like a subtle blueprint watermark */
+body.light-mode .infinite-terminal {
+    opacity: 0.15 !important;
+    color: #94a3b8 !important; /* Soft slate-blue text */
+    text-shadow: none !important;
+}
+
+/* Style the nodes to look like a dark, technical mesh */
+body.light-mode .particles-js-canvas-el {
+    opacity: 0.25 !important;
+    /* This filter forces the neon particles to become dark, sleek nodes */
+    filter: invert(1) grayscale(100%) contrast(200%) !important; 
+}
+
+/* 3. Sharp, clean typography inside the center box */
 body.light-mode #frontPage h1,
 body.light-mode #hero-title,
 body.light-mode #loginPage h2,
@@ -415,7 +438,6 @@ body.light-mode #registerPage input {
     border: 1px solid #d1d5db !important;
     border-radius: 8px !important;
     color: #111827 !important;
-    box-shadow: none !important;
 }
 body.light-mode #loginPage input:focus,
 body.light-mode #registerPage input:focus {
@@ -424,37 +446,39 @@ body.light-mode #registerPage input:focus {
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
 }
 
-/* 5. Match the Dashboard Buttons exactly */
+/* 5. VIBRANT BUTTON ACCENTS */
 body.light-mode #frontPage button,
 body.light-mode #loginPage button,
 body.light-mode #registerPage button {
     border-radius: 8px !important;
     font-weight: 600 !important;
     border: none !important;
-    box-shadow: none !important;
     transition: all 0.2s ease !important;
 }
 
-/* Primary actions (Login, Submit, Enter Playground) -> Blue */
+/* Primary actions (Login, Submit, Enter) get a rich gradient and drop shadow */
 body.light-mode #enterBtn,
 body.light-mode button[onclick="attemptLogin()"],
 body.light-mode button[onclick="completeRegistration()"] {
-    background-color: #3b82f6 !important;
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
     color: #ffffff !important;
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3) !important;
 }
 body.light-mode #enterBtn:hover,
 body.light-mode button[onclick="attemptLogin()"]:hover,
 body.light-mode button[onclick="completeRegistration()"]:hover {
-    background-color: #2563eb !important;
+    box-shadow: 0 6px 15px rgba(59, 130, 246, 0.4) !important;
+    transform: translateY(-2px) !important;
 }
 
-/* Secondary actions (Register, About, Back) -> Gray */
+/* Secondary actions (Register, About, Back) stay soft gray */
 body.light-mode button[onclick="showLogin()"],
 body.light-mode button[onclick="showRegister()"],
 body.light-mode button[onclick="showAboutPage()"],
 body.light-mode button[onclick="goHome()"] {
     background-color: #f3f4f6 !important;
     color: #374151 !important;
+    box-shadow: none !important;
 }
 body.light-mode button[onclick="showLogin()"]:hover,
 body.light-mode button[onclick="showRegister()"]:hover,
