@@ -399,16 +399,28 @@ body.light-mode #aboutPage div[style*="border-bottom: 1px dashed rgba(245, 158, 
 body.light-mode #aboutPage p { color: #475569 !important; }
 body.light-mode #aboutPage h4 { color: #0f172a !important; font-weight: 800 !important; }
 
-
 /* =========================================
-   12. DASHBOARD ONLY (From your second code)
+   12. DASHBOARD ONLY (Centered Fix)
 ========================================= */
-/* Applies the premium gradient exclusively to the Dashboard container */
+/* THE FIX: Restore the margin so the grid centers perfectly! */
 body.light-mode #playgroundPage {
+    margin: 0 auto !important; 
+    max-width: 1300px !important;
+    padding: 30px 15px !important; 
+    background: transparent !important; 
+}
+
+/* Paint the gradient perfectly behind the dashboard covering the whole screen */
+body.light-mode #playgroundPage::before {
+    content: "";
+    position: fixed !important;
+    top: 0 !important; 
+    left: 0 !important; 
+    width: 100vw !important; 
+    height: 100vh !important;
     background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%) !important;
-    margin: -30px -15px; 
-    padding: 30px 15px; 
-    min-height: 100vh;
+    z-index: -1 !important;
+    pointer-events: none !important;
 }
 
 body.light-mode #playgroundPage h1, body.light-mode #playgroundPage h2, body.light-mode #playgroundPage h3 { color: #111827 !important; }
@@ -449,7 +461,6 @@ body.light-mode #playgroundPage div[style*="background:#f3f4f6"] {
 }
 body.light-mode #playgroundPage progress::-webkit-progress-bar { background-color: #e5e7eb !important; }
 body.light-mode #playgroundPage progress::-webkit-progress-value { background-color: #3b82f6 !important; box-shadow: none !important; }
-
 
 /* =========================================
    13. NODE INTERACTIVITY FIX
