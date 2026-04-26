@@ -80,16 +80,6 @@ const registerLimiter = rateLimit({
 
 
 
-// TEMP test route
-/*
-app.get("/", (req, res) => {
-  res.send("Backend is running");
-});
-*/
-
-
-
-
 
 
 
@@ -153,47 +143,6 @@ app.post("/api/run", express.text(), (req, res) => {
     process.stdin.write(code);
     process.stdin.end();
 });
-
-// Caesar route
-/*
-app.post("/api/caesar", (req, res) => {
-  const { text, shift = 3, mode } = req.body;
-
-  let result = "";
-  let steps = [];
-
-  for (let c of text) {
-    if (/[a-z]/.test(c)) {
-      const base = 97;
-      const s = mode === "decrypt" ? 26 - shift : shift;
-      const newChar = String.fromCharCode(
-        (c.charCodeAt(0) - base + s) % 26 + base
-      );
-      steps.push(`${c} → ${newChar}`);
-      result += newChar;
-    } 
-    else if (/[A-Z]/.test(c)) {
-      const base = 65;
-      const s = mode === "decrypt" ? 26 - shift : shift;
-      const newChar = String.fromCharCode(
-        (c.charCodeAt(0) - base + s) % 26 + base
-      );
-      steps.push(`${c} → ${newChar}`);
-      result += newChar;
-    } 
-    else {
-      steps.push(`${c} → ${c} (unchanged)`);
-      result += c;
-    }
-  }
-
-  res.json({ result, steps });
-});
-*/
-
-
-
-
 
 
 
@@ -578,57 +527,6 @@ app.post("/api/railfence", (req, res) => {
 
 
 
-/*
-//------------User Registration Route------------//
-const bcrypt = require("bcryptjs");
-const db = require("./db"); // Assuming you have your DB connection here
-
-app.post("/api/register", async (req, res) => {
-  const { username, email, password } = req.body;
-
-  // 1. Check for missing fields
-  if (!username || !email || !password) {
-    return res.status(400).json({ error: "Missing fields" });
-  }
-
-  // 2. Server-side Airtight Email Validation
-  const emailRegex = /^[a-zA-Z0-9]+(?:[._-][a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*(?:\.[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*)*\.[a-zA-Z]{2,}$/;
-  if (!emailRegex.test(email)) {
-    return res.status(400).json({ error: "Invalid email format. Please check for typos, consecutive dots, or invalid characters." });
-  }
-
-  // Restrict to Popular Domains
-  const allowedDomains = ["gmail.com", "yahoo.com", "outlook.com", "hotmail.com", "icloud.com", "ethereal.email"];
-  const userDomain = email.split('@')[1].toLowerCase();
-  
-  if (!allowedDomains.includes(userDomain)) {
-    return res.status(400).json({ 
-      error: `Unsupported email provider. We only accept: ${allowedDomains.join(', ')}` 
-    });
-  }
-
-  const hashed = await bcrypt.hash(password, 10);
-
-  try {
-    // 3. Insert into database including the new email column
-    await db.execute(
-      "INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)",
-      [username, email, hashed]
-    );
-    res.json({ success: true });
-  } catch (err) {
-    // Check if error is due to duplicate username OR email
-    if (err.code === 'ER_DUP_ENTRY' || err.code === '23505') { 
-      return res.status(400).json({ error: "Username or Email already exists" });
-    }
-    console.error("Database error during registration:", err);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-//------------User Registration Route------------//
-*/
-
-
 
 //------------User Registration Route------------//
 app.post("/api/register", registerLimiter, async (req, res) => {
@@ -920,35 +818,11 @@ app.post("/api/unlock", async (req, res) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const upload = multer({ 
   dest: "uploads/",
   limits: { fileSize: 10 * 1024 * 1024 } // Enforces a strict 5MB size limit
 });
 const HASH_DB = path.join(__dirname, "hashes.json");
-
-//function loadHashes() {
-// if (!fs.existsSync(HASH_DB)) return {};
-// return JSON.parse(fs.readFileSync(HASH_DB, "utf8"));
-//}
-
-
-
-
-
 
 
 
@@ -1001,25 +875,6 @@ function isText(buffer) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //------------------------------------added now-------------------------------
 
 
@@ -1044,53 +899,6 @@ function getWordHashes(buffer) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//app.post("/api/integrity/check", upload.single("file"), (req, res) => {
-//  if (!req.file) return res.status(400).json({ error: "No file" });
-//
-//  const hashes = loadHashes();
-//  const originalHash = hashes[req.file.originalname];
-//
-//  if (!originalHash) {
-//    fs.unlinkSync(req.file.path);
-//    return res.json({ status: "UNKNOWN_FILE" });
-//  }
-//
-//  const buffer = fs.readFileSync(req.file.path);
-//  const currentHash = sha256(buffer);
-//
-//  fs.unlinkSync(req.file.path);
-//
-//  res.json({
-//    status: currentHash === originalHash ? "SAFE" : "TAMPERED",
-//    originalHash,
-//    currentHash
-//  });
-//});
 
 
 
@@ -1119,56 +927,6 @@ app.post("/api/integrity/check", upload.single("file"), (req, res) => {
     const originalWordHashes = record.wordHashes;
 
 
-
-
-
-
-/*
-    for (let i = 0; i < Math.max(originalWordHashes.length, currentWordHashes.length); i++) {
-      if (originalWordHashes[i] !== currentWordHashes[i]) {
-        changedWords.push(i);
-      }
-    }
-
-
-const differences = Diff.diffArrays(originalWordHashes, currentWordHashes);
-    let currentIndex = 0;
-
-    differences.forEach((part) => {
-      if (part.added) {
-        // Words were added or altered. Mark them all red.
-        for (let i = 0; i < part.count; i++) {
-          changedWords.push(currentIndex);
-          currentIndex++;
-        }
-      } else if (part.removed) {
-        // A word was deleted! 
-        // We grab the index of the word sitting right next to the gap to act as the "scar".
-        let scarIndex = currentIndex < currentWordHashes.length ? currentIndex : currentWordHashes.length - 1;
-        
-        // Push it to the changedWords array so it glows red on the frontend!
-        if (scarIndex >= 0 && !changedWords.includes(scarIndex)) {
-          changedWords.push(scarIndex);
-        }
-      } else {
-        // These words are safe and untouched. Move past them.
-        currentIndex += part.count;
-      }
-    });
-  }
-
-  fs.unlinkSync(req.file.path);
-
-  res.json({
-    status: currentHash === record.fileHash ? "SAFE" : "TAMPERED",
-    originalHash: record.fileHash,
-    currentHash,
-    changedWords
-  });
-
-  
-});
-*/
 
 
 
@@ -1447,42 +1205,6 @@ const info = meta[id];
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//app.post("/api/integrity/store", upload.single("file"), (req, res) => {
-//  if (!req.file) return res.status(400).json({ error: "No file" });
-//
-//  const buffer = fs.readFileSync(req.file.path);
-//  const hash = sha256(buffer);
-//
-//  const hashes = loadHashes();
-//  hashes[req.file.originalname] = hash;
-//  saveHashes(hashes);
-//
-//  fs.unlinkSync(req.file.path);
-//
-//  res.json({ success: true });
-//});
-
-
-
-
-
-
-
-
 app.post("/api/integrity/store", upload.single("file"), (req, res) => {
   if (!req.file) return res.status(400).json({ error: "No file" });
 
@@ -1491,13 +1213,13 @@ app.post("/api/integrity/store", upload.single("file"), (req, res) => {
 
   const hashes = loadHashes();
 
-  // ✅ NEW: word hashes (only if text file)
+  // NEW: word hashes (only if text file)
   let wordHashes = [];
   if (isText(buffer)) {
     wordHashes = getWordHashes(buffer);
   }
 
-  // ✅ STORE OBJECT instead of just hash
+  //STORE OBJECT instead of just hash
   hashes[req.file.originalname] = {
     fileHash,
     wordHashes
