@@ -3890,8 +3890,8 @@ async function encryptSecureFile() {
   // FILE SIZE LIMIT
 //const MAX_SIZE = 10 * 1024 * 1024; // 5MB
 
-if (file.size > MAX_SIZE) {
-  alert("File too large (max 5MB)");
+if (file.size > MAX_FILE_SIZE) {
+  alert("File too large (max 10MB)");
   return;
 }
 
@@ -3982,8 +3982,8 @@ async function decryptSecureFile() {
   //  FILE SIZE VALIDATION FOR DECRYPT
 //const MAX_SIZE = 10 * 1024 * 1024;
 
-if (dataFile.size > MAX_SIZE || idFile.size > MAX_SIZE || keyFile.size > MAX_SIZE) {
-  alert("File too large (max 5MB)");
+if (dataFile.size > MAX_FILE_SIZE || idFile.size > MAX_FILE_SIZE || keyFile.size > MAX_FILE_SIZE) {
+  alert("File too large (max 10MB)");
   return;
 }
 
