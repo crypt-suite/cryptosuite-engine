@@ -934,7 +934,10 @@ app.post("/api/unlock", async (req, res) => {
 
 
 
-const upload = multer({ dest: "uploads/" });
+const upload = multer({ 
+  dest: "uploads/",
+  limits: { fileSize: 10 * 1024 * 1024 } // Enforces a strict 5MB size limit
+});
 const HASH_DB = path.join(__dirname, "hashes.json");
 
 //function loadHashes() {
