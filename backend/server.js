@@ -92,6 +92,18 @@ app.get("/api/ping", async (req, res) => {
 
 
 
+
+app.get("/api/ram", (req, res) => {
+    const memory = process.memoryUsage();
+    res.status(200).json({
+        total_ram_allocated: `${Math.round(memory.rss / 1024 / 1024)} MB`,
+        ram_actively_used: `${Math.round(memory.heapUsed / 1024 / 1024)} MB`,
+        warning: "If total_ram_allocated gets close to 512 MB, Render will kill the server!"
+    });
+});
+
+
+
 // Serve the Main Hub (Your landing page with the two buttons)
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/index.html'));
