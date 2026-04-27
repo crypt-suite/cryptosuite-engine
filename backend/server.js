@@ -793,8 +793,8 @@ app.post("/api/forgot-password", async (req, res) => {
 
     // Let MySQL handle the time math perfectly
     await pool.execute(
-      "UPDATE users SET reset_token = ?, reset_token_expires = ? WHERE id = ?",
-      [resetToken, expireTime, user.id]
+      "UPDATE users SET reset_token = ?, reset_token_expires = DATE_ADD(NOW(), INTERVAL 1 HOUR) WHERE id = ?",
+      [resetToken, user.id] 
     );
 
     const resetLink = `https://cryptosuite-engine.onrender.com/?resetToken=${resetToken}`;
