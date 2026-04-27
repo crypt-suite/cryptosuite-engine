@@ -2848,10 +2848,10 @@ function toggleSystemLock(isUnlocked) {
     }
 }
 
-// --- AUTO-LOCK ON REFRESH ---
+// --- MASTER PAGE LOAD CONTROLLER ---
 window.addEventListener("DOMContentLoaded", () => {
 
-  // THEME CHECK: Apply Light Mode if they selected it previously
+    // 1. THEME CHECK
     if (localStorage.getItem("vaultTheme") === "light") {
         document.body.classList.add("light-mode");
         const toggleBtn = document.getElementById("themeToggleBtn");
@@ -2863,17 +2863,34 @@ window.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // 1. Destroy any existing session token the moment the page reloads
+    // 2. SECURITY: Destroy session and lock console
     sessionStorage.removeItem("authToken"); 
-    
-    // 2. Force the console light back to RED (Locked)
     toggleSystemLock(false);
     
-    // 3. Ensure they are kicked back to the Front Page
+    // 3. HIDE ALL PAGES INITIALLY
     document.querySelectorAll(".page").forEach(page => page.classList.add("hidden"));
-    document.getElementById("frontPage").classList.remove("hidden");
     
-    // 4. Reset brute-force tasks if any were running
+    // 4. SMART ROUTING: Check the URL for tokens BEFORE forcing the front page
+    const urlParams = new URLSearchParams(window.location.search);
+    const resetToken = urlParams.get('resetToken');
+    const unlocked = urlParams.get('unlocked');
+
+    if (resetToken) {
+        // User clicked a Forgot Password link!
+        document.getElementById("resetTokenInput").value = resetToken;
+        document.getElementById("resetPasswordPage").classList.remove("hidden");
+        window.history.replaceState({}, document.title, "/"); // Hide token from URL bar
+    } else if (unlocked) {
+        // User clicked an Account Unlock link!
+        document.getElementById("frontPage").classList.remove("hidden");
+        setTimeout(() => alert("Account successfully unlocked! You may now log in."), 500);
+        window.history.replaceState({}, document.title, "/"); 
+    } else {
+        // Normal visit: Kick them to the Front Page
+        document.getElementById("frontPage").classList.remove("hidden");
+    }
+    
+    // 5. Reset brute-force tasks if any were running
     if (typeof resetBruteForce === "function") {
         resetBruteForce();
     }
