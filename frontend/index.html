@@ -2803,6 +2803,8 @@ async function submitNewPassword() {
   }
 }
 
+
+/*
 // --- MASTER PAGE LOAD CONTROLLER (FIXED) ---
 window.addEventListener("DOMContentLoaded", () => {
     sessionStorage.removeItem("authToken"); 
@@ -2932,6 +2934,79 @@ window.addEventListener("DOMContentLoaded", () => {
         resetBruteForce();
     }
 });
+
+
+*/
+
+
+
+
+
+
+
+
+function toggleSystemLock(isUnlocked) {
+    const statusDot = document.getElementById("systemStatusDot");
+    const statusText = document.getElementById("systemStatusText");
+    const enterBtn = document.getElementById("enterBtn");
+
+    if (!statusDot || !statusText || !enterBtn) return;
+
+    if (isUnlocked) {
+        statusDot.style.backgroundColor = "#22c55e";
+        statusDot.style.boxShadow = "0 0 10px #22c55e";
+        statusText.innerText = "SYSTEM UNLOCKED";
+        statusText.style.color = "#22c55e";
+        enterBtn.style.display = "block";  
+    } else {
+        statusDot.style.backgroundColor = "#f87171";
+        statusDot.style.boxShadow = "0 0 10px #f87171";
+        statusText.innerText = "SYSTEM LOCKED";
+        statusText.style.color = "#f87171";
+        enterBtn.style.display = "none";  
+    }
+}
+
+// ==========================================
+// ULTIMATE MASTER PAGE ROUTER
+// ==========================================
+window.addEventListener("DOMContentLoaded", () => {
+    // 1. Immediately look for a reset token in the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const resetToken = urlParams.get('resetToken');
+
+    // 2. Apply Light/Dark Theme
+    if (localStorage.getItem("vaultTheme") === "light") {
+        document.body.classList.add("light-mode");
+        const toggleBtn = document.getElementById("themeToggleBtn");
+        if (toggleBtn) {
+            toggleBtn.innerText = "🌙 Dark Mode";
+            toggleBtn.style.background = "rgba(255, 255, 255, 0.9)";
+            toggleBtn.style.borderColor = "#0284c7";
+            toggleBtn.style.color = "#0284c7";
+        }
+    }
+
+    // 3. Security Lockdown on refresh
+    sessionStorage.removeItem("authToken"); 
+    toggleSystemLock(false);
+    if (typeof resetBruteForce === "function") resetBruteForce();
+
+    // 4. Hide all UI pages to clear the screen
+    document.querySelectorAll(".page").forEach(page => page.classList.add("hidden"));
+
+    // 5. TRAFFIC COP: Where does the user go?
+    if (resetToken) {
+        // Token found! Show the Override Page
+        document.getElementById("resetTokenInput").value = resetToken;
+        document.getElementById("resetPasswordPage").classList.remove("hidden");
+        window.history.replaceState({}, document.title, window.location.pathname);
+    } else {
+        // No token. Show Front Page
+        document.getElementById("frontPage").classList.remove("hidden");
+    }
+});
+
 
 
 // Login logic
