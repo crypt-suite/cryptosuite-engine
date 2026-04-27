@@ -1305,9 +1305,11 @@ body.light-mode .infinite-terminal {
     </div>
 </div>
 <!-- Hide these elements -->
-<div id="forgotPasswordPage" class="page hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; max-width: none; margin: 0; background-color: #020617; font-family: 'Courier New', monospace; z-index: 60; display: flex; align-items: center; justify-content: center; box-sizing: border-box; overflow-x: hidden;">
-    <div id="particles-js-forgot" style="position: absolute; width: 100%; height: 100%; z-index: 1;"></div>
-    <div style="position: relative; z-index: 10; background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 40px; width: 420px; max-width: 90%; box-shadow: 0 8px 32px 0 rgba(0,0,0,0.7); text-align: center;">
+<div id="forgotPasswordPage" class="page hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; max-width: none; margin: 0; background-color: #020617; font-family: 'Courier New', monospace; z-index: 60; display: flex; box-sizing: border-box; overflow-x: hidden; overflow-y: auto; padding: 40px 15px;">
+    
+    <div id="particles-js-forgot" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;"></div>
+    
+    <div style="margin: auto; position: relative; z-index: 10; background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 40px; width: 420px; max-width: 100%; box-shadow: 0 8px 32px 0 rgba(0,0,0,0.7); text-align: center;">
         
         <h2 style="color: #38bdf8; font-size: 2rem; margin-top: 0; margin-bottom: 5px; letter-spacing: 2px; border: none; text-shadow: 0 0 10px rgba(56,189,248,0.5);">RESET PASSKEY</h2>
         <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 25px;">Enter secure email to receive a reset link.</p>
@@ -1324,9 +1326,11 @@ body.light-mode .infinite-terminal {
     </div>
 </div>
 
-<div id="resetPasswordPage" class="page hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; max-width: none; margin: 0; background-color: #020617; font-family: 'Courier New', monospace; z-index: 60; display: flex; align-items: center; justify-content: center; box-sizing: border-box; overflow-x: hidden;">
-    <div id="particles-js-reset" style="position: absolute; width: 100%; height: 100%; z-index: 1;"></div>
-    <div style="position: relative; z-index: 10; background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 40px; width: 420px; max-width: 90%; box-shadow: 0 8px 32px 0 rgba(0,0,0,0.7); text-align: center;">
+<div id="resetPasswordPage" class="page hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; max-width: none; margin: 0; background-color: #020617; font-family: 'Courier New', monospace; z-index: 60; display: flex; box-sizing: border-box; overflow-x: hidden; overflow-y: auto; padding: 40px 15px;">
+    
+    <div id="particles-js-reset" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;"></div>
+    
+    <div style="margin: auto; position: relative; z-index: 10; background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 40px; width: 420px; max-width: 100%; box-shadow: 0 8px 32px 0 rgba(0,0,0,0.7); text-align: center;">
         
         <h2 style="color: #38bdf8; font-size: 2rem; margin-top: 0; margin-bottom: 5px; letter-spacing: 2px; border: none; text-shadow: 0 0 10px rgba(56,189,248,0.5);">SYSTEM OVERRIDE</h2>
         <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 25px;">Update Operator Name and Passkey.</p>
@@ -2804,144 +2808,6 @@ async function submitNewPassword() {
 }
 
 
-/*
-// --- MASTER PAGE LOAD CONTROLLER (FIXED) ---
-window.addEventListener("DOMContentLoaded", () => {
-    sessionStorage.removeItem("authToken"); 
-    toggleSystemLock(false);
-    
-    // We wrap the router in a 100ms timeout to prevent other scripts from forcing the Front Page!
-    setTimeout(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const resetToken = urlParams.get('resetToken');
-
-        if (resetToken) {
-            hideAllPages(); // Force hide everything
-            document.getElementById("resetTokenInput").value = resetToken;
-            document.getElementById("resetPasswordPage").classList.remove("hidden");
-            window.history.replaceState({}, document.title, window.location.pathname); // Clean URL
-        } else {
-            hideAllPages();
-            document.getElementById("frontPage").classList.remove("hidden");
-        }
-    }, 100);
-});
-
-
-// --- URL Token Detector ---
-// This automatically detects if the user clicked the link in their email!
-window.addEventListener("DOMContentLoaded", () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const resetToken = urlParams.get('resetToken');
-
-  if (resetToken) {
-    // If a token is in the URL, hide everything and show the New Password page
-    hideAllPages();
-    document.getElementById("resetTokenInput").value = resetToken;
-    document.getElementById("resetPasswordPage").classList.remove("hidden");
-    
-    // Clean the URL so the token disappears from the address bar
-    window.history.replaceState({}, document.title, "/"); 
-  }
-});
-
-
-
-
-
-
-
-
-
-
-
-function toggleSystemLock(isUnlocked) {
-    const statusDot = document.getElementById("systemStatusDot");
-    const statusText = document.getElementById("systemStatusText");
-    const enterBtn = document.getElementById("enterBtn");
-
-    // Safety check - we removed authGroup so it won't fail!
-    if (!statusDot || !statusText || !enterBtn) {
-        console.log("Waiting for UI to load...");
-        return;
-    }
-
-    if (isUnlocked) {
-        // GREEN STATE (Logged In)
-        statusDot.style.backgroundColor = "#22c55e";
-        statusDot.style.boxShadow = "0 0 10px #22c55e";
-        statusText.innerText = "SYSTEM UNLOCKED";
-        statusText.style.color = "#22c55e";
-        
-        // Unhides the 4th button. The other 3 stay right where they are!
-        enterBtn.style.display = "block";  
-    } else {
-        // RED STATE (Logged Out)
-        statusDot.style.backgroundColor = "#f87171";
-        statusDot.style.boxShadow = "0 0 10px #f87171";
-        statusText.innerText = "SYSTEM LOCKED";
-        statusText.style.color = "#f87171";
-        
-        // Hides the 4th button again.
-        enterBtn.style.display = "none";  
-    }
-}
-
-// --- MASTER PAGE LOAD CONTROLLER ---
-window.addEventListener("DOMContentLoaded", () => {
-
-    // 1. THEME CHECK
-    if (localStorage.getItem("vaultTheme") === "light") {
-        document.body.classList.add("light-mode");
-        const toggleBtn = document.getElementById("themeToggleBtn");
-        if (toggleBtn) {
-            toggleBtn.innerText = "🌙 Dark Mode";
-            toggleBtn.style.background = "rgba(255, 255, 255, 0.9)";
-            toggleBtn.style.borderColor = "#0284c7";
-            toggleBtn.style.color = "#0284c7";
-        }
-    }
-
-    // 2. SECURITY: Destroy session and lock console
-    sessionStorage.removeItem("authToken"); 
-    toggleSystemLock(false);
-    
-    // 3. HIDE ALL PAGES INITIALLY
-    document.querySelectorAll(".page").forEach(page => page.classList.add("hidden"));
-    
-    // 4. SMART ROUTING: Check the URL for tokens BEFORE forcing the front page
-    const urlParams = new URLSearchParams(window.location.search);
-    const resetToken = urlParams.get('resetToken');
-    const unlocked = urlParams.get('unlocked');
-
-    if (resetToken) {
-        // User clicked a Forgot Password link!
-        document.getElementById("resetTokenInput").value = resetToken;
-        document.getElementById("resetPasswordPage").classList.remove("hidden");
-        window.history.replaceState({}, document.title, "/"); // Hide token from URL bar
-    } else if (unlocked) {
-        // User clicked an Account Unlock link!
-        document.getElementById("frontPage").classList.remove("hidden");
-        setTimeout(() => alert("Account successfully unlocked! You may now log in."), 500);
-        window.history.replaceState({}, document.title, "/"); 
-    } else {
-        // Normal visit: Kick them to the Front Page
-        document.getElementById("frontPage").classList.remove("hidden");
-    }
-    
-    // 5. Reset brute-force tasks if any were running
-    if (typeof resetBruteForce === "function") {
-        resetBruteForce();
-    }
-});
-
-
-*/
-
-
-
-
-
 
 
 
@@ -3163,18 +3029,6 @@ function capitalizeVariants(word) {
 }
 
 
-
-/*
-function generateHeuristicList(dictionary) {
-  let heuristicList = [];
-  for (const word of dictionary) {
-    const subs = substitutions(word);       // get all substitution combos
-    const allVariants = appendNumbers(subs); // append suffixes to all
-    heuristicList.push(...allVariants);
-  }
-  return [...new Set(heuristicList)];
-}
-*/
 const baseDictionary = ["a", "apple", "mango", "admin", "hello", "world"];
 const heuristicDictionary = generateHeuristicList(baseDictionary);
 
@@ -3286,11 +3140,6 @@ async function readPasswordFile(inputElement) {
     reader.readAsText(file);
   });
 }
-
-
-
-
-
 
 
 
@@ -3962,24 +3811,6 @@ try {
 
 
 
-// ----------------------change here-------------------
-
-/*
-    if (data.status === "TAMPERED" && data.changedWords?.length > 0) {
-  const reader = new FileReader();
-
-  reader.onload = function (e) {
-    highlightChangedWords(e.target.result, data.changedWords);
-  };
-
-  reader.readAsText(file);
-
-  document.getElementById("diffBox").style.display = "block";
-}
-
-  return false; //  THIS STOPS PAGE JUMP
-}
-*/
 
 
 
@@ -4004,23 +3835,6 @@ try {
 }
 //---------------------------change here too----------------------------------
 
-/*
-function highlightChangedWords(text, changedWords) {
-  const words = text.split(/\s+/);
-
-  let result = "";
-
-  for (let i = 0; i < words.length; i++) {
-    if (changedWords.includes(i)) {
-      result += `<span class="diff">${words[i]} </span>`;
-    } else {
-      result += `<span class="same">${words[i]} </span>`;
-    }
-  }
-
-  document.getElementById("diffBox").innerHTML = result;
-}
-*/
 
 
 
@@ -4067,34 +3881,6 @@ function highlightChangedWords(text, changedWords, deletedSpaces) {
   }
 }
 
-
-/*
-function normalizeText(text) {
-  return text
-    .toLowerCase()
-    .replace(/\r\n/g, "\n")
-    .replace(/[^\w\s]/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-function highlightChangedWords(text, changedWords) {
-  const normalized = normalizeText(text);
-  const words = normalized.split(" ");
-
-  let result = "";
-
-  for (let i = 0; i < words.length; i++) {
-    if (changedWords.includes(i)) {
-      result += `<span class="diff">${words[i]} </span>`;
-    } else {
-      result += `<span class="same">${words[i]} </span>`;
-    }
-  }
-
-  document.getElementById("diffBox").innerHTML = result;
-}
-*/
 
 
 
