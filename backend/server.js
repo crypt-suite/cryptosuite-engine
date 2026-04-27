@@ -540,17 +540,23 @@ app.post("/api/railfence", (req, res) => {
 //------------User Registration Route------------//
 app.post("/api/register", registerLimiter, async (req, res) => {
   
-  const { username, email, password } = req.body;
+  // Add confirmPassword to the extraction
+  const { username, email, password, confirmPassword } = req.body;
 
-  // 3. Check for missing fields
-  if (!username || !email || !password) {
+  // Check for missing fields
+  if (!username || !email || !password || !confirmPassword) {
     return res.status(400).json({ error: "Missing fields" });
   }
 
-  // 4. Server-side Airtight Email Validation (Your Logic)
-  const emailRegex = /^[a-zA-Z0-9]+(?:[._-][a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*(?:\.[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*)*\.[a-zA-Z]{2,}$/;
-  if (!emailRegex.test(email)) {
-    return res.status(400).json({ error: "Invalid email format. Please check for typos, consecutive dots, or invalid characters." });
+  // The Server-Side Deadbolt: Passwords must match
+  if (password !== confirmPassword) {
+    return res.status(400).json({ error: "Passwords do not match. Please try again." });
+  }
+
+  //Backend Password Strength Check
+  const strongPasswordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$/;
+  if (!strongPasswordRegex.test(password)) {
+    return res.status(400).json({ error: "Password must be at least 8 characters and include a number and special character." });
   }
 
   // 5. Restrict to Popular Domains (Your Logic)
@@ -765,6 +771,102 @@ app.post("/api/login", async (req, res) => {
   res.json({ token });
 });
 //------------User Login Route------------//
+
+
+
+
+// ------------ Forgot Password Route ------------ //
+app.post("/api/forgot-password", async (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ error: "Email is required" });
+
+  try {
+    const [users] = await pool.execute("SELECT id, username FROM users WHERE email = ?", [email]);
+    if (users.length === 0) {
+      // Security best practice: Always say "If the email exists, a link was sent" to prevent email scraping
+      return res.json({ message: "If that email exists in our system, a reset link has been sent." });
+    }
+
+    const user = users[0];
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    // Set expiration to 1 hour from now
+
+    // Let MySQL handle the time math perfectly
+    await pool.execute(
+      "UPDATE users SET reset_token = ?, reset_token_expires = ? WHERE id = ?",
+      [resetToken, expireTime, user.id]
+    );
+
+    const resetLink = `https://cryptosuite-engine.onrender.com/?resetToken=${resetToken}`;
+
+    const mailOptions = {
+      from: '"Security Team" <' + process.env.EMAIL_USER + '>',
+      to: email,
+      subject: "🔐 Password Reset Request",
+      text: `Hello ${user.username},\n\nYou requested a password reset. Click here to reset it: ${resetLink}\nThis link expires in 1 hour.`,
+      html: `
+        <div style="font-family: Arial; padding: 20px;">
+          <h2>Password Reset</h2>
+          <p>Hello <strong>${user.username}</strong>,</p>
+          <p>You recently requested to reset your password for the Cryptography Suite.</p>
+          <a href="${resetLink}" style="display:inline-block; padding:10px 20px; background:#3b82f6; color:#fff; text-decoration:none; border-radius:5px;">Reset My Password</a>
+          <p style="font-size: 12px; color: gray; margin-top: 20px;">This link expires in 1 hour. If you didn't request this, ignore this email.</p>
+        </div>
+      `
+    };
+
+    await transporter.sendMail(mailOptions);
+    res.json({ message: "If that email exists in our system, a reset link has been sent." });
+
+  } catch (err) {
+    console.error("Forgot password error:", err);
+    res.status(500).json({ error: "An error occurred while processing your request." });
+  }
+});
+
+// ------------ Reset Password Route ------------ //
+app.post("/api/reset-password", async (req, res) => {
+  const { token, newPassword, confirmNewPassword } = req.body;
+
+  if (!token || !newPassword || !confirmNewPassword) {
+    return res.status(400).json({ error: "Missing required fields." });
+  }
+  if (newPassword !== confirmNewPassword) {
+    return res.status(400).json({ error: "Passwords do not match." });
+  }
+
+  // Backend Password Strength Check for the New Password
+  const strongPasswordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$/;
+  if (!strongPasswordRegex.test(newPassword)) {
+    return res.status(400).json({ error: "Password must be at least 8 characters and include a number and special character." });
+  }
+
+  try {
+    // Find user with this token where expiration is still in the future
+    const [users] = await pool.execute(
+      "SELECT id FROM users WHERE reset_token = ? AND reset_token_expires > NOW()",
+      [token]
+    );
+
+    if (users.length === 0) {
+      return res.status(400).json({ error: "Invalid or expired reset token. Please request a new link." });
+    }
+
+    const hashed = await bcrypt.hash(newPassword, 10);
+
+    // Update password and destroy the token so it can never be used again
+    await pool.execute(
+      "UPDATE users SET password_hash = ?, reset_token = NULL, reset_token_expires = NULL WHERE id = ?",
+      [hashed, users[0].id]
+    );
+
+    res.json({ message: "Password successfully updated! You may now log in." });
+
+  } catch (err) {
+    console.error("Reset password error:", err);
+    res.status(500).json({ error: "An error occurred." });
+  }
+});
 
 
 
