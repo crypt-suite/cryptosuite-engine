@@ -620,6 +620,31 @@ body.light-mode .infinite-terminal {
 }
 
 
+
+/* =========================================
+   INFO BOX LIGHT MODE FIX
+========================================= */
+body.light-mode div[id$="Info"] {
+    background: #f0f9ff !important; /* Soft, readable light blue background */
+    border-left: 4px solid #0284c7 !important; /* Darker blue accent border */
+    color: #334155 !important; /* Dark slate text for high readability */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05) !important;
+}
+
+body.light-mode div[id$="Info"] strong {
+    color: #0f172a !important; /* Very dark text for the main "How to use" header */
+}
+
+body.light-mode div[id$="Info"] li strong {
+    color: #0284c7 !important; /* Bold, readable blue for the cipher names */
+}
+
+/* Fix the info (i) icon color in light mode */
+body.light-mode button[onclick^="toggleInfo"] {
+    color: #0284c7 !important;
+}
+
+
 </style>
 </head>
 <body>
@@ -1412,8 +1437,11 @@ body.light-mode .infinite-terminal {
           <ul style="margin-left: 20px; margin-bottom: 0; padding-left: 0; list-style-type: square;">
               <li style="margin-bottom: 5px;"><strong style="color: #38bdf8;">Caesar / ROT13:</strong> Classic substitution. Shifts letters down the alphabet by a set number.</li>
               <li style="margin-bottom: 5px;"><strong style="color: #38bdf8;">Vigenère:</strong> Polyalphabetic. Uses a repeating secret keyword to scramble the text.</li>
+              <li style="margin-bottom: 5px;"><strong style="color: #38bdf8;">Atbash:</strong> A reverse alphabet cipher. A becomes Z, B becomes Y, and so on.</li>
               <li style="margin-bottom: 5px;"><strong style="color: #38bdf8;">Affine:</strong> Mathematical cipher combining multiplication and addition. Requires two keys.</li>
               <li style="margin-bottom: 5px;"><strong style="color: #38bdf8;">Rail Fence:</strong> Transposition cipher. Scrambles text by writing it in a visual zigzag pattern.</li>
+              <li style="margin-bottom: 5px;"><strong style="color: #38bdf8;">Morse Code:</strong> Encodes text as a series of dots and dashes used in classic telecommunication.</li>
+              <li style="margin-bottom: 5px;"><strong style="color: #38bdf8;">Binary:</strong> Converts characters into raw machine code consisting entirely of 1s and 0s.</li>
               <li style="margin-bottom: 5px;"><strong style="color: #38bdf8;">AES:</strong> Military-grade modern encryption. Requires a strong password.</li>
               <li><strong style="color: #38bdf8;">SHA-256:</strong> Creates a one-way digital fingerprint of your text. Cannot be decrypted.</li>
           </ul>
@@ -1556,8 +1584,28 @@ body.light-mode .infinite-terminal {
 
       <hr>
 
-      <h3>Dictionary Attack</h3>
+      <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 5px; margin-bottom: 15px; margin-top: 15px;">
+        <h3 style="margin: 0; border: none; padding: 0;">Dictionary Attack</h3>
+        <button onclick="toggleInfo('dictAttackInfo')" style="background: transparent; border: none; color: #38bdf8; cursor: pointer; padding: 5px; display: flex; align-items: center; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" title="Module Information">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+        </button>
+      </div>
+
+      <div id="dictAttackInfo" class="hidden" style="background: rgba(15, 23, 42, 0.8); border-left: 4px solid #38bdf8; border-radius: 4px; padding: 15px; margin-bottom: 20px; font-size: 0.9rem; color: #94a3b8; box-shadow: inset 0 0 10px rgba(0,0,0,0.3);">
+          <strong style="color: #e2e8f0; font-size: 1rem; display: block; margin-bottom: 8px;">ℹ️ Real-World Concept: Password Vulnerability Simulator</strong>
+          <p style="margin-top: 0; margin-bottom: 15px; line-height: 1.5;">When hackers try to steal your password, they don't guess random letters. Because humans are predictable, hackers use a <strong>Dictionary Attack</strong>. They take a massive list of common words (like pet names, cities, or sports teams) and write a script that automatically adds numbers and symbols to them (like "Boston2023!"). This module simulates that exact cyberattack so you can see firsthand how easily a weak password can be shattered.</p>
+          <strong style="color: #e2e8f0; font-size: 1rem; display: block; margin-bottom: 8px;">How to run the simulation:</strong>
+          <ul style="margin-left: 20px; margin-bottom: 0; padding-left: 0; list-style-type: square;">
+              <li style="margin-bottom: 8px;"><strong style="color: #38bdf8;">1. Build the Dictionary:</strong> Open Notepad and type a few root words (e.g., "Rover", "Admin"). Save it as a <code>.txt</code> file and upload it below.</li>
+              <li style="margin-bottom: 8px;"><strong style="color: #38bdf8;">2. Set the Target:</strong> Think of a "clever" password based on those words (like "R0v3r12") and type it into the Target Password box.</li>
+              <li style="margin-bottom: 8px;"><strong style="color: #38bdf8;">3. Launch Attack:</strong> Click "Start Crack". The engine will mutate your dictionary words into hundreds of common Leetspeak and number combinations to try and find a match.</li>
+              <li style="margin-bottom: 0;"><strong style="color: #38bdf8;">4. Analyze the Threat:</strong> Watch the live tracker to see exactly how many milliseconds it takes a computer algorithm to outsmart human predictability!</li>
+          </ul>
+      </div>
+
       <label style="font-size: 14px; font-weight: 600;">Upload custom dictionary (.txt)</label>
+
+      
       <input type="file" id="passwordFile" accept=".txt" onchange="validateFileSize(this)" />
       <input type="text" id="targetPassword" placeholder="Target password (max 5 chars)">
       
@@ -1573,9 +1621,28 @@ body.light-mode .infinite-terminal {
         <progress id="progressBar" max="100" value="0"></progress>
       </div>
 
-    </div> <div class="card full-width">
-      <h2>Secure File Vault</h2>
-      <p style="font-size: 14px; margin-bottom: 15px;">Two‑File Secure File Encryption protocol.</p>
+    <div class="card full-width">
+      
+      <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 15px;">
+        <div style="display: flex; flex-direction: column;">
+          <h2 style="margin: 0; border: none; padding: 0;">Secure File Vault</h2>
+          <p style="font-size: 14px; margin-top: 5px; margin-bottom: 0; color: #94a3b8;">Two‑File Secure File Encryption protocol.</p>
+        </div>
+        <button onclick="toggleInfo('vaultInfo')" style="background: transparent; border: none; color: #38bdf8; cursor: pointer; padding: 5px; display: flex; align-items: center; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" title="Module Information">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+        </button>
+      </div>
+
+      <div id="vaultInfo" class="hidden" style="background: rgba(15, 23, 42, 0.8); border-left: 4px solid #38bdf8; border-radius: 4px; padding: 15px; margin-bottom: 20px; font-size: 0.9rem; color: #94a3b8; box-shadow: inset 0 0 10px rgba(0,0,0,0.3);">
+          <strong style="color: #e2e8f0; font-size: 1rem; display: block; margin-bottom: 8px;">ℹ️ The Split-Key Scenario</strong>
+          <p style="margin-top: 0; margin-bottom: 15px; line-height: 1.5;">Imagine you are transferring highly sensitive intel to a contact. Sending a standard password-protected file is dangerous—if intercepted, a supercomputer could just brute-force the password. This vault uses a <strong>Zero-Trust Protocol</strong>. It encrypts your file with AES-256, rips the cryptographic lock in half, and scatters it across separate files. A hacker cannot crack the file even <em>with</em> your password unless they possess all the physical fragments.</p>
+          <strong style="color: #e2e8f0; font-size: 1rem; display: block; margin-bottom: 8px;">Operator Instructions:</strong>
+          <ul style="margin-left: 20px; margin-bottom: 0; padding-left: 0; list-style-type: square;">
+              <li style="margin-bottom: 8px;"><strong style="color: #38bdf8;">1. Encrypt:</strong> Upload your target file and set a Master Passkey. The system will process it and download a <code>.zip</code> package containing three items: the encrypted data, a key fragment, and a unique file ID.</li>
+              <li style="margin-bottom: 8px;"><strong style="color: #38bdf8;">2. Secure Transfer:</strong> Send the <code>.zip</code> file to your contact. Then, use a completely different secure channel (like Signal or a physical note) to tell them the Master Passkey.</li>
+              <li style="margin-bottom: 0;"><strong style="color: #38bdf8;">3. Decrypt:</strong> The receiver unzips the package, uploads the 3 separate pieces into the exact slots below, enters the Master Passkey, and reconstructs the original file!</li>
+          </ul>
+      </div>
 
       <h3>1. Encrypt File</h3>
       <input type="file" id="secureEncFile" onchange="validateFileSize(this)">
@@ -1604,8 +1671,26 @@ body.light-mode .infinite-terminal {
     </div>
 
     <div class="card full-width">
-      <h2>File Integrity Checker</h2>
-      <p style="font-size: 14px; margin-bottom: 15px;">Ensure files have not been tampered with.</p>
+      
+      <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 15px;">
+        <div style="display: flex; flex-direction: column;">
+          <h2 style="margin: 0; border: none; padding: 0;">File Integrity Checker</h2>
+          <p style="font-size: 14px; margin-top: 5px; margin-bottom: 0; color: #94a3b8;">Ensure files have not been tampered with.</p>
+        </div>
+        <button onclick="toggleInfo('integrityInfo')" style="background: transparent; border: none; color: #38bdf8; cursor: pointer; padding: 5px; display: flex; align-items: center; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" title="Module Information">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+        </button>
+      </div>
+
+      <div id="integrityInfo" class="hidden" style="background: rgba(15, 23, 42, 0.8); border-left: 4px solid #38bdf8; border-radius: 4px; padding: 15px; margin-bottom: 20px; font-size: 0.9rem; color: #94a3b8; box-shadow: inset 0 0 10px rgba(0,0,0,0.3);">
+          <strong style="color: #e2e8f0; font-size: 1rem; display: block; margin-bottom: 8px;">ℹ️ Everyday Use: Verifying Important Contracts</strong>
+          <p style="margin-top: 0; margin-bottom: 15px; line-height: 1.5;">Imagine you are signing a digital lease agreement or a freelance contract. You agree to the terms, but how do you know the other party didn't sneakily change a number or a clause in the text file before sending the final copy? This module solves that by taking a digital "fingerprint" (a hash) of your file. Even changing a single comma completely changes the fingerprint.</p>
+          <strong style="color: #e2e8f0; font-size: 1rem; display: block; margin-bottom: 8px;">How to use it:</strong>
+          <ul style="margin-left: 20px; margin-bottom: 0; padding-left: 0; list-style-type: square;">
+              <li style="margin-bottom: 8px;"><strong style="color: #38bdf8;">1. Store Original:</strong> Upload the original, agreed-upon document and click "Store Integrity". The system remembers its exact digital fingerprint.</li>
+              <li style="margin-bottom: 0;"><strong style="color: #38bdf8;">2. Check for Changes:</strong> Later, upload the "final" signed copy. If even a single pixel or word was altered, the system will instantly warn you that the file has been tampered with!</li>
+          </ul>
+      </div>
       
       <div id="integritySection">
         <input type="file" id="integrityFile" onchange="validateFileSize(this)"/>
@@ -1625,7 +1710,28 @@ body.light-mode .infinite-terminal {
     </div>
 
     <div class="card full-width">
-      <h2>Visual Cryptography Demo</h2>
+      
+      <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 15px;">
+        <div style="display: flex; flex-direction: column;">
+          <h2 style="margin: 0; border: none; padding: 0;">Visual Cryptography Demo</h2>
+          <p style="font-size: 14px; margin-top: 5px; margin-bottom: 0; color: #94a3b8;">Sub-pixel secret sharing via optical overlay.</p>
+        </div>
+        <button onclick="toggleInfo('visualCryptoInfo')" style="background: transparent; border: none; color: #38bdf8; cursor: pointer; padding: 5px; display: flex; align-items: center; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" title="Module Information">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+        </button>
+      </div>
+
+      <div id="visualCryptoInfo" class="hidden" style="background: rgba(15, 23, 42, 0.8); border-left: 4px solid #38bdf8; border-radius: 4px; padding: 15px; margin-bottom: 20px; font-size: 0.9rem; color: #94a3b8; box-shadow: inset 0 0 10px rgba(0,0,0,0.3);">
+          <strong style="color: #e2e8f0; font-size: 1rem; display: block; margin-bottom: 8px;">ℹ️ Everyday Use: Unhackable Password Backup</strong>
+          <p style="margin-top: 0; margin-bottom: 15px; line-height: 1.5;">Think about your most important master password, a safe combination, or a crypto recovery phrase. If you save it in your phone, a hacker could steal it. If you write it on a sticky note, a snooping roommate or guest could read it. Visual Cryptography fixes this by splitting the secret into two pictures of random static. You can save one picture on your phone and print the other on a clear plastic sheet. Neither piece means anything on its own!</p>
+          <strong style="color: #e2e8f0; font-size: 1rem; display: block; margin-bottom: 8px;">How to use it:</strong>
+          <ul style="margin-left: 20px; margin-bottom: 0; padding-left: 0; list-style-type: square;">
+              <li style="margin-bottom: 8px;"><strong style="color: #38bdf8;">1. Generate:</strong> Type your secret PIN or password and click "Generate Shares". The system turns it into two static images.</li>
+              <li style="margin-bottom: 8px;"><strong style="color: #38bdf8;">2. Store Separately:</strong> Save "Share 1" securely on your computer or phone. Print "Share 2" on a transparent plastic sheet and hide it in a physical drawer.</li>
+              <li style="margin-bottom: 0;"><strong style="color: #38bdf8;">3. Reveal:</strong> When you need the password, just hold the transparent sheet physically over your computer screen. Your eyes will instantly combine the two images to reveal the secret!</li>
+          </ul>
+      </div>
+      
       <div style="display:flex; gap:20px; flex-wrap: wrap;">
         
         <div style="flex: 1; min-width: 300px;">
