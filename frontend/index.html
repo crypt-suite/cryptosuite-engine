@@ -1328,11 +1328,16 @@ body.light-mode .infinite-terminal {
     <div id="particles-js-reset" style="position: absolute; width: 100%; height: 100%; z-index: 1;"></div>
     <div style="position: relative; z-index: 10; background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 40px; width: 420px; max-width: 90%; box-shadow: 0 8px 32px 0 rgba(0,0,0,0.7); text-align: center;">
         
-        <h2 style="color: #38bdf8; font-size: 2rem; margin-top: 0; margin-bottom: 5px; letter-spacing: 2px; border: none; text-shadow: 0 0 10px rgba(56,189,248,0.5);">CREATE NEW PASSKEY</h2>
-        <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 25px;">Enter your new credentials below.</p>
+        <h2 style="color: #38bdf8; font-size: 2rem; margin-top: 0; margin-bottom: 5px; letter-spacing: 2px; border: none; text-shadow: 0 0 10px rgba(56,189,248,0.5);">SYSTEM OVERRIDE</h2>
+        <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 25px;">Update Operator Name and Passkey.</p>
         
         <input type="hidden" id="resetTokenInput" />
         
+        <div style="text-align: left; margin-bottom: 15px;">
+            <label style="color: #38bdf8; font-size: 0.8rem; margin-bottom: 5px; display: block; text-transform: uppercase;">Operator Name (Current or New)</label>
+            <input type="text" id="resetUsername" placeholder="Enter Username" style="width: 100%; background: rgba(2, 6, 23, 0.7); border: 1px solid #334155; color: #22c55e; padding: 12px; font-family: inherit; font-size: 1rem; outline: none; border-radius: 4px; box-sizing: border-box; caret-color: #22c55e;" />
+        </div>
+
         <div style="text-align: left; margin-bottom: 15px;">
             <label style="color: #38bdf8; font-size: 0.8rem; margin-bottom: 5px; display: block; text-transform: uppercase;">New Passkey</label>
             <input type="password" id="newPassword" placeholder="••••••••" style="width: 100%; background: rgba(2, 6, 23, 0.7); border: 1px solid #334155; color: #22c55e; padding: 12px; font-family: inherit; font-size: 1rem; outline: none; border-radius: 4px; box-sizing: border-box; caret-color: #22c55e;" />
@@ -1344,7 +1349,7 @@ body.light-mode .infinite-terminal {
         </div>
         
         <div style="display: flex; flex-direction: column; gap: 12px;">
-            <button onclick="submitNewPassword()" class="cyber-btn-scan" style="background: transparent; border: 1px solid #38bdf8; color: #38bdf8; padding: 12px; font-family: inherit; font-size: 1rem; font-weight: bold; cursor: pointer; letter-spacing: 2px; transition: all 0.3s; border-radius: 4px; width: 100%;">UPDATE PASSKEY</button>
+            <button onclick="submitNewPassword()" class="cyber-btn-scan" style="background: transparent; border: 1px solid #38bdf8; color: #38bdf8; padding: 12px; font-family: inherit; font-size: 1rem; font-weight: bold; cursor: pointer; letter-spacing: 2px; transition: all 0.3s; border-radius: 4px; width: 100%;">UPDATE CREDENTIALS</button>
         </div>
     </div>
 </div>
@@ -2764,30 +2769,62 @@ async function requestPasswordReset() {
   showLogin(); // Send them back to the login screen to wait
 }
 
-// Submit the final new password
+// Submit the final new password AND username
 async function submitNewPassword() {
   const token = document.getElementById("resetTokenInput").value;
+  const username = document.getElementById("resetUsername").value.trim();
   const newPassword = document.getElementById("newPassword").value;
   const confirmNewPassword = document.getElementById("confirmNewPassword").value;
 
+  // STRICT VALIDATION (Same as Registration)
+  if (username.length < 2) {
+    return alert("Username must be at least 2 characters long.");
+  }
   if (newPassword !== confirmNewPassword) {
     return alert("Passwords do not match!");
+  }
+  const strongPasswordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$/;
+  if (!strongPasswordRegex.test(newPassword)) {
+    return alert("Password must be at least 8 characters long and include a number and special character.");
   }
 
   const res = await fetch("/api/reset-password", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ token, newPassword, confirmNewPassword })
+    body: JSON.stringify({ token, username, newPassword, confirmNewPassword })
   });
 
   const data = await res.json();
   if (res.ok) {
-    alert("Password updated successfully! You can now log in.");
+    alert("Credentials updated successfully! You can now log in.");
     showLogin();
   } else {
-    alert(data.error);
+    alert(data.error); // Alerts if username is already taken!
   }
 }
+
+// --- MASTER PAGE LOAD CONTROLLER (FIXED) ---
+window.addEventListener("DOMContentLoaded", () => {
+    sessionStorage.removeItem("authToken"); 
+    toggleSystemLock(false);
+    
+    // We wrap the router in a 100ms timeout to prevent other scripts from forcing the Front Page!
+    setTimeout(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const resetToken = urlParams.get('resetToken');
+
+        if (resetToken) {
+            hideAllPages(); // Force hide everything
+            document.getElementById("resetTokenInput").value = resetToken;
+            document.getElementById("resetPasswordPage").classList.remove("hidden");
+            window.history.replaceState({}, document.title, window.location.pathname); // Clean URL
+        } else {
+            hideAllPages();
+            document.getElementById("frontPage").classList.remove("hidden");
+        }
+    }, 100);
+});
+
 
 // --- URL Token Detector ---
 // This automatically detects if the user clicked the link in their email!

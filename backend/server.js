@@ -824,25 +824,32 @@ app.post("/api/forgot-password", async (req, res) => {
   }
 });
 
+
+
+
 // ------------ Reset Password Route ------------ //
 app.post("/api/reset-password", async (req, res) => {
-  const { token, newPassword, confirmNewPassword } = req.body;
+  const { token, username, newPassword, confirmNewPassword } = req.body;
 
-  if (!token || !newPassword || !confirmNewPassword) {
+  // 1. Check all fields are present
+  if (!token || !username || !newPassword || !confirmNewPassword) {
     return res.status(400).json({ error: "Missing required fields." });
+  }
+  
+  // 2. Strict Backend Validation
+  if (username.length < 2) {
+    return res.status(400).json({ error: "Username must be at least 2 characters long." });
   }
   if (newPassword !== confirmNewPassword) {
     return res.status(400).json({ error: "Passwords do not match." });
   }
-
-  // Backend Password Strength Check for the New Password
   const strongPasswordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$/;
   if (!strongPasswordRegex.test(newPassword)) {
     return res.status(400).json({ error: "Password must be at least 8 characters and include a number and special character." });
   }
 
   try {
-    // Find user with this token where expiration is still in the future
+    // 3. Verify Token
     const [users] = await pool.execute(
       "SELECT id FROM users WHERE reset_token = ? AND reset_token_expires > NOW()",
       [token]
@@ -854,15 +861,19 @@ app.post("/api/reset-password", async (req, res) => {
 
     const hashed = await bcrypt.hash(newPassword, 10);
 
-    // Update password and destroy the token so it can never be used again
+    // 4. Update both Username AND Password, then destroy token
     await pool.execute(
-      "UPDATE users SET password_hash = ?, reset_token = NULL, reset_token_expires = NULL WHERE id = ?",
-      [hashed, users[0].id]
+      "UPDATE users SET username = ?, password_hash = ?, reset_token = NULL, reset_token_expires = NULL WHERE id = ?",
+      [username, hashed, users[0].id]
     );
 
-    res.json({ message: "Password successfully updated! You may now log in." });
+    res.json({ message: "Credentials successfully updated! You may now log in." });
 
   } catch (err) {
+    // If they picked a username that someone else is already using
+    if (err.code === 'ER_DUP_ENTRY' || err.code === '23505') { 
+      return res.status(400).json({ error: "That Operator Name is already taken. Please choose another." });
+    }
     console.error("Reset password error:", err);
     res.status(500).json({ error: "An error occurred." });
   }
