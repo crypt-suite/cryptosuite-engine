@@ -1587,11 +1587,14 @@ body.light-mode button[onclick^="toggleInfo"] {
       <button onclick="estimateVigenereBruteForce()">Estimate Time</button>
 
       <pre id="vigBruteOutput" class="output-box" style="display: none; margin-top: 10px;"></pre>
+    </div> <!-- This closes the Brute Force & Cracking card -->
 
-      <hr>
-
-      <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 5px; margin-bottom: 15px; margin-top: 15px;">
-        <h3 style="margin: 0; border: none; padding: 0;">Dictionary Attack</h3>
+    <div class="card full-width"> <!-- This starts the new Dictionary Attack card -->
+      <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 15px;">
+        <div style="display: flex; flex-direction: column;">
+          <h2 style="margin: 0; border: none; padding: 0;">Dictionary Attack</h2>
+          <p style="font-size: 14px; margin-top: 5px; margin-bottom: 0; color: #94a3b8;">Automated password vulnerability simulator.</p>
+        </div>
         <button onclick="toggleInfo('dictAttackInfo')" style="background: transparent; border: none; color: #38bdf8; cursor: pointer; padding: 5px; display: flex; align-items: center; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" title="Module Information">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
         </button>
