@@ -1654,13 +1654,13 @@ body.light-mode button[onclick^="toggleInfo"] {
       <input type="file" id="secureEncFile" onchange="validateFileSize(this)">
       
       <label style="font-size: 13px; margin-top: 10px; display: block; color: #94a3b8; font-weight: bold;">Encryption Protocol:</label>
-      <select id="vaultEncMode" style="width: 100%; margin-bottom: 10px; background: rgba(2, 6, 23, 0.7); border: 1px solid #334155; color: #22c55e; padding: 12px; border-radius: 4px; font-family: inherit; outline: none;">
+      <select id="vaultEncMode" onchange="document.getElementById('secureEncPassword').style.display = this.value === 'otp' ? 'none' : 'block';" style="width: 100%; margin-bottom: 10px; background: rgba(2, 6, 23, 0.7); border: 1px solid #334155; color: #22c55e; padding: 12px; border-radius: 4px; font-family: inherit; outline: none;">
           <option value="aes-cbc">AES-256-CBC (Standard Split-Key)</option>
           <option value="aes-gcm">AES-256-GCM (Authenticated / Tamper-Proof)</option>
           <option value="otp">One-Time Pad (Perfect Secrecy - No Password)</option>
       </select>
 
-      <input type="password" id="secureEncPassword" placeholder="Enter vault password (Leave blank for OTP)">
+      <input type="password" id="secureEncPassword" placeholder="Enter vault password">
       <button onclick="encryptSecureFile()" style="width: 100%;">Encrypt & Generate Keys</button>
 
       <div style="width: 100%; background: #1e293b; border-radius: 10px; margin-top:15px; border: 1px solid #334155;">
@@ -1682,13 +1682,13 @@ body.light-mode button[onclick^="toggleInfo"] {
       <input type="file" id="secureIdFile" onchange="validateFileSize(this)">
       
       <label style="font-size: 13px; margin-top: 15px; display: block; color: #94a3b8; font-weight: bold;">Decryption Protocol:</label>
-      <select id="vaultDecMode" style="width: 100%; margin-bottom: 10px; background: rgba(2, 6, 23, 0.7); border: 1px solid #334155; color: #22c55e; padding: 12px; border-radius: 4px; font-family: inherit; outline: none;">
+      <select id="vaultDecMode" onchange="document.getElementById('secureDecPassword').style.display = this.value === 'otp' ? 'none' : 'block';" style="width: 100%; margin-bottom: 10px; background: rgba(2, 6, 23, 0.7); border: 1px solid #334155; color: #22c55e; padding: 12px; border-radius: 4px; font-family: inherit; outline: none;">
           <option value="aes-cbc">AES-256-CBC</option>
           <option value="aes-gcm">AES-256-GCM</option>
           <option value="otp">One-Time Pad</option>
       </select>
 
-      <input type="password" id="secureDecPassword" placeholder="Enter vault password (Leave blank for OTP)">
+      <input type="password" id="secureDecPassword" placeholder="Enter vault password">
       <button class="btn-secondary" onclick="decryptSecureFile()" style="width: 100%;">Decrypt File</button>
       <div id="secureDecStatus" style="margin-top: 10px;"></div>
     </div>
