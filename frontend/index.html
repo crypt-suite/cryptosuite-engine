@@ -1635,17 +1635,18 @@ body.light-mode button[onclick^="toggleInfo"] {
       </div>
 
       <div id="vaultInfo" class="hidden" style="background: rgba(15, 23, 42, 0.8); border-left: 4px solid #38bdf8; border-radius: 4px; padding: 15px; margin-bottom: 20px; font-size: 0.9rem; color: #94a3b8; box-shadow: inset 0 0 10px rgba(0,0,0,0.3);">
-          <strong style="color: #e2e8f0; font-size: 1rem; display: block; margin-bottom: 8px;">ℹ️ Everyday Use: Sending Sensitive Documents</strong>
-          <p style="margin-top: 0; margin-bottom: 15px; line-height: 1.5;">Standard email is not secure for tax returns or passports. This vault lets you safely send files by splitting the lock. You email the encrypted package, and text the password separately. You can choose your level of security:</p>
+          <strong style="color: #e2e8f0; font-size: 1rem; display: block; margin-bottom: 8px;">ℹ️ The Split-Key Scenario</strong>
+          <p style="margin-top: 0; margin-bottom: 15px; line-height: 1.5;">Imagine you are transferring highly sensitive intel to a contact. Sending a standard password-protected file is dangerous—if intercepted, a supercomputer could just brute-force the password. This vault uses a <strong>Zero-Trust Protocol</strong>. It rips the cryptographic lock in half and scatters it across separate files. You must choose your security clearance:</p>
           <ul style="margin-left: 20px; margin-bottom: 15px; padding-left: 0; list-style-type: square;">
-              <li style="margin-bottom: 5px;"><strong style="color: #22c55e;">AES-256-CBC:</strong> The standard military-grade lock. Fast and secure.</li>
-              <li style="margin-bottom: 5px;"><strong style="color: #f59e0b;">AES-256-GCM:</strong> Authenticated encryption. If a hacker alters even a single pixel of your file in transit, this protocol mathematically detects the tampering and refuses to decrypt it.</li>
-              <li style="margin-bottom: 0;"><strong style="color: #e879f9;">One-Time Pad (OTP):</strong> The only mathematically <em>unbreakable</em> cipher in existence. It requires no password! Instead, it generates a raw key file that is exactly as massive as your original file.</li>
+              <li style="margin-bottom: 5px;"><strong style="color: #22c55e;">AES-256-CBC:</strong> Standard military-grade split-key lock.</li>
+              <li style="margin-bottom: 5px;"><strong style="color: #f59e0b;">AES-256-GCM:</strong> Authenticated encryption. If an enemy alters even a single byte in transit, this protocol detects the tampering and locks down.</li>
+              <li style="margin-bottom: 0;"><strong style="color: #e879f9;">One-Time Pad (OTP):</strong> Mathematically <em>unbreakable</em> perfect secrecy. Requires no password! Instead, it generates a raw key file exactly as massive as your original file.</li>
           </ul>
-          <strong style="color: #e2e8f0; font-size: 1rem; display: block; margin-bottom: 8px;">How to use it:</strong>
+          <strong style="color: #e2e8f0; font-size: 1rem; display: block; margin-bottom: 8px;">Operator Instructions:</strong>
           <ul style="margin-left: 20px; margin-bottom: 0; padding-left: 0; list-style-type: square;">
-              <li style="margin-bottom: 8px;"><strong style="color: #38bdf8;">1. Encrypt:</strong> Upload your file, select a protocol, and set a password (unless using OTP). The system downloads a <code>.zip</code> package with your encrypted data and a key fragment.</li>
-              <li style="margin-bottom: 0;"><strong style="color: #38bdf8;">2. Decrypt:</strong> Unzip the package, upload the pieces below, match the protocol, enter the password, and safely recover the document!</li>
+              <li style="margin-bottom: 8px;"><strong style="color: #38bdf8;">1. Encrypt:</strong> Upload your target file, select a protocol, and set a Master Passkey. The system will download a <code>.zip</code> package containing your encrypted data and key fragments.</li>
+              <li style="margin-bottom: 8px;"><strong style="color: #38bdf8;">2. Secure Transfer:</strong> Send the <code>.zip</code> file to your contact. Then, use a completely different secure channel (like a burner phone or physical dead drop) to tell them the Master Passkey.</li>
+              <li style="margin-bottom: 0;"><strong style="color: #38bdf8;">3. Decrypt:</strong> The receiver unzips the package, uploads the 3 separate pieces into the exact slots below, enters the Master Passkey, and reconstructs the intel!</li>
           </ul>
       </div>
 
@@ -1690,47 +1691,6 @@ body.light-mode button[onclick^="toggleInfo"] {
       <input type="password" id="secureDecPassword" placeholder="Enter vault password (Leave blank for OTP)">
       <button class="btn-secondary" onclick="decryptSecureFile()" style="width: 100%;">Decrypt File</button>
       <div id="secureDecStatus" style="margin-top: 10px;"></div>
-    </div>
-        <button onclick="toggleInfo('vaultInfo')" style="background: transparent; border: none; color: #38bdf8; cursor: pointer; padding: 5px; display: flex; align-items: center; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" title="Module Information">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-        </button>
-      </div>
-
-      <div id="vaultInfo" class="hidden" style="background: rgba(15, 23, 42, 0.8); border-left: 4px solid #38bdf8; border-radius: 4px; padding: 15px; margin-bottom: 20px; font-size: 0.9rem; color: #94a3b8; box-shadow: inset 0 0 10px rgba(0,0,0,0.3);">
-          <strong style="color: #e2e8f0; font-size: 1rem; display: block; margin-bottom: 8px;">ℹ️ The Split-Key Scenario</strong>
-          <p style="margin-top: 0; margin-bottom: 15px; line-height: 1.5;">Imagine you are transferring highly sensitive intel to a contact. Sending a standard password-protected file is dangerous—if intercepted, a supercomputer could just brute-force the password. This vault uses a <strong>Zero-Trust Protocol</strong>. It encrypts your file with AES-256, rips the cryptographic lock in half, and scatters it across separate files. A hacker cannot crack the file even <em>with</em> your password unless they possess all the physical fragments.</p>
-          <strong style="color: #e2e8f0; font-size: 1rem; display: block; margin-bottom: 8px;">Operator Instructions:</strong>
-          <ul style="margin-left: 20px; margin-bottom: 0; padding-left: 0; list-style-type: square;">
-              <li style="margin-bottom: 8px;"><strong style="color: #38bdf8;">1. Encrypt:</strong> Upload your target file and set a Master Passkey. The system will process it and download a <code>.zip</code> package containing three items: the encrypted data, a key fragment, and a unique file ID.</li>
-              <li style="margin-bottom: 8px;"><strong style="color: #38bdf8;">2. Secure Transfer:</strong> Send the <code>.zip</code> file to your contact. Then, use a completely different secure channel (like Signal or a physical note) to tell them the Master Passkey.</li>
-              <li style="margin-bottom: 0;"><strong style="color: #38bdf8;">3. Decrypt:</strong> The receiver unzips the package, uploads the 3 separate pieces into the exact slots below, enters the Master Passkey, and reconstructs the original file!</li>
-          </ul>
-      </div>
-
-      <h3>1. Encrypt File</h3>
-      <input type="file" id="secureEncFile" onchange="validateFileSize(this)">
-      <input type="password" id="secureEncPassword" placeholder="Enter vault password">
-      <button onclick="encryptSecureFile()" style="width: 100%;">Encrypt & Generate Keys</button>
-
-      <div style="width: 100%; background: #eee; border-radius: 10px; margin-top:10px;">
-        <div id="fakeProgressBar" style="width: 0%; height: 8px; background: #10b981; border-radius: 10px; transition: width 0.2s ease;"></div>
-      </div>
-      <small id="progressText"></small>
-      <div id="secureEncStatus"></div>
-
-      <hr>
-
-      <h3>2. Decrypt File</h3>
-      <label style="font-size: 13px;">Encrypted Data File:</label>
-      <input type="file" id="secureDataFile" onchange="validateFileSize(this)">
-      <label style="font-size: 13px;">Key Fragment File:</label>
-      <input type="file" id="secureKeyFile" onchange="validateFileSize(this)">
-      <label style="font-size: 13px;">File ID:</label>
-      <input type="file" id="secureIdFile" onchange="validateFileSize(this)">
-      
-      <input type="password" id="secureDecPassword" placeholder="Enter vault password">
-      <button class="btn-secondary" onclick="decryptSecureFile()" style="width: 100%;">Decrypt File</button>
-      <div id="secureDecStatus"></div>
     </div>
 
     <div class="card full-width">
