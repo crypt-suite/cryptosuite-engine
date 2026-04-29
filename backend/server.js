@@ -20,11 +20,6 @@ app.use(express.json());
 
 
 
-const dns = require("dns");
-dns.setDefaultResultOrder("ipv4first"); // Forces Node to use standard IPv4
-
-
-
 
 const pool = require("./db"); 
 const bcrypt = require("bcryptjs");
@@ -44,34 +39,21 @@ const CryptoJS = require("crypto-js");
 
 
 //1. Load Environment Variables
-//require('@dotenvx/dotenvx').config();
-//require('dotenv').config();
+require('dotenv').config();
 
-const apiKey = process.env.BREVO_API_KEY; // Safe and secure!
 
-// --- FIREWALL BYPASS: HTTP EMAIL API (BREVO) ---
-async function sendEmailAPI(toAddress, subject, htmlContent) {
-  const response = await fetch('https://api.brevo.com/v3/smtp/email', {
-    method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'api-key': process.env.BREVO_API_KEY
-    },
-    body: JSON.stringify({
-      sender: { name: "Cryptosuite Security", email: process.env.EMAIL_USER },
-      to: [{ email: toAddress }],
-      subject: subject,
-      htmlContent: htmlContent
-    })
-  });
 
-  if (!response.ok) {
-    const errorData = await response.json();
-    console.error("Brevo API Error:", errorData);
-    throw new Error("Email API rejected the request.");
+const nodemailer = require("nodemailer");
+
+//2. Production Transporter (Free Gmail Route)
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
   }
-}
+});
+
 
 
 
@@ -630,7 +612,7 @@ app.post("/api/register", registerLimiter, async (req, res) => {
         `
     };
     
-    await sendEmailAPI(email, mailOptions.subject, mailOptions.html);
+    await transporter.sendMail(mailOptions);
     
     // 9. Success Response
     res.json({ success: true, message: "Registration pending. Please check your email." });
@@ -754,10 +736,14 @@ app.post("/api/login", async (req, res) => {
         `
       };
 
-      // API bypass for lockout email
-      sendEmailAPI(user.email, mailOptions.subject, mailOptions.html)
-        .then(() => console.log("✅ Unlock email successfully sent to:", user.email))
-        .catch(err => console.error("Failed to send unlock email:", err));
+      // Cleaned up production email callback
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.error("Failed to send unlock email:", error);
+        } else {
+            console.log("✅ Unlock email successfully sent to:", user.email);
+        }
+      });
 
       return res.status(403).json({ error: "Account locked. An unlock link has been automatically sent to your registered email address." });
     } else {
@@ -829,7 +815,7 @@ app.post("/api/forgot-password", async (req, res) => {
       `
     };
 
-    await sendEmailAPI(email, mailOptions.subject, mailOptions.html);
+    await transporter.sendMail(mailOptions);
     res.json({ message: "If that email exists in our system, a reset link has been sent." });
 
   } catch (err) {
@@ -1318,7 +1304,6 @@ const info = meta[id];
         decipher.final()
       ]);
 
-      // Cleanup files to prevent server disk from filling up
       if (dataFile) fs.unlinkSync(dataFile.path);
       if (keyFile) fs.unlinkSync(keyFile.path);
       if (idFile) fs.unlinkSync(idFile.path);
