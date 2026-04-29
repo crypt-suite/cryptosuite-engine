@@ -470,6 +470,21 @@ body.light-mode #vaultProgressContainer {
 }
 
 
+/* Ensure the Integrity Hash comparison box is dark by default */
+#hashBox {
+    background: #0f172a !important; /* Dark slate matching the body */
+    border: 1px solid #1e293b !important;
+    color: #10b981 !important; /* Hacker green text */
+}
+
+/* Maintain readability if the user explicitly switches to Light Mode */
+body.light-mode #hashBox {
+    background: #f1f5f9 !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #0f172a !important;
+}
+
+
 
 
 
