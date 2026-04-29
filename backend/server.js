@@ -39,7 +39,7 @@ const CryptoJS = require("crypto-js");
 
 
 //1. Load Environment Variables
-require('dotenv').config();
+//require('dotenv').config();
 
 
 
