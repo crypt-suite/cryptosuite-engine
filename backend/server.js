@@ -71,15 +71,6 @@ async function sendEmailAPI(toAddress, subject, htmlContent) {
   }
 }
 
-// --- EMAIL DIAGNOSTIC PING ---
-transporter.verify(function (error, success) {
-  if (error) {
-    console.log("🚨 EMAIL CONNECTION FAILED:", error.message);
-  } else {
-    console.log("✅ EMAIL SERVER IS AWAKE AND READY TO SEND!");
-  }
-});
-
 
 
 
