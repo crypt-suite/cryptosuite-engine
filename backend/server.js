@@ -46,8 +46,8 @@ const CryptoJS = require("crypto-js");
 const nodemailer = require("nodemailer");
 //2. Production Transporter (Free Gmail Route)
 const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
+  host: "sandbox.smtp.mailtrap.io",
+  port: 2525,
   secure: true, // Use SSL
   auth: {
     user: process.env.EMAIL_USER,
