@@ -47,25 +47,29 @@ const CryptoJS = require("crypto-js");
 require('dotenv').config();
 
 
+// --- FIREWALL BYPASS: HTTP EMAIL API (BREVO) ---
+async function sendEmailAPI(toAddress, subject, htmlContent) {
+  const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'api-key': process.env.BREVO_API_KEY
+    },
+    body: JSON.stringify({
+      sender: { name: "Cryptosuite Security", email: process.env.EMAIL_USER },
+      to: [{ email: toAddress }],
+      subject: subject,
+      htmlContent: htmlContent
+    })
+  });
 
-const nodemailer = require("nodemailer");
-
-// ==========================================
-// EMAIL TRANSPORTER SETUP (NUCLEAR OPTION)
-// ==========================================
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,           // Google's dedicated secure port
-  secure: true,        // Force strict SSL immediately
-  family: 4,           // 🛑 ABSOLUTE DEADBOLT: Force IPv4 at the physical socket level
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  },
-  tls: {
-    rejectUnauthorized: false // Bypasses aggressive cloud proxy certificates
+  if (!response.ok) {
+    const errorData = await response.json();
+    console.error("Brevo API Error:", errorData);
+    throw new Error("Email API rejected the request.");
   }
-});
+}
 
 // --- EMAIL DIAGNOSTIC PING ---
 transporter.verify(function (error, success) {
@@ -633,7 +637,7 @@ app.post("/api/register", registerLimiter, async (req, res) => {
         `
     };
     
-    await transporter.sendMail(mailOptions);
+    await sendEmailAPI(email, mailOptions.subject, mailOptions.html);
     
     // 9. Success Response
     res.json({ success: true, message: "Registration pending. Please check your email." });
@@ -757,14 +761,10 @@ app.post("/api/login", async (req, res) => {
         `
       };
 
-      // Cleaned up production email callback
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.error("Failed to send unlock email:", error);
-        } else {
-            console.log("✅ Unlock email successfully sent to:", user.email);
-        }
-      });
+      // API bypass for lockout email
+      sendEmailAPI(user.email, mailOptions.subject, mailOptions.html)
+        .then(() => console.log("✅ Unlock email successfully sent to:", user.email))
+        .catch(err => console.error("Failed to send unlock email:", err));
 
       return res.status(403).json({ error: "Account locked. An unlock link has been automatically sent to your registered email address." });
     } else {
@@ -836,7 +836,7 @@ app.post("/api/forgot-password", async (req, res) => {
       `
     };
 
-    await transporter.sendMail(mailOptions);
+    await sendEmailAPI(email, mailOptions.subject, mailOptions.html);
     res.json({ message: "If that email exists in our system, a reset link has been sent." });
 
   } catch (err) {
