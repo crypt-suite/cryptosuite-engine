@@ -46,6 +46,7 @@ const CryptoJS = require("crypto-js");
 //1. Load Environment Variables
 require('dotenv').config();
 
+const apiKey = process.env.BREVO_API_KEY; // Safe and secure!
 
 // --- FIREWALL BYPASS: HTTP EMAIL API (BREVO) ---
 async function sendEmailAPI(toAddress, subject, htmlContent) {
