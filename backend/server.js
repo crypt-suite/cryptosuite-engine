@@ -53,7 +53,14 @@ const transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_PASS
   }
 });
-
+// --- EMAIL DIAGNOSTIC PING ---
+transporter.verify(function (error, success) {
+  if (error) {
+    console.log("🚨 EMAIL CONNECTION FAILED:", error.message);
+  } else {
+    console.log("✅ EMAIL SERVER IS AWAKE AND READY TO SEND!");
+  }
+});
 
 
 
