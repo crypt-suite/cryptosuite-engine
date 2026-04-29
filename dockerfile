@@ -16,7 +16,7 @@ RUN npm install
 # 6. Copy the rest of your actual code into the cloud server
 COPY . .
 
-# 7. 🌟 THE COMPILER MAGIC: Tell the cloud to compile your C++ file!
+# 7. THE COMPILER MAGIC: Tell the cloud to compile your C++ file!
 # Make sure "your_cpp_file.cpp" matches your actual file name exactly.
 RUN g++ -o backend/compiler_engine/lan backend/compiler_engine/lan.cpp
 
