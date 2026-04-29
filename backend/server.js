@@ -48,10 +48,10 @@ const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
   host: "sandbox.smtp.mailtrap.io",
   port: 2525,
-  secure: true, // Use SSL
+  secure: false, // <--- THIS IS THE FIX
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
+    user: process.env.MAILTRAP_USER,
+    pass: process.env.MAILTRAP_PASS
   }
 });
 
