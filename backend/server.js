@@ -45,7 +45,7 @@ const CryptoJS = require("crypto-js");
 
 const nodemailer = require("nodemailer");
 //2. Production Transporter (Free Gmail Route)
-/*
+
 const transporter = nodemailer.createTransport({
   host: "sandbox.smtp.mailtrap.io",
   port: 2525,
@@ -55,7 +55,7 @@ const transporter = nodemailer.createTransport({
     pass: process.env.MAILTRAP_PASS
   }
 });
-*/
+/*
 // 3. Production Transporter (Google OAuth2 API Route)
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -67,7 +67,7 @@ const transporter = nodemailer.createTransport({
     refreshToken: process.env.OAUTH_REFRESH_TOKEN
   }
 });
-
+*/
 
 
 
