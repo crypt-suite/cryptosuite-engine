@@ -1166,7 +1166,7 @@ body.light-mode button[onclick^="toggleInfo"] {
 
         <div style="display: flex; flex-direction: column; gap: 12px;">
             <button onclick="suggestPassword()" onmouseover="this.style.background='#f59e0b'; this.style.color='#020617'" onmouseout="this.style.background='transparent'; this.style.color='#f59e0b'" style="background: transparent; border: 1px solid #f59e0b; color: #f59e0b; padding: 10px; font-family: inherit; font-size: 0.9rem; cursor: pointer; transition: all 0.3s; border-radius: 4px; width: 100%;">Suggest Strong Passkey</button>
-            <button onclick="completeRegistration()" class="cyber-btn-scan" style="background: transparent; border: 1px solid #38bdf8; color: #38bdf8; padding: 12px; font-family: inherit; font-size: 1rem; font-weight: bold; cursor: pointer; letter-spacing: 2px; transition: all 0.3s; border-radius: 4px; width: 100%;">SUBMIT REGISTRATION</button>
+            <button id="regSubmitBtn" onclick="completeRegistration()" class="cyber-btn-scan" style="background: transparent; border: 1px solid #38bdf8; color: #38bdf8; padding: 12px; font-family: inherit; font-size: 1rem; font-weight: bold; cursor: pointer; letter-spacing: 2px; transition: all 0.3s; border-radius: 4px; width: 100%;">SUBMIT REGISTRATION</button>
             <button onclick="goHome()" onmouseover="this.style.background='#64748b'; this.style.color='#020617'" onmouseout="this.style.background='transparent'; this.style.color='#64748b'" style="background: transparent; border: 1px solid #64748b; color: #64748b; padding: 10px; font-family: inherit; font-size: 0.9rem; cursor: pointer; transition: all 0.3s; border-radius: 4px; width: 100%;">Abort & Return</button>
         </div>
     </div>
@@ -2855,7 +2855,7 @@ function goBackFromAbout() {
 
 
 
-
+/*
 //Registration logic
 async function completeRegistration() {
   const username = document.getElementById("regUsername").value.trim();
@@ -2930,8 +2930,98 @@ async function completeRegistration() {
     alert("CRITICAL ERROR: The server failed to respond properly. Check the Render logs!");
   }
 }
+*/
 
 
+
+//Registration logic
+async function completeRegistration() {
+  const username = document.getElementById("regUsername").value.trim();
+  const email = document.getElementById("regEmail").value.trim();
+  const password = document.getElementById("regPassword").value;
+  const confirmPassword = document.getElementById("regConfirmPassword").value;
+  
+  // Frontend check: Instantly reject typos without wasting server time
+  if (password !== confirmPassword) {
+    alert("Passwords do not match!");
+    return;
+  }
+
+  // Username validation
+  if (username.length < 2) {
+    alert("Username must be at least 2 characters long.");
+    return;
+  }
+
+  // 1. Email Validation
+  const emailRegex = /^[a-zA-Z0-9]+(?:[._-][a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*(?:\.[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*)*\.[a-zA-Z]{2,}$/;
+  if (!emailRegex.test(email)) {
+    alert("Please enter a valid email address. (No consecutive dots, trailing dots, or invalid domains).");
+    return;
+  }
+
+  // 2. Restrict to Popular Domains
+  const allowedDomains = ["gmail.com", "yahoo.com", "outlook.com", "hotmail.com", "icloud.com", "ethereal.email"];
+  const userDomain = email.split('@')[1].toLowerCase();
+  
+  if (!allowedDomains.includes(userDomain)) {
+    alert(`Please use a supported email provider: ${allowedDomains.join(', ')}`);
+    return;
+  }
+
+  // Password strength validation
+  const strongPasswordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$/;
+  if (!strongPasswordRegex.test(password)) {
+    alert("Password must be at least 8 characters long and include at least one number and one special character.");
+    return;
+  }
+
+  // --- UI LOCK: GRAB THE BUTTON AND DISABLE IT ---
+  const submitBtn = document.getElementById("regSubmitBtn");
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.innerText = "SENDING SECURE LINK...";
+    submitBtn.style.opacity = "0.5"; // Dims the button so it looks disabled
+  }
+
+  try {
+    const res = await fetch("/api/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, email, password, confirmPassword }) 
+    });
+
+    // Catch Render's silent HTML crash pages!
+    const contentType = res.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+        throw new Error("Server crashed or returned non-JSON data.");
+    }
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error || "Registration failed");
+      return;
+    }
+
+    // Alert the user that they need to check their email!
+    alert(data.message || "Registration pending. Please check your email to verify your account.");
+
+    document.getElementById("registerPage").classList.add("hidden");
+    document.getElementById("loginPage").classList.remove("hidden");
+
+  } catch (err) {
+    console.error("Frontend Fetch Error:", err);
+    alert("CRITICAL ERROR: The server failed to respond properly. Check the Render logs!");
+  } finally {
+    // --- UI UNLOCK: THIS RUNS NO MATTER WHAT HAPPENS ---
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerText = "SUBMIT REGISTRATION";
+      submitBtn.style.opacity = "1";
+    }
+  }
+}
 
 // Show Forgot Password Page
 function showForgotPassword() {
