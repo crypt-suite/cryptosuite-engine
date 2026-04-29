@@ -44,7 +44,8 @@ const CryptoJS = require("crypto-js");
 
 
 //1. Load Environment Variables
-require('dotenv').config();
+require('@dotenvx/dotenvx').config();
+//require('dotenv').config();
 
 const apiKey = process.env.BREVO_API_KEY; // Safe and secure!
 
@@ -1317,9 +1318,10 @@ const info = meta[id];
         decipher.final()
       ]);
 
-      //fs.unlinkSync(dataFile.path);
-      //fs.unlinkSync(keyFile.path);
-      //fs.unlinkSync(idFile.path);
+      // Cleanup files to prevent server disk from filling up
+      if (dataFile) fs.unlinkSync(dataFile.path);
+      if (keyFile) fs.unlinkSync(keyFile.path);
+      if (idFile) fs.unlinkSync(idFile.path);
 
       res.setHeader(
         "Content-Disposition",
