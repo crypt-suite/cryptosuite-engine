@@ -50,17 +50,23 @@ require('dotenv').config();
 
 const nodemailer = require("nodemailer");
 
-//2. Production Transporter (Free Gmail Route)
+// ==========================================
+// EMAIL TRANSPORTER SETUP (NUCLEAR OPTION)
+// ==========================================
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
-  port: 587,
-  secure: false, // true for 465, false for 587
-  requireTLS: true,
+  port: 465,           // Google's dedicated secure port
+  secure: true,        // Force strict SSL immediately
+  family: 4,           // 🛑 ABSOLUTE DEADBOLT: Force IPv4 at the physical socket level
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS
+  },
+  tls: {
+    rejectUnauthorized: false // Bypasses aggressive cloud proxy certificates
   }
 });
+
 // --- EMAIL DIAGNOSTIC PING ---
 transporter.verify(function (error, success) {
   if (error) {
