@@ -547,6 +547,7 @@ string binaryDecrypt(string s) {
  * MORSE CODE: A simple dictionary lookup algorithm.
  */
 unordered_map<char, string> morseMap = {
+    // Letters
     {'A', ".-"},   {'B', "-..."}, {'C', "-.-."}, {'D', "-.."},
     {'E', "."},    {'F', "..-."}, {'G', "--."},  {'H', "...."},
     {'I', ".."},   {'J', ".---"}, {'K', "-.-"},  {'L', ".-.."},
@@ -554,6 +555,13 @@ unordered_map<char, string> morseMap = {
     {'Q', "--.-"}, {'R', ".-."},  {'S', "..."},  {'T', "-"},
     {'U', "..-"},  {'V', "...-"}, {'W', ".--"},  {'X', "-..-"},
     {'Y', "-.--"}, {'Z', "--.."},
+    
+    // Numbers
+    {'0', "-----"}, {'1', ".----"}, {'2', "..---"}, {'3', "...--"},
+    {'4', "....-"}, {'5', "....."}, {'6', "-...."}, {'7', "--..."},
+    {'8', "---.."}, {'9', "----."},
+
+    // Space / Word Separator
     {' ', "/"}
 };
 unordered_map<string, char> revMorseMap;
