@@ -20,6 +20,11 @@ app.use(express.json());
 
 
 
+const dns = require("dns");
+dns.setDefaultResultOrder("ipv4first"); // Forces Node to use standard IPv4
+
+
+
 
 const pool = require("./db"); 
 const bcrypt = require("bcryptjs");
@@ -47,7 +52,10 @@ const nodemailer = require("nodemailer");
 
 //2. Production Transporter (Free Gmail Route)
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false, // true for 465, false for 587
+  requireTLS: true,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS
