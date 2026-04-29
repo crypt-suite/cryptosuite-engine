@@ -45,7 +45,7 @@ const CryptoJS = require("crypto-js");
 
 //1. Load Environment Variables
 //require('@dotenvx/dotenvx').config();
-require('dotenv').config();
+//require('dotenv').config();
 
 const apiKey = process.env.BREVO_API_KEY; // Safe and secure!
 
